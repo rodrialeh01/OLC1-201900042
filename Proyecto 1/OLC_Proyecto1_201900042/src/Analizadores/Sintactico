@@ -22,43 +22,25 @@ parser code
     }  
 :} 
 
-terminal String PTCOMA,PARIZQ,PARDER,CORIZQ,CORDER;
-terminal String MAS,MENOS,POR,DIVIDIDO;
-terminal String ENTERO;
-terminal String DECIMAL;
-terminal String UMENOS;
-terminal String REVALUAR;
+//TERMINALES
+terminal String RINICIO,RFIN;
 
-non terminal ini;
-non terminal instrucciones;
-non terminal instruccion;
-non terminal Double expresion;
+//NO TERMINALES
+non terminal INICIO;
+non terminal INSTRUCCIONES;
+non terminal INSTRUCCION;
 
-precedence left MAS,MENOS;
-precedence left POR,DIVIDIDO;
-precedence right UMENOS; 
+//-------------------------------------------GRAMATICA SINTACTICA-------------------------------------------------
+start with INICIO; 
 
-start with ini; 
-
-ini::=instrucciones;
+INICIO::=INSTRUCCIONES;
 
 instrucciones ::= 
-   instruccion instrucciones
- | instruccion
- | error instrucciones
+   INSTRUCCION INSTRUCCIONES
+ | INSTRUCCION
+ | error INSTRUCCIONES
 ; 
 
-instruccion ::= 
-   REVALUAR CORIZQ expresion:a CORDER PTCOMA{:System.out.println("El valor de la expresión es: "+a);:}
-;
-
-expresion  ::= 
-    MENOS expresion:a                      {:RESULT=a*-1;:}%prec UMENOS     
- |  expresion:a MAS        expresion:b     {:RESULT=a+b;:}
- |  expresion:a MENOS      expresion:b     {:RESULT=a-b;:}
- |  expresion:a POR        expresion:b     {:RESULT=a*b;:}
- |  expresion:a DIVIDIDO   expresion:b     {:RESULT=a/b;:}
- |  ENTERO:a                               {:RESULT=new Double(a);:}
- |  DECIMAL:a                              {:RESULT=new Double(a);:}
- |  PARIZQ expresion:a PARDER              {:RESULT=a;:}
+instruccion ::= RINICIO RFIN
+                |error
 ;

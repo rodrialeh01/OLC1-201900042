@@ -216,37 +216,24 @@ public class Lexico implements java_cup.runtime.Scanner {
 		/* 3 */ YY_NO_ANCHOR,
 		/* 4 */ YY_NO_ANCHOR,
 		/* 5 */ YY_NO_ANCHOR,
-		/* 6 */ YY_NO_ANCHOR,
+		/* 6 */ YY_NOT_ACCEPT,
 		/* 7 */ YY_NO_ANCHOR,
-		/* 8 */ YY_NO_ANCHOR,
+		/* 8 */ YY_NOT_ACCEPT,
 		/* 9 */ YY_NO_ANCHOR,
-		/* 10 */ YY_NO_ANCHOR,
-		/* 11 */ YY_NO_ANCHOR,
-		/* 12 */ YY_NO_ANCHOR,
-		/* 13 */ YY_NO_ANCHOR,
-		/* 14 */ YY_NO_ANCHOR,
-		/* 15 */ YY_NO_ANCHOR,
-		/* 16 */ YY_NO_ANCHOR,
-		/* 17 */ YY_NOT_ACCEPT,
-		/* 18 */ YY_NO_ANCHOR,
-		/* 19 */ YY_NOT_ACCEPT,
-		/* 20 */ YY_NOT_ACCEPT,
-		/* 21 */ YY_NOT_ACCEPT,
-		/* 22 */ YY_NOT_ACCEPT,
-		/* 23 */ YY_NOT_ACCEPT
+		/* 10 */ YY_NOT_ACCEPT,
+		/* 11 */ YY_NOT_ACCEPT,
+		/* 12 */ YY_NOT_ACCEPT
 	};
 	private int yy_cmap[] = unpackFromString(1,65538,
-"22:9,17,16,22:2,17,22:18,20,22:7,8,9,14,12,22,13,19,15,18:10,22,7,22:5,3,22" +
-":3,1,22:6,4,22:5,6,22:2,5,2,22:4,10,22,11,22:3,3,22:3,1,22:6,4,22:5,6,22:2," +
-"5,2,22:5,21,22:65411,0:2")[0];
+"7:10,6,7:2,0,7:53,3,7:2,5,7:2,1,7:4,2,4,7:19,3,7:2,5,7:2,1,7:4,2,4,7:65424," +
+"8:2")[0];
 
-	private int yy_rmap[] = unpackFromString(1,24,
-"0,1,2,1:10,3,4,5,1,6,1,5,7,8,9,10")[0];
+	private int yy_rmap[] = unpackFromString(1,13,
+"0,1,2:4,3,2,4,5,6,7,8")[0];
 
-	private int yy_nxt[][] = unpackFromString(11,23,
-"1,2,18:5,3,4,5,6,7,8,9,10,11,12,13,14,18,13,18:2,-1:25,17,-1:37,13,-1:2,13," +
-"-1:20,14,19,-1:21,15,-1,15:2,-1:4,20,-1:23,21,-1:23,22,-1:20,23,-1:25,16,-1" +
-":16");
+	private int yy_nxt[][] = unpackFromString(9,9,
+"-1,1,7:3,9,2,7,3,-1:2,6,-1:16,10,-1:9,4,-1:7,8,-1:10,11,-1:6,12,-1:11,5,-1:" +
+"4");
 
 	public java_cup.runtime.Symbol next_token ()
 		throws java.io.IOException {
@@ -293,79 +280,41 @@ public class Lexico implements java_cup.runtime.Scanner {
 					yy_to_mark();
 					switch (yy_last_accept_state) {
 					case 1:
-						
+						{
+    System.out.println("Este es un error lexico: "+yytext()+
+    ", en la linea: "+yyline+", en la columna: "+yychar);
+}
 					case -2:
 						break;
 					case 2:
-						{
-    System.out.println("Este es un error lexico: "+yytext()+
-    ", en la linea: "+yyline+", en la columna: "+yychar);
-}
+						{yychar=1;}
 					case -3:
 						break;
 					case 3:
-						{return new Symbol(sym.PTCOMA,yyline,yychar, yytext());}
+						
 					case -4:
 						break;
 					case 4:
-						{return new Symbol(sym.PARIZQ,yyline,yychar, yytext());}
+						{System.out.println("TOKEN: " + sym.RFIN); return new Symbol(sym.RFIN,yyline,yychar,yytext());}
 					case -5:
 						break;
 					case 5:
-						{return new Symbol(sym.PARDER,yyline,yychar, yytext());}
+						{System.out.println("TOKEN: " + sym.RINICIO); return new Symbol(sym.RINICIO,yyline,yychar,yytext());}
 					case -6:
 						break;
-					case 6:
-						{return new Symbol(sym.CORIZQ,yyline,yychar, yytext());}
-					case -7:
-						break;
 					case 7:
-						{return new Symbol(sym.CORDER,yyline,yychar, yytext());}
-					case -8:
-						break;
-					case 8:
-						{return new Symbol(sym.MAS,yyline,yychar, yytext());}
-					case -9:
-						break;
-					case 9:
-						{return new Symbol(sym.MENOS,yyline,yychar, yytext());}
-					case -10:
-						break;
-					case 10:
-						{return new Symbol(sym.POR,yyline,yychar, yytext());}
-					case -11:
-						break;
-					case 11:
-						{return new Symbol(sym.DIVIDIDO,yyline,yychar, yytext());}
-					case -12:
-						break;
-					case 12:
-						{yychar=1;}
-					case -13:
-						break;
-					case 13:
-						{}
-					case -14:
-						break;
-					case 14:
-						{return new Symbol(sym.ENTERO,yyline,yychar, yytext());}
-					case -15:
-						break;
-					case 15:
-						{return new Symbol(sym.DECIMAL,yyline,yychar, yytext());}
-					case -16:
-						break;
-					case 16:
-						{return new Symbol(sym.REVALUAR,yyline,yychar,
-                             yytext());}
-					case -17:
-						break;
-					case 18:
 						{
     System.out.println("Este es un error lexico: "+yytext()+
     ", en la linea: "+yyline+", en la columna: "+yychar);
 }
-					case -18:
+					case -7:
+						break;
+					case 9:
+						{
+    System.out.println("Este es un error lexico: "+yytext()+
+    ", en la linea: "+yyline+", en la columna: "+yychar);
+}
+					case -8:
 						break;
 					default:
 						yy_error(YY_E_INTERNAL,false);

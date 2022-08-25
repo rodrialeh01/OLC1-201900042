@@ -23,21 +23,20 @@ COMENTARIOL=\/\/([^\n]*)
 COMENTARIOML=\/\*([^\*\/]*)\*\/
 IDENTIFICADOR=\_([A-Za-z0-9])+\_
 CARACTER=\'([A-Za-zñÑ])\'
-ASCCI=\'\$\{((6[5-9]|[7-8]\d|90)|((9[7-9]|1[0-1]\d|12[0-2]))|164|165)\}\'
-NOMBRE=[a-zA-Z][a-zA-Z0-9]+
+CARASCCI=\'\$\{((6[5-9]|[7-8]\d|90)|((9[7-9]|1[0-1]\d|12[0-2]))|164|165)\}\'
 %%
 
 "Verdadero" {return new Symbol(sym.RVERDADERO,yyline,yychar,yytext());}
 "Falso" {return new Symbol(sym.RFALSO,yyline,yychar,yytext());}
-"inicio" {return new Symbol(sym.RREVALUAR,yyline,yychar,yytext());} 
+"inicio" {return new Symbol(sym.RINICIO,yyline,yychar,yytext());} 
 "fin" {return new Symbol(sym.RFIN,yyline,yychar,yytext());}
 "ingresar" {return new Symbol(sym.RINGRESAR,yyline,yychar,yytext());}
-"como" {retun new Symbol(sym.RCOMO,yyline,yychar,yytext());}
+"como" {return new Symbol(sym.RCOMO,yyline,yychar,yytext());}
 "con_valor" {return new Symbol(sym.RCONVALOR,yyline,yychar,yytext());}
-"Número" {return new Symbol(sym.RNUMERO,yyline,yychar,yytext());}
+"Numero" {return new Symbol(sym.RNUMERO,yyline,yychar,yytext());}
 "Cadena" {return new Symbol(sym.RCADENA,yyline,yychar,yytext());}
 "Boolean" {return new Symbol(sym.RBOOLEAN,yyline,yychar,yytext());}
-"Carácter" {return new Symbol(sym.RCARACTER,yyline,yychar,yytext());}
+"Caracter" {return new Symbol(sym.RCARACTER,yyline,yychar,yytext());}
 "si" {return new Symbol(sym.RSI,yyline,yychar, yytext());}
 "entonces" {return new Symbol(sym.RENTONCES,yyline,yychar, yytext());}
 "fin_si" {return new Symbol(sym.RFINSI,yyline,yychar, yytext());}
@@ -71,12 +70,14 @@ NOMBRE=[a-zA-Z][a-zA-Z0-9]+
 "[" {return new Symbol(sym.CORIZQ,yyline,yychar, yytext());} 
 "]" {return new Symbol(sym.CORDER,yyline,yychar, yytext());} 
 "->" {return new Symbol(sym.FLECHA,yyline,yychar, yytext());}
+"¿" {return new Symbol(sym.INTABRE,yyline,yychar, yytext());}
+"?" {return new Symbol(sym.INTCIERRA,yyline,yychar, yytext());}
 
 "=" {return new Symbol(sym.IGUAL,yyline,yychar, yytext());}
 "+" {return new Symbol(sym.SUMA,yyline,yychar, yytext());} 
 "-" {return new Symbol(sym.RESTA,yyline,yychar, yytext());} 
 "*" {return new Symbol(sym.MULTIPLICACION,yyline,yychar, yytext());} 
-"/" {return new Symbol(sym.DIVISION,yyline,yychar, yytext());} 
+"/" {return new Symbol(sym.DIVIDIR,yyline,yychar, yytext());} 
 "potencia" {return new Symbol(sym.POTENCIA,yyline,yychar, yytext());}
 "mod" {return new Symbol(sym.MODULAR,yyline,yychar, yytext());}
 
@@ -89,9 +90,8 @@ NOMBRE=[a-zA-Z][a-zA-Z0-9]+
 {COMENTARIOL} {return new Symbol(sym.COMENTARIOL,yyline,yychar, yytext());}
 {COMENTARIOML} {return new Symbol(sym.COMENTARIOML,yyline,yychar, yytext());}
 {IDENTIFICADOR} {return new Symbol(sym.IDENTIFICADOR,yyline,yychar, yytext());}
-{ASCCI} {return new Symbol(sym.ASCII,yyline,yychar, yytext());}
+{CARASCCI} {return new Symbol(sym.CARASCCI,yyline,yychar, yytext());}
 {CARACTER} {return new Symbol(sym.CARACTER,yyline,yychar, yytext());}
-{NOMBRE} {return new Symbol(sym.NOMBRE,yyline,yychar, yytext());}
 
 . {
     System.out.println("Este es un error lexico: "+yytext()+

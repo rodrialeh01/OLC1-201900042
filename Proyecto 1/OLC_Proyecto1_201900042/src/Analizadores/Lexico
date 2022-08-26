@@ -5,7 +5,7 @@ import java_cup.runtime.Symbol;
 %class Lexico
 %public 
 %line 
-%char 
+%char
 %cup 
 %unicode
 %ignorecase
@@ -19,79 +19,88 @@ BLANCOS=[ \r\t]+
 DIGITO=[0-9]+
 DECIMAL=[0-9]+("."[  |0-9]+)?
 CADENA=\"([^\"]*)\"
-COMENTARIOL=\/\/([^\n]*)
-COMENTARIOML=\/\*([^\*\/]*)\*\/
-IDENTIFICADOR=\_([A-Za-z0-9])+\_
-CARACTER=\'([A-Za-zñÑ])\'
-CARASCCI=\'\$\{((6[5-9]|[7-8]\d|90)|((9[7-9]|1[0-1]\d|12[0-2]))|164|165)\}\'
+COMENTARIOL="//"([^\n]*)
+COMENTARIOML="/*"([^"*/"]*)"*/"
+IDENTIFICADOR="_"([A-Za-z0-9])+"_"
+CARACTER="'"([A-Za-zñÑ])"'"
+CARASCCI="'${"((6[5-9]|[7-8]\d|90)|((9[7-9]|1[0-1]\d|12[0-2]))|164|165)"}'"
+
 %%
 
-"Verdadero" {return new Symbol(sym.RVERDADERO,yyline,yychar,yytext());}
-"Falso" {return new Symbol(sym.RFALSO,yyline,yychar,yytext());}
-"inicio" {return new Symbol(sym.RINICIO,yyline,yychar,yytext());} 
-"fin" {return new Symbol(sym.RFIN,yyline,yychar,yytext());}
-"ingresar" {return new Symbol(sym.RINGRESAR,yyline,yychar,yytext());}
-"como" {return new Symbol(sym.RCOMO,yyline,yychar,yytext());}
-"con_valor" {return new Symbol(sym.RCONVALOR,yyline,yychar,yytext());}
-"Numero" {return new Symbol(sym.RNUMERO,yyline,yychar,yytext());}
-"Cadena" {return new Symbol(sym.RCADENA,yyline,yychar,yytext());}
-"Boolean" {return new Symbol(sym.RBOOLEAN,yyline,yychar,yytext());}
-"Caracter" {return new Symbol(sym.RCARACTER,yyline,yychar,yytext());}
-"si" {return new Symbol(sym.RSI,yyline,yychar, yytext());}
-"entonces" {return new Symbol(sym.RENTONCES,yyline,yychar, yytext());}
-"fin_si" {return new Symbol(sym.RFINSI,yyline,yychar, yytext());}
-"de_lo_contrario" {return new Symbol(sym.RDELOCONTRARIO,yyline,yychar, yytext());}
-"o_si" {return new Symbol(sym.ROSI,yyline,yychar, yytext());}
-"segun" {return new Symbol(sym.RSEGUN,yyline,yychar, yytext());}
-"hacer" {return new Symbol(sym.RHACER,yyline,yychar, yytext());}
-"fin_segun" {return new Symbol(sym.RFINSEGUN,yyline,yychar, yytext());}
-"para" {return new Symbol(sym.RPARA,yyline,yychar, yytext());}
-"hasta" {return new Symbol(sym.RHASTA,yyline,yychar, yytext());}
-"fin_para" {return new Symbol(sym.RFINPARA,yyline,yychar, yytext());}
-"con incremental" {return new Symbol(sym.RCONINCREMENTAL,yyline,yychar, yytext());}
-"mientras" {return new Symbol(sym.RMIENTRAS,yyline,yychar, yytext());}
-"fin_mientras" {return new Symbol(sym.RFINMIENTRAS,yyline,yychar, yytext());}
-"repetir" {return new Symbol(sym.RREPETIR,yyline,yychar, yytext());}
-"hasta_que" {return new Symbol(sym.RHASTAQUE,yyline,yychar, yytext());}
-"retornar" {return new Symbol(sym.RRETORNAR,yyline,yychar, yytext());}
-"metodo" {return new Symbol(sym.RMETODO,yyline,yychar, yytext());}
-"fin_metodo" {return new Symbol(sym.RFINMETODO,yyline,yychar, yytext());}
-"con_parametros" {return new Symbol(sym.RCONPARAMETROS,yyline,yychar, yytext());}
-"funcion" {return new Symbol(sym.RFUNCION,yyline,yychar, yytext());}
-"fin_funcion" {return new Symbol(sym.RFINFUNCION,yyline,yychar, yytext());}
-"ejecutar" {return new Symbol(sym.REJECUTAR,yyline,yychar, yytext());}
-"imprimir" {return new Symbol(sym.RIMPRIMIR,yyline,yychar, yytext());}
-"imprimir_nl" {return new Symbol(sym.RIMPRIMIRNL,yyline,yychar, yytext());}
+"mayor"             {return new Symbol(sym.RMAYOR,yyline,yychar,yytext());}
+"menor"             {return new Symbol(sym.RMENOR,yyline,yychar,yytext());}
+"mayor_o_igual"     {return new Symbol(sym.RMAYOROIGUAL,yyline,yychar,yytext());}
+"menor_o_igual"     {return new Symbol(sym.RMENOROIGUAL,yyline,yychar,yytext());}
+"es_igual"          {return new Symbol(sym.RESIGUAL,yyline,yychar,yytext());}
+"es_diferente"      {return new Symbol(sym.RESDIFERENTE,yyline,yychar,yytext());}
+"Or"                {return new Symbol(sym.ROR,yyline,yychar,yytext());}
+"And"               {return new Symbol(sym.RAND,yyline,yychar,yytext());}
+"Not"               {return new Symbol(sym.RNOT,yyline,yychar,yytext());}
+"Verdadero"         {return new Symbol(sym.RVERDADERO,yyline,yychar,yytext());}
+"Falso"             {return new Symbol(sym.RFALSO,yyline,yychar,yytext());}
+"inicio"            {return new Symbol(sym.RINICIO,yyline,yychar,yytext());} 
+"fin"               {return new Symbol(sym.RFIN,yyline,yychar,yytext());}
+"ingresar"          {return new Symbol(sym.RINGRESAR,yyline,yychar,yytext());}
+"como"              {return new Symbol(sym.RCOMO,yyline,yychar,yytext());}
+"con_valor"         {return new Symbol(sym.RCONVALOR,yyline,yychar,yytext());}
+"Numero"            {return new Symbol(sym.RNUMERO,yyline,yychar,yytext());}
+"Cadena"            {return new Symbol(sym.RCADENA,yyline,yychar,yytext());}
+"Boolean"           {return new Symbol(sym.RBOOLEAN,yyline,yychar,yytext());}
+"Caracter"          {return new Symbol(sym.RCARACTER,yyline,yychar,yytext());}
+"si"                {return new Symbol(sym.RSI,yyline,yychar, yytext());}
+"entonces"          {return new Symbol(sym.RENTONCES,yyline,yychar, yytext());}
+"fin_si"            {return new Symbol(sym.RFINSI,yyline,yychar, yytext());}
+"de_lo_contrario"   {return new Symbol(sym.RDELOCONTRARIO,yyline,yychar, yytext());}
+"o_si"              {return new Symbol(sym.ROSI,yyline,yychar, yytext());}
+"segun"             {return new Symbol(sym.RSEGUN,yyline,yychar, yytext());}
+"hacer"             {return new Symbol(sym.RHACER,yyline,yychar, yytext());}
+"fin_segun"         {return new Symbol(sym.RFINSEGUN,yyline,yychar, yytext());}
+"para"              {return new Symbol(sym.RPARA,yyline,yychar, yytext());}
+"hasta"             {return new Symbol(sym.RHASTA,yyline,yychar, yytext());}
+"fin_para"          {return new Symbol(sym.RFINPARA,yyline,yychar, yytext());}
+"con incremental"   {return new Symbol(sym.RCONINCREMENTAL,yyline,yychar, yytext());}
+"mientras"          {return new Symbol(sym.RMIENTRAS,yyline,yychar, yytext());}
+"fin_mientras"      {return new Symbol(sym.RFINMIENTRAS,yyline,yychar, yytext());}
+"repetir"           {return new Symbol(sym.RREPETIR,yyline,yychar, yytext());}
+"hasta_que"         {return new Symbol(sym.RHASTAQUE,yyline,yychar, yytext());}
+"retornar"          {return new Symbol(sym.RRETORNAR,yyline,yychar, yytext());}
+"metodo"            {return new Symbol(sym.RMETODO,yyline,yychar, yytext());}
+"fin_metodo"        {return new Symbol(sym.RFINMETODO,yyline,yychar, yytext());}
+"con_parametros"    {return new Symbol(sym.RCONPARAMETROS,yyline,yychar, yytext());}
+"funcion"           {return new Symbol(sym.RFUNCION,yyline,yychar, yytext());}
+"fin_funcion"       {return new Symbol(sym.RFINFUNCION,yyline,yychar, yytext());}
+"ejecutar"          {return new Symbol(sym.REJECUTAR,yyline,yychar, yytext());}
+"imprimir"          {return new Symbol(sym.RIMPRIMIR,yyline,yychar, yytext());}
+"imprimir_nl"       {return new Symbol(sym.RIMPRIMIRNL,yyline,yychar, yytext());}
 
-";" {return new Symbol(sym.PTCOMA,yyline,yychar, yytext());}
-"," {return new Symbol(sym.COMA,yyline,yychar, yytext());}  
-"(" {return new Symbol(sym.PARIZQ,yyline,yychar, yytext());} 
-")" {return new Symbol(sym.PARDER,yyline,yychar, yytext());} 
-"[" {return new Symbol(sym.CORIZQ,yyline,yychar, yytext());} 
-"]" {return new Symbol(sym.CORDER,yyline,yychar, yytext());} 
-"->" {return new Symbol(sym.FLECHA,yyline,yychar, yytext());}
-"¿" {return new Symbol(sym.INTABRE,yyline,yychar, yytext());}
-"?" {return new Symbol(sym.INTCIERRA,yyline,yychar, yytext());}
+";"                 {return new Symbol(sym.PTCOMA,yyline,yychar, yytext());}
+","                 {return new Symbol(sym.COMA,yyline,yychar, yytext());}  
+"("                 {return new Symbol(sym.PARIZQ,yyline,yychar, yytext());} 
+")"                 {return new Symbol(sym.PARDER,yyline,yychar, yytext());} 
+"["                 {return new Symbol(sym.CORIZQ,yyline,yychar, yytext());} 
+"]"                 {return new Symbol(sym.CORDER,yyline,yychar, yytext());} 
+"->"                {return new Symbol(sym.FLECHA,yyline,yychar, yytext());}
+"¿"                 {return new Symbol(sym.INTABRE,yyline,yychar, yytext());}
+"?"                 {return new Symbol(sym.INTCIERRA,yyline,yychar, yytext());}
 
-"=" {return new Symbol(sym.IGUAL,yyline,yychar, yytext());}
-"+" {return new Symbol(sym.SUMA,yyline,yychar, yytext());} 
-"-" {return new Symbol(sym.RESTA,yyline,yychar, yytext());} 
-"*" {return new Symbol(sym.MULTIPLICACION,yyline,yychar, yytext());} 
-"/" {return new Symbol(sym.DIVIDIR,yyline,yychar, yytext());} 
-"potencia" {return new Symbol(sym.POTENCIA,yyline,yychar, yytext());}
-"mod" {return new Symbol(sym.MODULAR,yyline,yychar, yytext());}
+"+"                 {return new Symbol(sym.SUMA,yyline,yychar, yytext());} 
+"-"                 {return new Symbol(sym.RESTA,yyline,yychar, yytext());} 
+"*"                 {return new Symbol(sym.MULTIPLICACION,yyline,yychar, yytext());} 
+"/"                 {return new Symbol(sym.DIVIDIR,yyline,yychar, yytext());} 
+"potencia"          {return new Symbol(sym.POTENCIA,yyline,yychar, yytext());}
+"mod"               {return new Symbol(sym.MOD,yyline,yychar, yytext());}
 
 \n {yychar=1;}
 
-{BLANCOS} {} 
-{DIGITO} {return new Symbol(sym.ENTERO,yyline,yychar, yytext());} 
-{DECIMAL} {return new Symbol(sym.DECIMAL,yyline,yychar, yytext());} 
-{CADENA} {return new Symbol(sym.CADENA,yyline,yychar, yytext());}
-{COMENTARIOL} {return new Symbol(sym.COMENTARIOL,yyline,yychar, yytext());}
-{COMENTARIOML} {return new Symbol(sym.COMENTARIOML,yyline,yychar, yytext());}
-{IDENTIFICADOR} {return new Symbol(sym.IDENTIFICADOR,yyline,yychar, yytext());}
-{CARASCCI} {return new Symbol(sym.CARASCCI,yyline,yychar, yytext());}
-{CARACTER} {return new Symbol(sym.CARACTER,yyline,yychar, yytext());}
+{BLANCOS}           {} 
+{DIGITO}            {return new Symbol(sym.ENTERO,yyline,yychar, yytext());} 
+{DECIMAL}           {return new Symbol(sym.DECIMAL,yyline,yychar, yytext());} 
+{CADENA}            {return new Symbol(sym.CADENA,yyline,yychar, yytext());}
+{COMENTARIOL}       {return new Symbol(sym.COMENTARIOL,yyline,yychar, yytext());}
+{COMENTARIOML}      {return new Symbol(sym.COMENTARIOML,yyline,yychar, yytext());}
+{IDENTIFICADOR}     {return new Symbol(sym.IDENTIFICADOR,yyline,yychar, yytext());}
+{CARASCCI}          {return new Symbol(sym.CARASCCI,yyline,yychar, yytext());}
+{CARACTER}          {return new Symbol(sym.CARACTER,yyline,yychar, yytext());}
 
 . {
     System.out.println("Este es un error lexico: "+yytext()+

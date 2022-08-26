@@ -18,8 +18,6 @@ import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import Analizadores.*;
-import analizadores.Lexico;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**

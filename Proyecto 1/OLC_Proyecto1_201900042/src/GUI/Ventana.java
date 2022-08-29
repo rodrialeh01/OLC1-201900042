@@ -409,7 +409,13 @@ public class Ventana extends javax.swing.JFrame {
     }
     
     public void RSyntax(){
-        Color fondo = new Color(45, 45, 45);
+        Color fondo = new Color(12, 17, 22);
+        Color funciones = new Color(91, 140, 199);
+        Color reservadas = new Color(221, 107, 116);
+        Color identificadores = new Color(243, 133, 22);
+        Color tipo_dato =new Color(132, 91, 199);
+        Color literales = new Color(199, 120, 91);
+        Color operadores = new Color(160, 199, 91);
         textArea = new RSyntaxTextArea();
         textArea.setFont(new Font("Monospaced",Font.PLAIN,18));
         //textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
@@ -429,14 +435,17 @@ public class Ventana extends javax.swing.JFrame {
         
         //AGREGANDO COLOR A LOS TOKENS
         SyntaxScheme esquema = textArea.getSyntaxScheme();
-        esquema.getStyle(Token.OPERATOR).foreground = Color.RED;
-        esquema.getStyle(Token.DATA_TYPE).foreground = Color.ORANGE;
-        esquema.getStyle(Token.RESERVED_WORD).foreground = Color.LIGHT_GRAY;
-        esquema.getStyle(Token.FUNCTION).foreground=Color.CYAN;
-        esquema.getStyle(Token.IDENTIFIER).foreground=Color.YELLOW;
+        esquema.getStyle(Token.OPERATOR).foreground = operadores;
+        esquema.getStyle(Token.DATA_TYPE).foreground = tipo_dato;
+        esquema.getStyle(Token.RESERVED_WORD).foreground = reservadas;
+        esquema.getStyle(Token.FUNCTION).foreground=funciones;
+        esquema.getStyle(Token.IDENTIFIER).foreground=identificadores;
         esquema.getStyle(Token.COMMENT_DOCUMENTATION).foreground=Color.GREEN;
-        esquema.getStyle(Token.SEPARATOR).foreground=Color.gray;
-        
+        esquema.getStyle(Token.SEPARATOR).foreground=Color.WHITE;
+        esquema.getStyle(Token.LITERAL_BOOLEAN).foreground=literales;
+        esquema.getStyle(Token.LITERAL_CHAR).foreground=literales;
+        esquema.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground=literales;
+        esquema.getStyle(Token.LITERAL_NUMBER_DECIMAL_INT).foreground=literales;
     }
     /**
      * @param args the command line arguments

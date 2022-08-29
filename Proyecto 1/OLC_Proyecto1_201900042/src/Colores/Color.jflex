@@ -173,7 +173,7 @@ CARASCCI=("'${"(((6[5-9])|([7-8][0-9])|(90))|((9[7-9])|(1[0-1][0-9])|(12[0-2]))|
 <YYINITIAL> {   
    
    /* Keywords */ 
-   "ingresar"   
+   "ingresar" |  
    "como" |
    "con_valor" |
    "si"|
@@ -214,7 +214,9 @@ CARASCCI=("'${"(((6[5-9])|([7-8][0-9])|(90))|((9[7-9])|(1[0-1][0-9])|(12[0-2]))|
    
    {IDENTIFICADOR}            { addToken(Token.IDENTIFIER); }   
     
-   
+   "verdadero" |
+   "falso"              { addToken(Token.LITERAL_BOOLEAN); }
+
    /* String/Character literals. */   
    {CARACTER}|{CARASCCI}            { addToken(Token.LITERAL_CHAR); }   
    {CADENA}            { addToken(Token.LITERAL_STRING_DOUBLE_QUOTE); }     

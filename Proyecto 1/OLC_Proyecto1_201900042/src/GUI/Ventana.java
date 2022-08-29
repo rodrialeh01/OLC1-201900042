@@ -412,25 +412,31 @@ public class Ventana extends javax.swing.JFrame {
         Color fondo = new Color(45, 45, 45);
         textArea = new RSyntaxTextArea();
         textArea.setFont(new Font("Monospaced",Font.PLAIN,18));
-        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        //textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
         textArea.setHighlightCurrentLine(false);
         textArea.setBackground(fondo);
         textArea.setForeground(Color.WHITE);
-        //LO COMENTADO LO DEJO PARA DESPUES PARA PONERLE COLOR A MIS TOKENS DE PSEUDOCODIGO
-        /*
+        
         try{
             AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory)TokenMakerFactory.getDefaultInstance();
-            atmf.putMapping("text/MyLanguaje", "");
-            textArea.setSyntaxEditingStyle("text/MyLanguaje");
+            atmf.putMapping("text/Pseudocodigo", "Colores.Colores");
+            textArea.setSyntaxEditingStyle("text/Pseudocodigo");
         }catch(Exception e){
         }
-        */
+        
         RTextScrollPane sp = new RTextScrollPane(textArea);
         panelcodigo.add(sp);
-        /*
+        
+        //AGREGANDO COLOR A LOS TOKENS
         SyntaxScheme esquema = textArea.getSyntaxScheme();
-        esquema.getStyle(Token.IDENTIFIER).foreground = Color.RED;
-        */
+        esquema.getStyle(Token.OPERATOR).foreground = Color.RED;
+        esquema.getStyle(Token.DATA_TYPE).foreground = Color.ORANGE;
+        esquema.getStyle(Token.RESERVED_WORD).foreground = Color.LIGHT_GRAY;
+        esquema.getStyle(Token.FUNCTION).foreground=Color.CYAN;
+        esquema.getStyle(Token.IDENTIFIER).foreground=Color.YELLOW;
+        esquema.getStyle(Token.COMMENT_DOCUMENTATION).foreground=Color.GREEN;
+        esquema.getStyle(Token.SEPARATOR).foreground=Color.gray;
+        
     }
     /**
      * @param args the command line arguments

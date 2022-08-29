@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.StringReader;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
@@ -19,7 +20,10 @@ import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
+import analizadores.Analizador_Lexico;
+import analizadores.Sintactico;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Rodrigo
@@ -174,6 +178,11 @@ public class Ventana extends javax.swing.JFrame {
         jButton3.setBackground(new java.awt.Color(204, 204, 204));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/pythonlogo.png"))); // NOI18N
         jButton3.setText("Traducir código a Python");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(204, 204, 204));
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/golanglogo.png"))); // NOI18N
@@ -337,11 +346,24 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.println("run");
         if(textArea.getText()==""){
             System.out.println("No hay nada que analizar");
         }else{
+            System.out.println("");
+            Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader(new StringReader(textArea.getText())));
+            Sintactico sintactico = new Sintactico(lexico);
+            try {
+                sintactico.parse();
+            } catch (Exception ex) {
+                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     String contenido = "";
     File archivo;

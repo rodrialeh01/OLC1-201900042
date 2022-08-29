@@ -8,11 +8,11 @@ package Clases;
  *
  * @author Rodrigo
  */
-public class Error {
+public class ErrorLenguaje {
     String tipo, descripcion;
     int linea,columna;
 
-    public Error(String tipo, String descripcion, int linea, int columna) {
+    public ErrorLenguaje(String tipo, String descripcion, int linea, int columna) {
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.linea = linea;

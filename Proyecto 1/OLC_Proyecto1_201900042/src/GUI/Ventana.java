@@ -349,6 +349,7 @@ public class Ventana extends javax.swing.JFrame {
     BufferedReader br;
     //CARGAR EL ARCHIVO DE ENTRADA
     public void CargarArchivo(){
+        
         try{
             JFileChooser fc = new JFileChooser();
             fc.setCurrentDirectory(new java.io.File("."));
@@ -382,6 +383,7 @@ public class Ventana extends javax.swing.JFrame {
                 e2.printStackTrace();
             }
         }
+        
     }
     
     public void RSyntax(){

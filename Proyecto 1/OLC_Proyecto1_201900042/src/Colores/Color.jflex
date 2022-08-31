@@ -162,10 +162,11 @@ DIGITO=[0-9]+
 DECIMAL=[0-9]+("."[0-9]+)?
 CADENA=[\"](((\\\')|(\\\")|(\\n))|[^\\\"\n])*[\"]
 COMENTARIOL=("//".*\r\n*)|("//".*\n*)|("//".*\r\n*)|(\/\/(.*)*)
-COMENTARIOML=("/""*"([^"*"]*)"*""/")
+COMENTARIOML=("/""*"([^"*""/"]*)"*""/")
 IDENTIFICADOR=("_"([A-Za-z0-9])+"_")
 CARACTER=("'"([A-Za-zñÑ])"'")
 CARASCCI=("'${"(((6[5-9])|([7-8][0-9])|(90))|((9[7-9])|(1[0-1][0-9])|(12[0-2]))|(164)|(165)|(32))"}'")
+INTERROGACIONA = [\¿]
 
 %state MLC
 %%   
@@ -197,9 +198,13 @@ CARASCCI=("'${"(((6[5-9])|([7-8][0-9])|(90))|((9[7-9])|(1[0-1][0-9])|(12[0-2]))|
    "imprimir_nl"      { addToken(Token.RESERVED_WORD); }   
    
    /* Data types */   
-   "numero" |   
-   "cadena" |   
-   "boolean" |   
+   "numero" |
+   "Numero" |
+   "cadena" |
+   "Cadena" |
+   "boolean" |
+   "Boolean" |
+   "Caracter" |
    "caracter" { addToken(Token.DATA_TYPE); }   
    
    /* Functions */   
@@ -222,14 +227,15 @@ CARASCCI=("'${"(((6[5-9])|([7-8][0-9])|(90))|((9[7-9])|(1[0-1][0-9])|(12[0-2]))|
    {CADENA}            { addToken(Token.LITERAL_STRING_DOUBLE_QUOTE); }     
    
    /* Comment literals. */   
-   {COMENTARIOL} | {COMENTARIOML}    { addToken(Token.COMMENT_MULTILINE);}   
+   {COMENTARIOML}    { addToken(Token.COMMENT_MULTILINE);}   
+   {COMENTARIOL}    { addToken(Token.COMMENT_EOL);} 
    
    /* Operators. */   
    "mayor" | "menor" | "mayor_o_igual" | "menor_o_igual" | "es_igual" | "es_diferente" | "or" | "and" | "not" | "+" | "-" | "/" | "*" | "mod" |   
    "potencia" | "->"  { addToken(Token.OPERATOR); }   
 
     /* Separators. */   
-   ";" | "(" | ")" | "[" | "]" | "," | "¿" | "?"  { addToken(Token.SEPARATOR); }   
+   ";" | "(" | ")" | "[" | "]" | "," | {INTERROGACIONA} | "?"  { addToken(Token.SEPARATOR); }   
    
    /* Numbers */   
    {DIGITO}|{DECIMAL}         { addToken(Token.LITERAL_NUMBER_DECIMAL_INT); }  

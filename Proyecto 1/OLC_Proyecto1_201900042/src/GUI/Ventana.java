@@ -346,12 +346,11 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("run");
-        if(textArea.getText()==""){
+        if(textArea.getText().equals("")){
             System.out.println("No hay nada que analizar");
         }else{
             System.out.println("");
-            Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader(new StringReader(textArea.getText())));
+            Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader(new StringReader(textArea.getText().toLowerCase())));
             Sintactico sintactico = new Sintactico(lexico);
             try {
                 sintactico.parse();
@@ -371,7 +370,7 @@ public class Ventana extends javax.swing.JFrame {
     BufferedReader br;
     //CARGAR EL ARCHIVO DE ENTRADA
     public void CargarArchivo(){
-        
+        textArea.setText("");
         try{
             JFileChooser fc = new JFileChooser();
             fc.setCurrentDirectory(new java.io.File("."));
@@ -409,8 +408,9 @@ public class Ventana extends javax.swing.JFrame {
     }
     
     public void RSyntax(){
+        //CREANDO COLORES PARA EL FOREGROUND DEL LENGUAJE
         Color fondo = new Color(12, 17, 22);
-        Color funciones = new Color(91, 140, 199);
+        Color funciones = new Color(4, 190, 255);
         Color reservadas = new Color(221, 107, 116);
         Color identificadores = new Color(243, 133, 22);
         Color tipo_dato =new Color(132, 91, 199);
@@ -440,7 +440,8 @@ public class Ventana extends javax.swing.JFrame {
         esquema.getStyle(Token.RESERVED_WORD).foreground = reservadas;
         esquema.getStyle(Token.FUNCTION).foreground=funciones;
         esquema.getStyle(Token.IDENTIFIER).foreground=identificadores;
-        esquema.getStyle(Token.COMMENT_DOCUMENTATION).foreground=Color.GREEN;
+        esquema.getStyle(Token.COMMENT_EOL).foreground=Color.GREEN;
+        esquema.getStyle(Token.COMMENT_MULTILINE).foreground=Color.GREEN;
         esquema.getStyle(Token.SEPARATOR).foreground=Color.WHITE;
         esquema.getStyle(Token.LITERAL_BOOLEAN).foreground=literales;
         esquema.getStyle(Token.LITERAL_CHAR).foreground=literales;

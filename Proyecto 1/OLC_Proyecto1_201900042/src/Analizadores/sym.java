@@ -8,74 +8,76 @@ package analizadores;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int INTABRE = 61;
-  public static final int RIMPRIMIRNL = 31;
-  public static final int RIMPRIMIR = 30;
+  public static final int INTABRE = 63;
+  public static final int RIMPRIMIRNL = 33;
+  public static final int RIMPRIMIR = 32;
   public static final int RINICIO = 2;
-  public static final int RFALSO = 58;
+  public static final int RFALSO = 60;
   public static final int RENTONCES = 14;
-  public static final int ENTERO = 33;
+  public static final int ENTERO = 35;
   public static final int RSEGUN = 18;
   public static final int RHACER = 19;
-  public static final int RESTA = 39;
-  public static final int RNUMERO = 53;
+  public static final int RESTA = 41;
+  public static final int RNUMERO = 55;
   public static final int RFINSI = 17;
-  public static final int RREPETIR = 27;
-  public static final int RCARACTER = 56;
-  public static final int RMIENTRAS = 25;
-  public static final int IDENTIFICADOR = 32;
-  public static final int CARACTER = 36;
-  public static final int CORDER = 67;
+  public static final int RREPETIR = 29;
+  public static final int COMENTARIOL = 21;
+  public static final int RCARACTER = 58;
+  public static final int COMENTARIOML = 22;
+  public static final int RMIENTRAS = 27;
+  public static final int IDENTIFICADOR = 34;
+  public static final int CARACTER = 38;
+  public static final int CORDER = 69;
   public static final int RCONVALOR = 12;
   public static final int RMETODO = 4;
-  public static final int MODU = 42;
-  public static final int INTCIERRA = 62;
-  public static final int SUMA = 38;
-  public static final int RHASTAQUE = 28;
-  public static final int RPARA = 21;
+  public static final int MODU = 44;
+  public static final int INTCIERRA = 64;
+  public static final int SUMA = 40;
+  public static final int RHASTAQUE = 30;
+  public static final int RPARA = 23;
   public static final int RCONPARAMETROS = 8;
-  public static final int PARIZQ = 59;
-  public static final int DECIMAL = 37;
+  public static final int PARIZQ = 61;
+  public static final int DECIMAL = 39;
   public static final int EOF = 0;
-  public static final int RFINMIENTRAS = 26;
+  public static final int RFINMIENTRAS = 28;
   public static final int error = 1;
-  public static final int COMA = 65;
-  public static final int CADENA = 35;
+  public static final int COMA = 67;
+  public static final int CADENA = 37;
   public static final int RFUNCION = 6;
   public static final int RDELOCONTRARIO = 16;
-  public static final int RHASTA = 22;
-  public static final int CARASCCI = 34;
+  public static final int RHASTA = 24;
+  public static final int CARASCCI = 36;
   public static final int RSI = 13;
   public static final int ROSI = 15;
-  public static final int POTENCIA = 43;
-  public static final int RMAYOROIGUAL = 46;
+  public static final int POTENCIA = 45;
+  public static final int RMAYOROIGUAL = 48;
   public static final int RFINFUNCION = 7;
   public static final int RINGRESAR = 10;
-  public static final int FLECHA = 63;
+  public static final int FLECHA = 65;
   public static final int RFINSEGUN = 20;
-  public static final int RESDIFERENTE = 49;
-  public static final int DIVIDIR = 41;
-  public static final int RESIGUAL = 48;
-  public static final int RCADENA = 54;
-  public static final int RCONINCREMENTAL = 23;
-  public static final int RFINPARA = 24;
+  public static final int RESDIFERENTE = 51;
+  public static final int DIVIDIR = 43;
+  public static final int RESIGUAL = 50;
+  public static final int RCADENA = 56;
+  public static final int RCONINCREMENTAL = 25;
+  public static final int RFINPARA = 26;
   public static final int RRETORNAR = 9;
-  public static final int RMENOROIGUAL = 47;
-  public static final int PTCOMA = 64;
-  public static final int ROR = 50;
-  public static final int REJECUTAR = 29;
-  public static final int RVERDADERO = 57;
-  public static final int RBOOLEAN = 55;
-  public static final int RMENOR = 45;
-  public static final int PARDER = 60;
+  public static final int RMENOROIGUAL = 49;
+  public static final int PTCOMA = 66;
+  public static final int ROR = 52;
+  public static final int REJECUTAR = 31;
+  public static final int RVERDADERO = 59;
+  public static final int RBOOLEAN = 57;
+  public static final int RMENOR = 47;
+  public static final int PARDER = 62;
   public static final int RFIN = 3;
-  public static final int CORIZQ = 66;
+  public static final int CORIZQ = 68;
   public static final int RFINMETODO = 5;
   public static final int RCOMO = 11;
-  public static final int RNOT = 52;
-  public static final int RAND = 51;
-  public static final int RMAYOR = 44;
-  public static final int MULTIPLICACION = 40;
+  public static final int RNOT = 54;
+  public static final int RAND = 53;
+  public static final int RMAYOR = 46;
+  public static final int MULTIPLICACION = 42;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -98,6 +100,8 @@ public class sym {
   "RSEGUN",
   "RHACER",
   "RFINSEGUN",
+  "COMENTARIOL",
+  "COMENTARIOML",
   "RPARA",
   "RHASTA",
   "RCONINCREMENTAL",

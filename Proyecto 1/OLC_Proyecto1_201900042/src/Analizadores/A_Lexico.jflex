@@ -36,11 +36,11 @@ DIGITO=[0-9]+
 DECIMAL=[0-9]+("."[0-9]+)?
 CADENA=[\"](((\\\')|(\\\")|(\\n))|[^\\\"\n])*[\"]
 COMENTARIOL=("//".*\r\n*)|("//".*\n*)|("//".*\r\n*)|(\/\/(.*)*)
-COMENTARIOML=("/""*"([^"*"]*)"*""/")
+COMENTARIOML=("/""*"([^"*""/"]*)"*""/")
 IDENTIFICADOR=("_"([A-Za-z0-9])+"_")
 CARACTER=("'"([A-Za-zñÑ])"'")
 CARASCCI=("'${"(((6[5-9])|([7-8][0-9])|(90))|((9[7-9])|(1[0-1][0-9])|(12[0-2]))|(164)|(165)|(32))"}'")
-
+INTERROGACIONA = [\¿]
 %%
 
 
@@ -100,7 +100,7 @@ CARASCCI=("'${"(((6[5-9])|([7-8][0-9])|(90))|((9[7-9])|(1[0-1][0-9])|(12[0-2]))|
 <YYINITIAL> "["                 {System.out.println("TOKEN: " + yytext());return new Symbol(sym.CORIZQ,yyline,yychar, yytext());} 
 <YYINITIAL> "]"                 {System.out.println("TOKEN: " + yytext());return new Symbol(sym.CORDER,yyline,yychar, yytext());} 
 <YYINITIAL> "->"                {System.out.println("TOKEN: " + yytext());return new Symbol(sym.FLECHA,yyline,yychar, yytext());}
-<YYINITIAL> "¿"                 {System.out.println("TOKEN: " + yytext());return new Symbol(sym.INTABRE,yyline,yychar, yytext());}
+<YYINITIAL> {INTERROGACIONA}    {System.out.println("TOKEN: " + yytext());return new Symbol(sym.INTABRE,yyline,yychar, yytext());}
 <YYINITIAL> "?"                 {System.out.println("TOKEN: " + yytext());return new Symbol(sym.INTCIERRA,yyline,yychar, yytext());}
 
 <YYINITIAL> "+"                 {System.out.println("TOKEN: " + yytext());return new Symbol(sym.SUMA,yyline,yychar, yytext());} 
@@ -116,8 +116,8 @@ CARASCCI=("'${"(((6[5-9])|([7-8][0-9])|(90))|((9[7-9])|(1[0-1][0-9])|(12[0-2]))|
 <YYINITIAL> {DIGITO}            {System.out.println("TOKEN: " + yytext());return new Symbol(sym.ENTERO,yyline,yychar, yytext());} 
 <YYINITIAL> {DECIMAL}           {System.out.println("TOKEN: " + yytext());return new Symbol(sym.DECIMAL,yyline,yychar, yytext());} 
 <YYINITIAL> {CADENA}            {System.out.println("TOKEN: " + yytext());return new Symbol(sym.CADENA,yyline,yychar, yytext());}
-<YYINITIAL> {COMENTARIOL}       {System.out.println("COMENTARIOL: " + yytext());}
-<YYINITIAL> {COMENTARIOML}      {System.out.println("COMENTARIOML: " + yytext());}
+<YYINITIAL> {COMENTARIOL}       {System.out.println("TOKEN: " + yytext());return new Symbol(sym.COMENTARIOL,yyline,yychar, yytext());}
+<YYINITIAL> {COMENTARIOML}      {System.out.println("TOKEN: " + yytext());return new Symbol(sym.COMENTARIOML,yyline,yychar, yytext());}
 <YYINITIAL> {IDENTIFICADOR}     {System.out.println("TOKEN: " + yytext());return new Symbol(sym.IDENTIFICADOR,yyline,yychar, yytext());}
 <YYINITIAL> {CARASCCI}          {System.out.println("TOKEN: " + yytext());return new Symbol(sym.CARASCCI,yyline,yychar, yytext());}
 <YYINITIAL> {CARACTER}          {System.out.println("TOKEN: " + yytext());return new Symbol(sym.CARACTER,yyline,yychar, yytext());}

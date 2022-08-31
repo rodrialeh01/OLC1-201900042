@@ -108,7 +108,7 @@ INTERROGACIONA = [\¿]
 <YYINITIAL> "*"                 {System.out.println("TOKEN: " + yytext());return new Symbol(sym.MULTIPLICACION,yyline,yychar, yytext());} 
 <YYINITIAL> "/"                 {System.out.println("TOKEN: " + yytext());return new Symbol(sym.DIVIDIR,yyline,yychar, yytext());} 
 <YYINITIAL> "potencia"          {System.out.println("TOKEN: " + yytext());return new Symbol(sym.POTENCIA,yyline,yychar, yytext());}
-<YYINITIAL> "mod"               {System.out.println("TOKEN: " + yytext());return new Symbol(sym.MODU,yyline,yychar, yytext());}
+<YYINITIAL> "modulo"            {System.out.println("TOKEN: " + yytext());return new Symbol(sym.MODU,yyline,yychar, yytext());}
 
 \n {yychar=1;}
 

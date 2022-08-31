@@ -22,6 +22,9 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import analizadores.Analizador_Lexico;
 import analizadores.Sintactico;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -248,6 +251,11 @@ public class Ventana extends javax.swing.JFrame {
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/savefile.png"))); // NOI18N
         jMenuItem2.setText("Guardar Como");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
@@ -364,13 +372,52 @@ public class Ventana extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        JFileChooser guardarArchivo = new JFileChooser();
+        guardarArchivo.setDialogTitle("Guardar Como");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter(".olc","olc");
+        guardarArchivo.setFileFilter(filtro);
+        int opcion = guardarArchivo.showSaveDialog(this);
+        File archivo;
+        if(opcion==0){
+            String nombre = guardarArchivo.getSelectedFile().getName();
+            if(nombre.endsWith("olc")){
+                try {
+                archivo = new File(guardarArchivo.getSelectedFile().getAbsolutePath());
+                if (!archivo.exists()) {
+                    archivo.createNewFile();
+                    FileWriter fw = new FileWriter(archivo);
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    bw.write(textArea.getText());
+                    bw.close();
+                }
+                } catch (IOException ex) {
+                    Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+                try {
+                archivo = new File(guardarArchivo.getSelectedFile().getAbsolutePath()+".olc");
+                if (!archivo.exists()) {
+                    archivo.createNewFile();
+                    FileWriter fw = new FileWriter(archivo);
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    bw.write(textArea.getText());
+                    bw.close();
+                }
+                } catch (IOException ex) {
+                    Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            JOptionPane.showMessageDialog(this, "Se guardo el archivo correctamente");
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     String contenido = "";
     File archivo;
     FileReader fr;
     BufferedReader br;
     //CARGAR EL ARCHIVO DE ENTRADA
     public void CargarArchivo(){
-        textArea.setText("");
         try{
             JFileChooser fc = new JFileChooser();
             fc.setCurrentDirectory(new java.io.File("."));
@@ -389,6 +436,7 @@ public class Ventana extends javax.swing.JFrame {
             while ((linea = br.readLine()) != null) {
                 contenido += linea +"\n";
             }
+            textArea.setText("");
             System.out.println(contenido);
             textArea.append(contenido);
             JOptionPane.showMessageDialog(this, "Se cargó el archivo exitosamente");

@@ -231,7 +231,7 @@ INTERROGACIONA = [\¿]
    {COMENTARIOL}    { addToken(Token.COMMENT_EOL);} 
    
    /* Operators. */   
-   "mayor" | "menor" | "mayor_o_igual" | "menor_o_igual" | "es_igual" | "es_diferente" | "or" | "and" | "not" | "+" | "-" | "/" | "*" | "mod" |   
+   "mayor" | "menor" | "mayor_o_igual" | "menor_o_igual" | "es_igual" | "es_diferente" | "or" | "and" | "not" | "+" | "-" | "/" | "*" | "modulo" |   
    "potencia" | "->"  { addToken(Token.OPERATOR); }   
 
     /* Separators. */   

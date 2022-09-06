@@ -9,7 +9,8 @@ import org.fife.ui.rsyntaxtextarea.*;
 %public   
 %class Colores   
 %extends AbstractJFlexCTokenMaker   
-%unicode   
+%unicode 
+%ignorecase  
 %type org.fife.ui.rsyntaxtextarea.Token   
    
 /**   

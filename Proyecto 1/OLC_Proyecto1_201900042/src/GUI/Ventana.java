@@ -27,6 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Structures.Instrucciones.Instruccion;
 /**
  *
  * @author Rodrigo
@@ -358,10 +359,22 @@ public class Ventana extends javax.swing.JFrame {
             System.out.println("No hay nada que analizar");
         }else{
             System.out.println("");
-            Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader(new StringReader(textArea.getText().toLowerCase())));
+            Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader(new StringReader(textArea.getText())));
             Sintactico sintactico = new Sintactico(lexico);
+            
             try {
                 sintactico.parse();
+                System.out.println("===========================================================================");
+                String go = "";
+                if(sintactico.getAST()!= null){
+                    for(Instruccion ins:sintactico.getAST()){
+                       go+= ins.traductorGolang();
+                    }
+                    
+                }else{
+                    go+= "Chale se intento :(";
+                }
+                System.out.println(go);
             } catch (Exception ex) {
                 Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -9,10 +9,30 @@ package Structures.Instrucciones;
  * @author Rodrigo
  */
 public class Comentarios implements Instruccion{
+    public static enum Tipo_Comentario{
+        COMENTARIO_UNILINEA,
+        COMENTARIO_MILTILINEA
+    }
+    private final Tipo_Comentario tipo;
+    private Object comentario;
+    public Comentarios(Tipo_Comentario tipo, String comentario) {
+        this.tipo = tipo;
+        this.comentario = comentario;
+    }
+    
+    
 
+    
     @Override
     public String traductorGolang() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(tipo==Tipo_Comentario.COMENTARIO_UNILINEA){
+            return "//"+comentario.toString();
+        }else if(tipo==Tipo_Comentario.COMENTARIO_MILTILINEA){
+            return "/*"+comentario.toString()+"*/";
+        }else{
+            return "";
+        }
+         
     }
     
 }

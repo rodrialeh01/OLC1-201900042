@@ -10,6 +10,7 @@ package Structures.Instrucciones;
  */
 public class Operacion implements Instruccion{
     public static enum Tipo_operacion{
+        AGRUPACION,
         SUMA,
         RESTA,
         MULTIPLICACION,
@@ -20,8 +21,10 @@ public class Operacion implements Instruccion{
         POTENCIA,
         CADENA,
         DECIMAL,
-        BOOLEANO,
+        VERDADERO,
+        FALSO,
         CARACTER,
+        ASCCI,
         IDENTIFICADOR,
         MAYORQUE,
         MENORQUE,
@@ -42,18 +45,18 @@ public class Operacion implements Instruccion{
     
     private Object valor;
 
-    public Operacion(Tipo_operacion tipo, Operacion operadorizq, Operacion operadorder) {
+    public Operacion(Operacion operadorizq, Operacion operadorder,Tipo_operacion tipo) {
         this.tipo = tipo;
         this.operadorizq = operadorizq;
         this.operadorder = operadorder;
     }
 
-    public Operacion(Tipo_operacion tipo, Operacion operadorizq) {
+    public Operacion(Operacion operadorizq,Tipo_operacion tipo) {
         this.tipo = tipo;
         this.operadorizq = operadorizq;
     }
 
-    public Operacion(Tipo_operacion tipo, String valor) {
+    public Operacion(String valor,Tipo_operacion tipo) {
         this.tipo = tipo;
         this.valor = valor;
     }
@@ -83,11 +86,19 @@ public class Operacion implements Instruccion{
         }else if(tipo == Tipo_operacion.DECIMAL){
             return valor.toString();
         }else if(tipo == Tipo_operacion.CADENA){
-            return valor.toString();
-        }else if(tipo == Tipo_operacion.BOOLEANO){
-            return valor.toString();
+            return "\"" + valor.toString() + "\"";
+        }else if(tipo == Tipo_operacion.VERDADERO){
+            return "true";
+        }else if(tipo == Tipo_operacion.FALSO){
+            return "false";
         }else if(tipo == Tipo_operacion.CARACTER){
-            return valor.toString();
+            return "'" + valor.toString() + "'";
+        }else if(tipo == Tipo_operacion.ASCCI){
+            String[] split1 = valor.toString().split("}");
+            String[] split2 = split1[1].split("\\{");
+            String[] split3 = split2[1].split("}");
+            String caracterconvertido = Character.toString(Integer.parseInt(split3[0]));
+            return "'" + caracterconvertido + "'";
         }else if(tipo == Tipo_operacion.IDENTIFICADOR){
             return valor.toString();
         }
@@ -112,6 +123,8 @@ public class Operacion implements Instruccion{
             return operadorizq.traductorGolang() + "||" + operadorder.traductorGolang();
         }else if(tipo == Tipo_operacion.NOT){
             return operadorizq.traductorGolang() + "!" + operadorder.traductorGolang();
+        }else if(tipo == Tipo_operacion.AGRUPACION){
+            return "(" + operadorizq.traductorGolang() + ")";
         }else{
             return "";
         }

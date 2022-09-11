@@ -5,7 +5,7 @@
 package Structures.Instrucciones;
 
 import java.util.LinkedList;
-
+import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 /**
  *
  * @author Rodrigo
@@ -53,7 +53,7 @@ public class Si implements Instruccion{
         String traduccion = "if " + this.condicion.traductorGolang() + "{\n";
         if(this.listaInstrucciones != null){
             for (Instruccion ins: this.listaInstrucciones) {
-                traduccion+= tabular(1)+ins.traductorGolang();
+                traduccion+= OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador+=1)+ins.traductorGolang();
             }
             traduccion+="\n}";
         }
@@ -67,17 +67,10 @@ public class Si implements Instruccion{
         if (this.listaInsdelocontrario != null) {
             traduccion+= "else{\n";
             for (Instruccion ins: this.listaInsdelocontrario) {
-                traduccion+=tabular(1) + ins.traductorGolang();
+                traduccion+=OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador+=1) + ins.traductorGolang();
             }
             traduccion+="\n}\n";
         }
         return traduccion;
-    }
-    public String tabular(int contador){
-        String tabs = "";
-        for (int i = 0; i < contador; i++) {
-            tabs+="\t"; 
-        }
-        return tabs;
     }
 }

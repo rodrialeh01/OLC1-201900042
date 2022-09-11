@@ -8,6 +8,11 @@ import Structures.Instrucciones.Operacion;
 import Structures.Instrucciones.Si;
 import Structures.Instrucciones.Main;
 import Structures.Instrucciones.Asignacion;
+import Structures.Instrucciones.Case;
+import Structures.Instrucciones.SeleccionMultiple;
+import Structures.Instrucciones.Para;
+import Structures.Instrucciones.Mientras;
+import Structures.Instrucciones.Repetir;
 import java.util.LinkedList;
 import Structures.Nodo;
 import Structures.Arbol;
@@ -75,7 +80,7 @@ non terminal CONDICION;
 non terminal LinkedList<Instruccion> LOCAL;
 non terminal LinkedList<Si> LISTA_OSI;
 non terminal SELECCION_MULTIPLE;
-non terminal LISTA_VALORENTONCES;
+non terminal LinkedList<Instruccion> LISTA_VALORENTONCES;
 non terminal CICLO_PARA;
 non terminal CICLO_MIENTRAS;
 non terminal CICLO_REPETIR;
@@ -280,10 +285,18 @@ ENTORNO_LOCAL::=ASIGNACION:a                                                    
                |CONDICIONAL_SI:a                                                                        {:  
                                                                                                             RESULT= (Instruccion) a;
                                                                                                         :}
-               |SELECCION_MULTIPLE
-               |CICLO_PARA
-               |CICLO_MIENTRAS
-               |CICLO_REPETIR
+               |SELECCION_MULTIPLE:a                                                                    {:  
+                                                                                                            RESULT= (Instruccion) a;
+                                                                                                        :} 
+               |CICLO_PARA:a                                                                            {:  
+                                                                                                            RESULT= (Instruccion) a;
+                                                                                                        :}
+               |CICLO_MIENTRAS:a                                                                        {:  
+                                                                                                            RESULT= (Instruccion) a;
+                                                                                                        :}
+               |CICLO_REPETIR:a                                                                         {:  
+                                                                                                            RESULT= (Instruccion) a;
+                                                                                                        :}
                |EJECUTAR
                |IMPRESION
                |IMPRESION_CONSALTO
@@ -306,7 +319,6 @@ CONDICIONAL_SI::=RSI CONDICION:a RENTONCES LOCAL:b RFINSI                       
 LISTA_OSI::=LISTA_OSI:l ROSI CONDICION:c RENTONCES LOCAL:d                                              {:  
                                                                                                             RESULT = new LinkedList<>();
                                                                                                             for (int i = 0; i < l.size(); i++) {
-                                                                                                                System.out.println(i);
                                                                                                                 RESULT.add(l.get(i));
                                                                                                             }
                                                                                                             RESULT.add(new Si((Operacion) c, (LinkedList) d));
@@ -316,22 +328,51 @@ LISTA_OSI::=LISTA_OSI:l ROSI CONDICION:c RENTONCES LOCAL:d                      
                                                                                                             RESULT.add(new Si((Operacion) e, (LinkedList) f));
                                                                                                         :}
 ;
-SELECCION_MULTIPLE::=RSEGUN EXPRESION RHACER LISTA_VALORENTONCES RFINSEGUN
-                    |RSEGUN EXPRESION RHACER LISTA_VALORENTONCES RDELOCONTRARIO RENTONCES LOCAL RFINSEGUN
+SELECCION_MULTIPLE::=RSEGUN EXPRESION:a RHACER LISTA_VALORENTONCES:l RFINSEGUN                          {:  
+                                                                                                            RESULT= new SeleccionMultiple((Operacion)a, (LinkedList) l);
+                                                                                                        :}
+                    |RSEGUN EXPRESION:a RHACER LISTA_VALORENTONCES:l RDELOCONTRARIO RENTONCES LOCAL:b RFINSEGUN{:  
+                                                                                                            RESULT = new SeleccionMultiple((Operacion)a, (LinkedList)l, (LinkedList) b);
+                                                                                                        :} 
 ;
-LISTA_VALORENTONCES::=LISTA_VALORENTONCES INTABRE EXPRESION INTCIERRA RENTONCES LOCAL
-                     |INTABRE EXPRESION INTCIERRA RENTONCES LOCAL
+LISTA_VALORENTONCES::=LISTA_VALORENTONCES:l INTABRE EXPRESION:e INTCIERRA RENTONCES LOCAL:a             {:  
+                                                                                                            RESULT= new LinkedList<>();
+                                                                                                            for (int i = 0; i < l.size(); i++) {
+                                                                                                                RESULT.add(l.get(i));
+                                                                                                            }
+                                                                                                            RESULT.add(new Case((Operacion) e, (LinkedList) a));
+                                                                                                        :}
+                     |INTABRE EXPRESION:e INTCIERRA RENTONCES LOCAL:a                                   {:  
+                                                                                                            RESULT= new LinkedList<>();
+                                                                                                            RESULT.add(new Case((Operacion) e, (LinkedList) a));
+                                                                                                        :}
 ;
-CICLO_PARA::=RPARA IDENTIFICADOR FLECHA EXPRESION RHASTA EXPRESION RHACER LOCAL RFINPARA
-            |RPARA IDENTIFICADOR FLECHA EXPRESION RHASTA EXPRESION RHACER RFINPARA
-            |RPARA IDENTIFICADOR FLECHA EXPRESION RHASTA EXPRESION RCONINCREMENTAL EXPRESION RHACER LOCAL RFINPARA
-            |RPARA IDENTIFICADOR FLECHA EXPRESION RHASTA EXPRESION RCONINCREMENTAL EXPRESION RHACER RFINPARA
+CICLO_PARA::=RPARA IDENTIFICADOR:a FLECHA EXPRESION:b RHASTA EXPRESION:c RHACER LOCAL:d RFINPARA        {:  
+                                                                                                            RESULT= new Para(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Operacion) b, (Operacion) c, (LinkedList) d);
+                                                                                                        :}
+            |RPARA IDENTIFICADOR:a FLECHA EXPRESION:b RHASTA EXPRESION:c RHACER RFINPARA                {:  
+                                                                                                            RESULT= new Para(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Operacion) b, (Operacion) c);
+                                                                                                        :}
+            |RPARA IDENTIFICADOR:a FLECHA EXPRESION:b RHASTA EXPRESION:c RCONINCREMENTAL EXPRESION:d RHACER LOCAL:e RFINPARA {:  
+                                                                                                            RESULT= new Para(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Operacion) b, (Operacion) c, (Operacion) d,(LinkedList) e);
+                                                                                                        :}
+            |RPARA IDENTIFICADOR:a FLECHA EXPRESION:b RHASTA EXPRESION:c RCONINCREMENTAL EXPRESION:d RHACER RFINPARA {:  
+                                                                                                            RESULT= new Para(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Operacion) b, (Operacion) c, (Operacion) d);
+                                                                                                        :}
 ;
-CICLO_MIENTRAS::=RMIENTRAS CONDICION RHACER LOCAL RFINMIENTRAS
-                |RMIENTRAS CONDICION RHACER RFINMIENTRAS
+CICLO_MIENTRAS::=RMIENTRAS CONDICION:a RHACER LOCAL:b RFINMIENTRAS                                      {:  
+                                                                                                            RESULT= new Mientras((Operacion) a,(LinkedList) b);
+                                                                                                        :}
+                |RMIENTRAS CONDICION:a RHACER RFINMIENTRAS                                              {:  
+                                                                                                            RESULT= new Mientras((Operacion) a);
+                                                                                                        :}
 ;
-CICLO_REPETIR::=RREPETIR LOCAL RHASTAQUE CONDICION
-               |RREPETIR RHASTAQUE CONDICION
+CICLO_REPETIR::=RREPETIR LOCAL:a RHASTAQUE CONDICION:b                                                  {:  
+                                                                                                            RESULT= new Repetir((Operacion) b,(LinkedList) a);
+                                                                                                        :}
+               |RREPETIR RHASTAQUE CONDICION:a                                                          {:  
+                                                                                                            RESULT= new Repetir((Operacion) a);
+                                                                                                        :}
 ;
 EJECUTAR::=REJECUTAR IDENTIFICADOR PARIZQ PARDER PTCOMA
            |REJECUTAR IDENTIFICADOR PARIZQ INSERCION_PARAMETROS PARDER PTCOMA

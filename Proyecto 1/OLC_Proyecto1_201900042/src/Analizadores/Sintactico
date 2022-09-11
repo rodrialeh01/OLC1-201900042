@@ -72,8 +72,8 @@ non terminal LISTA_PARAMETROS;
 non terminal ENTORNO_LOCAL;
 non terminal CONDICIONAL_SI;
 non terminal CONDICION;
-non terminal LOCAL;
-non terminal LISTA_OSI;
+non terminal LinkedList<Instruccion> LOCAL;
+non terminal LinkedList<Si> LISTA_OSI;
 non terminal SELECCION_MULTIPLE;
 non terminal LISTA_VALORENTONCES;
 non terminal CICLO_PARA;
@@ -123,23 +123,22 @@ ALGORITMO::=ALGORITMO GLOBAL
 ;
 GLOBAL::=FUNCION
         |METODO
-        |ENTORNO_LOCAL
+        |ENTORNO_LOCAL:a                                                                                {:  
+                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            Golang.add((Instruccion) RESULT);
+                                                                                                        :}
 ;
 DECLARACION::=RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RNUMERO RCONVALOR EXPRESION:e PTCOMA              {:  
                                                                                                             RESULT=new Declaracion(Declaracion.Tipo_Variable.RNUMERO,(Operacion)e,(LinkedList)l);
-                                                                                                            Golang.add((Declaracion) RESULT);
                                                                                                         :}                                    
              |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RCADENA RCONVALOR EXPRESION:e PTCOMA              {:  
                                                                                                             RESULT=new Declaracion(Declaracion.Tipo_Variable.RCADENA,(Operacion)e,(LinkedList)l);
-                                                                                                            Golang.add((Declaracion) RESULT);
                                                                                                         :}  
              |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RBOOLEAN RCONVALOR EXPRESION:e PTCOMA             {:  
                                                                                                             RESULT=new Declaracion(Declaracion.Tipo_Variable.RBOOLEAN,(Operacion)e,(LinkedList)l);
-                                                                                                            Golang.add((Declaracion) RESULT);
                                                                                                         :}  
              |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RCARACTER RCONVALOR EXPRESION:e PTCOMA            {:  
                                                                                                             RESULT=new Declaracion(Declaracion.Tipo_Variable.RCARACTER,(Operacion)e,(LinkedList)l);
-                                                                                                            Golang.add((Declaracion) RESULT);
                                                                                                         :} 
 ;
 LISTA_IDENTIFICADORES::=LISTA_IDENTIFICADORES:a COMA IDENTIFICADOR:b                                    {:  
@@ -203,9 +202,43 @@ EXPRESION::=ENTERO:a                                                            
                                                                                                             RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.MODULAR);
                                                                                                         :}                                                                   
 ;
+RELACIONAL::=EXPRESION:a                                                                                {:  
+                                                                                                            RESULT=(Operacion) a;
+                                                                                                        :}
+           |EXPRESION:a RMAYOR EXPRESION:b                                                              {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.MAYORQUE);;
+                                                                                                        :}
+           |EXPRESION:a RMENOR EXPRESION:b                                                              {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.MENORQUE);;
+                                                                                                        :}
+           |EXPRESION:a RMAYOROIGUAL EXPRESION:b                                                        {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.MAYOROIGUAL);;
+                                                                                                        :}
+           |EXPRESION:a RMENOROIGUAL EXPRESION:b                                                        {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.MENOROIGUAL);;
+                                                                                                        :}
+           |EXPRESION:a RESIGUAL EXPRESION:b                                                            {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.IGUAL);;
+                                                                                                        :}
+           |EXPRESION:a RESDIFERENTE EXPRESION:b                                                        {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.DIFERENTE);;
+                                                                                                        :}
+;
+CONDICION::=RELACIONAL:a ROR RELACIONAL:b                                                               {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.OR);;
+                                                                                                        :}
+           |RELACIONAL:a RAND RELACIONAL:b                                                              {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.AND);;
+                                                                                                        :}
+           |RNOT RELACIONAL:a                                                                           {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,Operacion.Tipo_operacion.MENOROIGUAL);;
+                                                                                                        :}
+           |RELACIONAL:a                                                                                {:  
+                                                                                                            RESULT=(Operacion)a;
+                                                                                                        :} 
+;
 ASIGNACION::=LISTA_IDENTIFICADORES:l FLECHA EXPRESION:e PTCOMA                                          {:  
                                                                                                             RESULT=new Asignacion((Operacion)e,(LinkedList)l);
-                                                                                                            Golang.add((Asignacion) RESULT);
                                                                                                         :}
 ;
 FUNCION::=RFUNCION IDENTIFICADOR TIPODATO LOCAL RRETORNAR CONDICION PTCOMA RFINFUNCION
@@ -221,12 +254,32 @@ METODO::=RMETODO IDENTIFICADOR LOCAL RFINMETODO
 LISTA_PARAMETROS::=LISTA_PARAMETROS COMA IDENTIFICADOR TIPODATO
                   |IDENTIFICADOR TIPODATO
 ;
-LOCAL::=LOCAL ENTORNO_LOCAL
-       |ENTORNO_LOCAL 
+TIPODATO::=RNUMERO
+          |RCADENA
+          |RBOOLEAN
+          |RCARACTER
 ;
-ENTORNO_LOCAL::=ASIGNACION
-               |DECLARACION
-               |CONDICIONAL_SI
+LOCAL::=LOCAL:a ENTORNO_LOCAL:b                                                                         {:  
+                                                                                                            RESULT = new LinkedList<>();
+                                                                                                            for (int i = 0; i < a.size(); i++) {
+                                                                                                                RESULT.add(a.get(i));
+                                                                                                            }
+                                                                                                            RESULT.add((Instruccion) b);
+                                                                                                        :}  
+       |ENTORNO_LOCAL:a                                                                                 {:  
+                                                                                                            RESULT= new LinkedList<Instruccion>();
+                                                                                                            RESULT.add((Instruccion) a);
+                                                                                                        :} 
+;
+ENTORNO_LOCAL::=ASIGNACION:a                                                                            {:  
+                                                                                                            RESULT= (Instruccion) a;
+                                                                                                        :}
+               |DECLARACION:a                                                                           {:  
+                                                                                                            RESULT= (Instruccion) a;
+                                                                                                        :}
+               |CONDICIONAL_SI:a                                                                        {:  
+                                                                                                            RESULT= (Instruccion) a;
+                                                                                                        :}
                |SELECCION_MULTIPLE
                |CICLO_PARA
                |CICLO_MIENTRAS
@@ -237,26 +290,31 @@ ENTORNO_LOCAL::=ASIGNACION
                |COMENTARIOL
                |COMENTARIOML
 ;
-CONDICIONAL_SI::=RSI CONDICION:a RENTONCES LOCAL RFINSI 
-                |RSI CONDICION LOCAL LISTA_OSI RFINSI 
-                |RSI CONDICION LOCAL LISTA_OSI RDELOCONTRARIO LOCAL RFINSI 
-                |RSI CONDICION:a LOCAL:b RDELOCONTRARIO LOCAL:c RFINSI  
+CONDICIONAL_SI::=RSI CONDICION:a RENTONCES LOCAL:b RFINSI                                               {:  
+                                                                                                            RESULT= new Si((Operacion) a, (LinkedList) b);
+                                                                                                        :}                                
+                |RSI CONDICION:a LOCAL:b LISTA_OSI:l RFINSI                                             {:  
+                                                                                                            RESULT= new Si((LinkedList) b,(Operacion) a, (LinkedList) l);
+                                                                                                        :}     
+                |RSI CONDICION:a LOCAL:b LISTA_OSI:l RDELOCONTRARIO LOCAL:c RFINSI                      {:  
+                                                                                                            RESULT= new Si((Operacion) a,(LinkedList) b, (LinkedList) l, (LinkedList) c);
+                                                                                                        :}
+                |RSI CONDICION:a LOCAL:b RDELOCONTRARIO LOCAL:c RFINSI                                  {:  
+                                                                                                            RESULT= new Si((Operacion) a,(LinkedList) b, (LinkedList) c);
+                                                                                                        :}
 ;
-RELACIONAL::=EXPRESION
-           |EXPRESION RMAYOR EXPRESION
-           |EXPRESION RMENOR EXPRESION
-           |EXPRESION RMAYOROIGUAL EXPRESION
-           |EXPRESION RMENOROIGUAL EXPRESION
-           |EXPRESION RESIGUAL EXPRESION
-           |EXPRESION RESDIFERENTE EXPRESION
-;
-CONDICION::=RELACIONAL ROR RELACIONAL
-           |RELACIONAL RAND RELACIONAL
-           |RNOT RELACIONAL
-           |RELACIONAL                                                                          
-;
-LISTA_OSI::=LISTA_OSI ROSI CONDICION RENTONCES LOCAL
-            |ROSI CONDICION RENTONCES LOCAL 
+LISTA_OSI::=LISTA_OSI:l ROSI CONDICION:c RENTONCES LOCAL:d                                              {:  
+                                                                                                            RESULT = new LinkedList<>();
+                                                                                                            for (int i = 0; i < l.size(); i++) {
+                                                                                                                System.out.println(i);
+                                                                                                                RESULT.add(l.get(i));
+                                                                                                            }
+                                                                                                            RESULT.add(new Si((Operacion) c, (LinkedList) d));
+                                                                                                        :} 
+            |ROSI CONDICION:e RENTONCES LOCAL:f                                                         {:  
+                                                                                                            RESULT= new LinkedList<Si>();
+                                                                                                            RESULT.add(new Si((Operacion) e, (LinkedList) f));
+                                                                                                        :}
 ;
 SELECCION_MULTIPLE::=RSEGUN EXPRESION RHACER LISTA_VALORENTONCES RFINSEGUN
                     |RSEGUN EXPRESION RHACER LISTA_VALORENTONCES RDELOCONTRARIO RENTONCES LOCAL RFINSEGUN

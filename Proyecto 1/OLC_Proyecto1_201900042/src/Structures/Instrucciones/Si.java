@@ -50,28 +50,34 @@ public class Si implements Instruccion{
     
     @Override
     public String traductorGolang() {
-        String traduccion = "\nif " + this.condicion.traductorGolang() + "{\n";
+        String traduccion = "if " + this.condicion.traductorGolang() + "{\n";
         if(this.listaInstrucciones != null){
             for (Instruccion ins: this.listaInstrucciones) {
-                traduccion+=ins.traductorGolang();
+                traduccion+= tabular(1)+ins.traductorGolang();
             }
             traduccion+="\n}";
         }
         if (this.listaOSiInstrucciones != null) {
-            traduccion+= "else if" + this.condicion.traductorGolang() + "{\n";
-            for (Instruccion ins: this.listaInstrucciones) {
-                traduccion+=ins.traductorGolang();
+            traduccion+= "";
+            for (Instruccion ins: this.listaOSiInstrucciones) {
+                traduccion+="else "+ins.traductorGolang();
             }
-            traduccion+="\n}";
+            traduccion+="\n";
         }
         if (this.listaInsdelocontrario != null) {
-            traduccion+= "else{";
-            for (Instruccion ins: this.listaInstrucciones) {
-                traduccion+=ins.traductorGolang();
+            traduccion+= "else{\n";
+            for (Instruccion ins: this.listaInsdelocontrario) {
+                traduccion+=tabular(1) + ins.traductorGolang();
             }
             traduccion+="\n}\n";
         }
         return traduccion;
     }
-    
+    public String tabular(int contador){
+        String tabs = "";
+        for (int i = 0; i < contador; i++) {
+            tabs+="\t"; 
+        }
+        return tabs;
+    }
 }

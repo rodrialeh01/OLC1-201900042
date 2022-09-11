@@ -4,6 +4,7 @@ import Structures.Instrucciones.Comentarios;
 import Structures.Instrucciones.Declaracion;
 import Structures.Instrucciones.Instruccion;
 import Structures.Instrucciones.Operacion;
+import Structures.Instrucciones.Si;
 import java.util.LinkedList;
 import Structures.Nodo;
 import Structures.Arbol;
@@ -107,19 +108,17 @@ INICIO::=INSTRUCCIONES:a                                                        
                                                                                                         :}                                                                               
 ;
 INSTRUCCIONES::=MAIN:a                                                                                  {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Main"),new LinkedList<>());
-                                                                                                            RESULT.agregarIns(a.getIns());
+                                                                                                            RESULT=new Produccion(new Nodo("Main"),a.getIns());
                                                                                                             RESULT.agregarHijo(a);
                                                                                                         :}                                                                                      
                |error INSTRUCCIONES:a                                                                   {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Instrucciones"),a.getInstrucciones());
-                                                                                                            RESULT.agregarIns(a.getIns());
+                                                                                                            RESULT=new Produccion(new Nodo("Instrucciones"),a.getIns());
                                                                                                             RESULT.agregarHijo(a);
                                                                                                         :}                                                                        
 ; 
 
 MAIN::=RINICIO ALGORITMO:a RFIN                                                                         {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Algoritmo"),new LinkedList<>());
+                                                                                                            RESULT=new Produccion(new Nodo("Algoritmo"),a.getInstrucciones());
                                                                                                             RESULT.agregarHijo("INICIO");
                                                                                                             RESULT.agregarIns(a.getIns());
                                                                                                             RESULT.agregarHijo(a);
@@ -158,7 +157,7 @@ ALGORITMO::=ALGORITMO:a GLOBAL:b                                                
 GLOBAL::=FUNCION
         |METODO
         |ENTORNO_LOCAL:a                                                                                {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Global"),new LinkedList<>());
+                                                                                                            RESULT=new Produccion(new Nodo("Global"),a.getIns());
                                                                                                             RESULT.agregarHijo(a);
                                                                                                         :}
 ;
@@ -303,14 +302,26 @@ METODO::=RMETODO IDENTIFICADOR LOCAL RFINMETODO
 LISTA_PARAMETROS::=LISTA_PARAMETROS COMA IDENTIFICADOR TIPODATO
                   |IDENTIFICADOR TIPODATO
 ;
-LOCAL::=LOCAL ENTORNO_LOCAL
-       |ENTORNO_LOCAL
+LOCAL::=LOCAL:a ENTORNO_LOCAL:b                                                                         {:  
+                                                                                                            RESULT=new Produccion(new Nodo("Local"),a.getInstrucciones());
+                                                                                                            RESULT.agregarIns(b.getIns());
+                                                                                                            RESULT.agregarHijo(a);
+                                                                                                            RESULT.agregarHijo(b);
+                                                                                                        :}
+       |ENTORNO_LOCAL:a                                                                                 {:
+                                                                                                            RESULT=new Produccion(new Nodo("Entorno_Local"), new LinkedList<>());
+                                                                                                            RESULT.agregarHijo(a);
+                                                                                                        :}
 ;
 ENTORNO_LOCAL::=ASIGNACION
                |DECLARACION:a                                                                           {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Declaracion"));
+                                                                                                            RESULT=new Produccion(new Nodo("Declaracion"),a.getIns());
+                                                                                                            RESULT.agregarHijo(a);
                                                                                                         :}
-               |CONDICIONAL_SI
+               |CONDICIONAL_SI:a                                                                        {:  
+                                                                                                            RESULT=new Produccion(new Nodo("Condicional_Si"), a.getIns());
+                                                                                                            RESULT.agregarHijo(a);
+                                                                                                        :}
                |SELECCION_MULTIPLE
                |CICLO_PARA
                |CICLO_MIENTRAS
@@ -321,12 +332,45 @@ ENTORNO_LOCAL::=ASIGNACION
                |COMENTARIOL
                |COMENTARIOML
 ;
-CONDICIONAL_SI::=RSI CONDICION RENTONCES LOCAL RFINSI
-                |RSI CONDICION LISTA_OSI RFINSI
-                |RSI CONDICION LISTA_OSI RDELOCONTRARIO LOCAL RFINSI
-                |RSI CONDICION LOCAL RDELOCONTRARIO LOCAL RFINSI
+CONDICIONAL_SI::=RSI CONDICION:a RENTONCES LOCAL:b RFINSI                                               {:  
+                                                                                                            RESULT=new Produccion(new Nodo("Condicional_Si"), new Si((Operacion)a.getIns(), a.getInstrucciones()));
+                                                                                                            RESULT.agregarHijo("si");
+                                                                                                            RESULT.agregarHijo(a);
+                                                                                                            RESULT.agregarHijo("entonces");
+                                                                                                            RESULT.agregarHijo(b);
+                                                                                                            RESULT.agregarHijo("fin_si");
+                                                                                                        :}
+                |RSI CONDICION:a LOCAL:b LISTA_OSI:l RFINSI                                             {:  
+                                                                                                            RESULT=new Produccion(new Nodo("Condicional_Si"), new Si(b.getInstrucciones(),(Operacion)a.getIns(),l.getInstrucciones()));
+                                                                                                            RESULT.agregarHijo("si");
+                                                                                                            RESULT.agregarHijo(a);
+                                                                                                            RESULT.agregarHijo(l);
+                                                                                                            RESULT.agregarHijo("fin_si");
+                                                                                                        :}
+                |RSI CONDICION:a LOCAL:b LISTA_OSI:l RDELOCONTRARIO LOCAL:c RFINSI                      {:  
+                                                                                                            RESULT=new Produccion(new Nodo("Condicional_Si"), new Si((Operacion)a.getIns(), b.getInstrucciones(),l.getInstrucciones(),c.getInstrucciones()));
+                                                                                                            RESULT.agregarHijo("si");
+                                                                                                            RESULT.agregarHijo(a);
+                                                                                                            RESULT.agregarHijo(b);
+                                                                                                            RESULT.agregarHijo(l);
+                                                                                                            RESULT.agregarHijo("de_lo_contrario");
+                                                                                                            RESULT.agregarHijo(c);
+                                                                                                            RESULT.agregarHijo("fin_si");
+                                                                                                        :}
+                |RSI CONDICION:a LOCAL:b RDELOCONTRARIO LOCAL:c RFINSI                                  {:  
+                                                                                                            RESULT=new Produccion(new Nodo("Condicional_Si"), new Si((Operacion)a.getIns(), b.getInstrucciones(),c.getInstrucciones()));
+                                                                                                            RESULT.agregarHijo("si");
+                                                                                                            RESULT.agregarHijo(a);
+                                                                                                            RESULT.agregarHijo(b);
+                                                                                                            RESULT.agregarHijo("de lo contrario");
+                                                                                                            RESULT.agregarHijo(c);
+                                                                                                            RESULT.agregarHijo("fin_si");
+                                                                                                        :}
 ;
-RELACIONAL::=EXPRESION
+RELACIONAL::=EXPRESION:a                                                                                {:
+                                                                                                            RESULT=new Produccion(new Nodo("Expresion"), new LinkedList<>());
+                                                                                                            RESULT.agregarHijo(a);
+                                                                                                        :}
            |EXPRESION:a RMAYOR EXPRESION:b                                                              {:
                                                                                                             RESULT=new Produccion(new Nodo("Expresion_Relacional"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.MAYORQUE));
                                                                                                             RESULT.agregarHijo(a);
@@ -381,10 +425,25 @@ CONDICION::=RELACIONAL:a ROR RELACIONAL:b                                       
                                                                                                             RESULT.agregarHijo("not");
                                                                                                             RESULT.agregarHijo(a);
                                                                                                         :}
-           |RELACIONAL
+           |RELACIONAL                                                                          
 ;
-LISTA_OSI::=LISTA_OSI ROSI CONDICION RENTONCES LOCAL
-            |LOCAL ROSI CONDICION RENTONCES LOCAL
+LISTA_OSI::=LISTA_OSI:l ROSI CONDICION:a RENTONCES LOCAL:b                                              {:  
+                                                                                                            RESULT=new Produccion(new Nodo("Lista_osi"), l.getInstrucciones());
+                                                                                                            RESULT.agregarIns(new Si((Operacion)a.getIns(), b.getInstrucciones()));
+                                                                                                            RESULT.agregarHijo(l);
+                                                                                                            RESULT.agregarHijo("o_si");
+                                                                                                            RESULT.agregarHijo(a);
+                                                                                                            RESULT.agregarHijo("entonces");
+                                                                                                            RESULT.agregarHijo(b);
+                                                                                                        :}
+            |ROSI CONDICION:a RENTONCES LOCAL:b                                                         {:  
+                                                                                                            RESULT=new Produccion(new Nodo("Lista_osi"), new LinkedList<>());
+                                                                                                            RESULT.agregarIns(new Si((Operacion)a.getIns(), b.getInstrucciones()));
+                                                                                                            RESULT.agregarHijo("o_si");
+                                                                                                            RESULT.agregarHijo(a);
+                                                                                                            RESULT.agregarHijo("entonces");
+                                                                                                            RESULT.agregarHijo(b);
+                                                                                                        :}
 ;
 SELECCION_MULTIPLE::=RSEGUN EXPRESION RHACER LISTA_VALORENTONCES RFINSEGUN
                     |RSEGUN EXPRESION RHACER LISTA_VALORENTONCES RDELOCONTRARIO RENTONCES LOCAL RFINSEGUN

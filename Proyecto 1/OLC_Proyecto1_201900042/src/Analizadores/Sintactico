@@ -1,10 +1,13 @@
 package analizadores; 
+import Clases.ErrorLenguaje;
 import java_cup.runtime.*;
 import Structures.Instrucciones.Comentarios;
 import Structures.Instrucciones.Declaracion;
 import Structures.Instrucciones.Instruccion;
 import Structures.Instrucciones.Operacion;
 import Structures.Instrucciones.Si;
+import Structures.Instrucciones.Main;
+import Structures.Instrucciones.Asignacion;
 import java.util.LinkedList;
 import Structures.Nodo;
 import Structures.Arbol;
@@ -14,16 +17,17 @@ import Structures.Produccion;
 parser code 
 {:
     /**
-    *Arbol AST
+    *Listas
     **/
-    public LinkedList<Instruccion> AST;
-    public Arbol arbol;
-
-
+    public LinkedList<ErrorLenguaje> ErroresSintacticos = new LinkedList<ErrorLenguaje>();
+    public LinkedList<Instruccion> Golang = new LinkedList<Instruccion>();
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
-    public void syntax_error(Symbol s){ 
+    public void syntax_error(Symbol s){
+        
+        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
+
         System.out.println("Error Sintáctico en la Línea " + (s.left) +
         " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
     } 
@@ -33,17 +37,10 @@ parser code
      * en el que ya no es posible una recuperación de errores.
      **/ 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
         System.out.println("Error síntactico irrecuperable en la Línea " + 
         (s.left)+ " Columna "+s.right+". Componente " + s.value + 
         " no reconocido."); 
-    }
-
-    public Arbol getArbol(){
-        return arbol;
-    }
-    
-    public LinkedList<Instruccion> getAST() {
-        return AST;
     }
 :} 
 
@@ -61,38 +58,37 @@ terminal String RNUMERO,RCADENA,RBOOLEAN,RCARACTER;
 terminal String RVERDADERO,RFALSO;
 terminal String PARIZQ,PARDER,INTABRE,INTCIERRA,FLECHA,PTCOMA,COMA,CORIZQ,CORDER;
 
-non terminal Produccion INICIO;
-non terminal Produccion INSTRUCCIONES;
-non terminal Produccion DECLARACION;
-non terminal Produccion LISTA_IDENTIFICADORES;
-non terminal Produccion DECLARACIONyASIGNACION;
-non terminal Produccion ASIGNACION;
-non terminal Produccion EXPRESION;
-non terminal Produccion TIPODATO;
-non terminal Produccion GLOBAL;
-non terminal Produccion FUNCION;
-non terminal Produccion METODO;
-non terminal Produccion LISTA_PARAMETROS;
-non terminal Produccion ENTORNO_LOCAL;
-non terminal Produccion CONDICIONAL_SI;
-non terminal Produccion CONDICION;
-non terminal Produccion LOCAL;
-non terminal Produccion LISTA_OSI;
-non terminal Produccion SELECCION_MULTIPLE;
-non terminal Produccion LISTA_VALORENTONCES;
-non terminal Produccion CICLO_PARA;
-non terminal Produccion CICLO_MIENTRAS;
-non terminal Produccion CICLO_REPETIR;
-non terminal Produccion EJECUTAR;
-non terminal Produccion IMPRESION;
-non terminal Produccion IMPRESION_CONSALTO;
-non terminal Produccion ALGORITMO;
-non terminal Produccion MAIN;
-non terminal Produccion COMENTARIOS;
-non terminal Produccion COMENTARIO;
-non terminal Produccion INSERCION_PARAMETROS;
-non terminal Produccion EJECUTAR_2;
-non terminal Produccion RELACIONAL;
+non terminal INICIO;
+non terminal INSTRUCCIONES;
+non terminal DECLARACION;
+non terminal LinkedList<Instruccion> LISTA_IDENTIFICADORES;
+non terminal ASIGNACION;
+non terminal EXPRESION;
+non terminal TIPODATO;
+non terminal GLOBAL;
+non terminal FUNCION;
+non terminal METODO;
+non terminal LISTA_PARAMETROS;
+non terminal ENTORNO_LOCAL;
+non terminal CONDICIONAL_SI;
+non terminal CONDICION;
+non terminal LOCAL;
+non terminal LISTA_OSI;
+non terminal SELECCION_MULTIPLE;
+non terminal LISTA_VALORENTONCES;
+non terminal CICLO_PARA;
+non terminal CICLO_MIENTRAS;
+non terminal CICLO_REPETIR;
+non terminal EJECUTAR;
+non terminal IMPRESION;
+non terminal IMPRESION_CONSALTO;
+non terminal ALGORITMO;
+non terminal MAIN;
+non terminal COMENTARIOS;
+non terminal COMENTARIO;
+non terminal INSERCION_PARAMETROS;
+non terminal EJECUTAR_2;
+non terminal RELACIONAL;
 
 precedence left SUMA,RESTA;
 precedence left MULTIPLICACION,DIVIDIR;
@@ -101,194 +97,117 @@ precedence left POTENCIA,MODU;
 //-------------------------------------------GRAMATICA SINTACTICA-------------------------------------------------
 start with INICIO; 
 
-INICIO::=INSTRUCCIONES:a                                                                                {:  
-                                                                                                            parser.AST=a.getInstrucciones();
-                                                                                                            Nodo NODERAIZ = new Nodo("INICIO"); NODERAIZ.agregarhijo(a.getNodo());
-                                                                                                            parser.arbol= new Arbol(NODERAIZ);
-                                                                                                        :}                                                                               
+INICIO::=INSTRUCCIONES                                                                                                                                                             
 ;
-INSTRUCCIONES::=MAIN:a                                                                                  {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Main"),a.getIns());
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                        :}                                                                                      
-               |error INSTRUCCIONES:a                                                                   {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Instrucciones"),a.getIns());
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                        :}                                                                        
-; 
-
-MAIN::=RINICIO ALGORITMO:a RFIN                                                                         {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Algoritmo"),a.getInstrucciones());
-                                                                                                            RESULT.agregarHijo("INICIO");
-                                                                                                            RESULT.agregarIns(a.getIns());
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("FIN");
-                                                                                                        :}
-      |RINICIO RFIN                                                                                     {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Main"));
-                                                                                                            RESULT.agregarHijo("INICIO");
-                                                                                                            RESULT.agregarHijo("FIN");
-                                                                                                        :}
-      |RINICIO RFIN COMENTARIOS
-      |RINICIO ALGORITMO RFIN COMENTARIOS 
-      |COMENTARIOS RINICIO ALGORITMO RFIN
-      |COMENTARIOS RINICIO RFIN
-      |COMENTARIOS RINICIO ALGORITMO RFIN COMENTARIOS
-      |COMENTARIOS RINICIO RFIN COMENTARIOS
+INSTRUCCIONES::=MAIN                                                                                  
+               |COMENTARIOS                                                                           
+               |error
 ;
-COMENTARIOS::=COMENTARIO COMENTARIOS
+MAIN::=RINICIO ALGORITMO RFIN                                                                         
+      |RINICIO RFIN
+;
+COMENTARIOS::=COMENTARIOS COMENTARIO
              |COMENTARIO
 ;
-COMENTARIO::=COMENTARIOL
-            |COMENTARIOML
+COMENTARIO::=COMENTARIOL:a                                                                              {:  
+                                                                                                            RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_UNILINEA, a);
+                                                                                                            Golang.add((Comentarios) RESULT);
+                                                                                                        :}
+            |COMENTARIOML:a                                                                             {:  
+                                                                                                            RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_MILTILINEA, a);
+                                                                                                            Golang.add((Comentarios) RESULT);
+                                                                                                        :}
 ;
-ALGORITMO::=ALGORITMO:a GLOBAL:b                                                                        {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Algoritmo"),a.getInstrucciones());
-                                                                                                            RESULT.agregarIns(b.getIns());
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-           |GLOBAL:a                                                                                    {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Algoritmo"),new LinkedList<>());
-                                                                                                            RESULT.agregarIns(a.getIns());
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                        :}
+ALGORITMO::=ALGORITMO GLOBAL
+           |GLOBAL
 ;
 GLOBAL::=FUNCION
         |METODO
-        |ENTORNO_LOCAL:a                                                                                {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Global"),a.getIns());
-                                                                                                            RESULT.agregarHijo(a);
+        |ENTORNO_LOCAL
+;
+DECLARACION::=RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RNUMERO RCONVALOR EXPRESION:e PTCOMA              {:  
+                                                                                                            RESULT=new Declaracion(Declaracion.Tipo_Variable.RNUMERO,(Operacion)e,(LinkedList)l);
+                                                                                                            Golang.add((Declaracion) RESULT);
+                                                                                                        :}                                    
+             |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RCADENA RCONVALOR EXPRESION:e PTCOMA              {:  
+                                                                                                            RESULT=new Declaracion(Declaracion.Tipo_Variable.RCADENA,(Operacion)e,(LinkedList)l);
+                                                                                                            Golang.add((Declaracion) RESULT);
+                                                                                                        :}  
+             |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RBOOLEAN RCONVALOR EXPRESION:e PTCOMA             {:  
+                                                                                                            RESULT=new Declaracion(Declaracion.Tipo_Variable.RBOOLEAN,(Operacion)e,(LinkedList)l);
+                                                                                                            Golang.add((Declaracion) RESULT);
+                                                                                                        :}  
+             |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RCARACTER RCONVALOR EXPRESION:e PTCOMA            {:  
+                                                                                                            RESULT=new Declaracion(Declaracion.Tipo_Variable.RCARACTER,(Operacion)e,(LinkedList)l);
+                                                                                                            Golang.add((Declaracion) RESULT);
+                                                                                                        :} 
+;
+LISTA_IDENTIFICADORES::=LISTA_IDENTIFICADORES:a COMA IDENTIFICADOR:b                                    {:  
+                                                                                                            RESULT = new LinkedList<>();
+                                                                                                            for (int i = 0; i < a.size(); i++) {
+                                                                                                                RESULT.add(a.get(i));
+                                                                                                            }
+                                                                                                            RESULT.add(new Operacion(b,Operacion.Tipo_operacion.IDENTIFICADOR));
+                                                                                                        :} 
+                       |IDENTIFICADOR:a                                                                 {:  
+                                                                                                            RESULT= new LinkedList<Instruccion>();
+                                                                                                            RESULT.add(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR));
                                                                                                         :}
 ;
-DECLARACION::=RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RNUMERO PTCOMA                                    {:
-                                                                                                            RESULT=new Produccion(new Nodo("Declaracion"), new Declaracion(Declaracion.Tipo_Variable.RNUMERO,l.getInstrucciones()));
-                                                                                                            RESULT.agregarHijo("ingresar");
-                                                                                                            RESULT.agregarHijo(l);
-                                                                                                            RESULT.agregarHijo("como");
-                                                                                                            RESULT.agregarHijo("Numero");
-                                                                                                            RESULT.agregarHijo(";");
+EXPRESION::=ENTERO:a                                                                                    {:  
+                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.NUMERO);
                                                                                                         :}
-             |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RCADENA PTCOMA                                    {:
-                                                                                                            RESULT=new Produccion(new Nodo("Declaracion"), new Declaracion(Declaracion.Tipo_Variable.RCADENA,l.getInstrucciones()));
-                                                                                                            RESULT.agregarHijo("ingresar");
-                                                                                                            RESULT.agregarHijo(l);
-                                                                                                            RESULT.agregarHijo("como");
-                                                                                                            RESULT.agregarHijo("Cadena");
-                                                                                                            RESULT.agregarHijo(";");
+            |DECIMAL:a                                                                                  {:  
+                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.DECIMAL);
                                                                                                         :}
-             |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RBOOLEAN PTCOMA                                   {:
-                                                                                                            RESULT=new Produccion(new Nodo("Declaracion"), new Declaracion(Declaracion.Tipo_Variable.RBOOLEAN,l.getInstrucciones()));
-                                                                                                            RESULT.agregarHijo("ingresar");
-                                                                                                            RESULT.agregarHijo(l);
-                                                                                                            RESULT.agregarHijo("como");
-                                                                                                            RESULT.agregarHijo("Numero");
-                                                                                                            RESULT.agregarHijo(";");
+            |CADENA:a                                                                                   {:  
+                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.CADENA);
                                                                                                         :}
-             |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RCARACTER PTCOMA                                  {:
-                                                                                                            RESULT=new Produccion(new Nodo("Declaracion"), new Declaracion(Declaracion.Tipo_Variable.RCARACTER,l.getInstrucciones()));
-                                                                                                            RESULT.agregarHijo("ingresar");
-                                                                                                            RESULT.agregarHijo(l);
-                                                                                                            RESULT.agregarHijo("como");
-                                                                                                            RESULT.agregarHijo("Caracter");
-                                                                                                            RESULT.agregarHijo(";");
+            |CARACTER:a                                                                                 {:  
+                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.CARACTER);
                                                                                                         :}
-             |DECLARACIONyASIGNACION
+            |CARASCCI:a                                                                                 {:  
+                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.ASCCI);
+                                                                                                        :}
+            |RVERDADERO:a                                                                               {:  
+                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.VERDADERO);
+                                                                                                        :}
+            |RFALSO:a                                                                                   {:  
+                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.FALSO);
+                                                                                                        :}
+            |IDENTIFICADOR:a                                                                            {:  
+                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR);
+                                                                                                        :}
+            |RESTA EXPRESION:a                                                                          {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,Operacion.Tipo_operacion.NEGATIVO);
+                                                                                                        :}
+            |PARIZQ EXPRESION:a PARDER                                                                  {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,Operacion.Tipo_operacion.AGRUPACION);
+                                                                                                        :} 
+            |EXPRESION:a SUMA EXPRESION:b                                                               {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.SUMA);
+                                                                                                        :} 
+            |EXPRESION:a RESTA EXPRESION:b                                                              {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.RESTA);
+                                                                                                        :} 
+            |EXPRESION:a MULTIPLICACION EXPRESION:b                                                     {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.MULTIPLICACION);
+                                                                                                        :} 
+            |EXPRESION:a DIVIDIR EXPRESION:b                                                            {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.DIVISION);
+                                                                                                        :}        
+            |EXPRESION:a POTENCIA CORIZQ EXPRESION:b CORDER                                             {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.POTENCIA);
+                                                                                                        :} 
+            |EXPRESION:a MODU EXPRESION:b                                                               {:  
+                                                                                                            RESULT=new Operacion((Operacion)a,(Operacion)b,Operacion.Tipo_operacion.MODULAR);
+                                                                                                        :}                                                                   
 ;
-LISTA_IDENTIFICADORES::=LISTA_IDENTIFICADORES:l COMA IDENTIFICADOR:a                                    {:
-                                                                                                            RESULT=new Produccion(new Nodo("Lista_Identificadores"), l.getInstrucciones());
-                                                                                                            RESULT.agregarIns(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR));
-                                                                                                            RESULT.agregarHijo(l);
-                                                                                                            RESULT.agregarHijo(",");
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                        :}
-                       |IDENTIFICADOR:a                                                                 {:
-                                                                                                            RESULT=new Produccion(new Nodo("Lista_Identificadores"), new LinkedList<>());
-                                                                                                            RESULT.agregarIns(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR));
-                                                                                                            RESULT.agregarHijo(a);
+ASIGNACION::=LISTA_IDENTIFICADORES:l FLECHA EXPRESION:e PTCOMA                                          {:  
+                                                                                                            RESULT=new Asignacion((Operacion)e,(LinkedList)l);
+                                                                                                            Golang.add((Asignacion) RESULT);
                                                                                                         :}
 ;
-DECLARACIONyASIGNACION::=RINGRESAR LISTA_IDENTIFICADORES RCOMO TIPODATO RCONVALOR EXPRESION PTCOMA;
-EXPRESION::=ENTERO:a                                                                                    {:
-                                                                                                            RESULT=new Produccion(new Nodo(null, a), new Operacion(a,Operacion.Tipo_operacion.NUMERO));
-                                                                                                        :}
-            |DECIMAL:a                                                                                  {:
-                                                                                                            RESULT=new Produccion(new Nodo(null, a), new Operacion(a,Operacion.Tipo_operacion.DECIMAL));
-                                                                                                        :}    
-            |CADENA:a                                                                                   {:
-                                                                                                            RESULT=new Produccion(new Nodo(null, a), new Operacion(a,Operacion.Tipo_operacion.CADENA));   
-                                                                                                        :}
-            |CARACTER:a                                                                                 {:
-                                                                                                            RESULT=new Produccion(new Nodo(null, a), new Operacion(a,Operacion.Tipo_operacion.CARACTER));   
-                                                                                                        :}
-            |CARASCCI:a                                                                                 {:
-                                                                                                            RESULT=new Produccion(new Nodo(null, a), new Operacion(a,Operacion.Tipo_operacion.ASCCI));   
-                                                                                                        :}
-            |RVERDADERO:a                                                                               {:
-                                                                                                            RESULT=new Produccion(new Nodo(null, a), new Operacion(a,Operacion.Tipo_operacion.VERDADERO));  
-                                                                                                        :}
-            |RFALSO:a                                                                                   {:
-                                                                                                            RESULT=new Produccion(new Nodo(null, a), new Operacion(a,Operacion.Tipo_operacion.FALSO));  
-                                                                                                        :}
-            |IDENTIFICADOR:a                                                                            {:
-                                                                                                            RESULT=new Produccion(new Nodo(null, a), new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR));  
-                                                                                                        :}
-            |RESTA EXPRESION:a                                                                          {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion"), new Operacion((Operacion)a.getIns(),Operacion.Tipo_operacion.NEGATIVO));
-                                                                                                            RESULT.agregarHijo("-");
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                        :}
-            |PARIZQ EXPRESION:a PARDER                                                                  {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion"), new Operacion((Operacion)a.getIns(),Operacion.Tipo_operacion.AGRUPACION));
-                                                                                                            RESULT.agregarHijo("(");
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo(")");
-                                                                                                        :}
-            |EXPRESION:a SUMA EXPRESION:b                                                               {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.SUMA));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("+");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-            |EXPRESION:a RESTA EXPRESION:b                                                              {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.RESTA));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("-");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-            |EXPRESION:a MULTIPLICACION EXPRESION:b                                                     {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.MULTIPLICACION));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("*");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-            |EXPRESION:a DIVIDIR EXPRESION:b                                                            {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.DIVISION));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("/");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-            |EXPRESION:a POTENCIA CORIZQ EXPRESION:b CORDER                                             {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.POTENCIA));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("potencia");
-                                                                                                            RESULT.agregarHijo("[");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                            RESULT.agregarHijo("]");
-                                                                                                        :}
-            |EXPRESION:a MODU EXPRESION:b                                                               {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.MODULAR));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("modular");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}                                                                                          
-;
-TIPODATO::=RNUMERO
-          |RCARACTER
-          |RBOOLEAN
-          |RCADENA
-;
-ASIGNACION::=LISTA_IDENTIFICADORES FLECHA EXPRESION PTCOMA;
 FUNCION::=RFUNCION IDENTIFICADOR TIPODATO LOCAL RRETORNAR CONDICION PTCOMA RFINFUNCION
          |RFUNCION IDENTIFICADOR TIPODATO RRETORNAR CONDICION PTCOMA RFINFUNCION
          |RFUNCION IDENTIFICADOR TIPODATO RCONPARAMETROS PARIZQ LISTA_PARAMETROS PARDER LOCAL RRETORNAR CONDICION PTCOMA RFINFUNCION
@@ -302,26 +221,12 @@ METODO::=RMETODO IDENTIFICADOR LOCAL RFINMETODO
 LISTA_PARAMETROS::=LISTA_PARAMETROS COMA IDENTIFICADOR TIPODATO
                   |IDENTIFICADOR TIPODATO
 ;
-LOCAL::=LOCAL:a ENTORNO_LOCAL:b                                                                         {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Local"),a.getInstrucciones());
-                                                                                                            RESULT.agregarIns(b.getIns());
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-       |ENTORNO_LOCAL:a                                                                                 {:
-                                                                                                            RESULT=new Produccion(new Nodo("Entorno_Local"), new LinkedList<>());
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                        :}
+LOCAL::=LOCAL ENTORNO_LOCAL
+       |ENTORNO_LOCAL 
 ;
 ENTORNO_LOCAL::=ASIGNACION
-               |DECLARACION:a                                                                           {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Declaracion"),a.getIns());
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                        :}
-               |CONDICIONAL_SI:a                                                                        {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Condicional_Si"), a.getIns());
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                        :}
+               |DECLARACION
+               |CONDICIONAL_SI
                |SELECCION_MULTIPLE
                |CICLO_PARA
                |CICLO_MIENTRAS
@@ -332,118 +237,26 @@ ENTORNO_LOCAL::=ASIGNACION
                |COMENTARIOL
                |COMENTARIOML
 ;
-CONDICIONAL_SI::=RSI CONDICION:a RENTONCES LOCAL:b RFINSI                                               {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Condicional_Si"), new Si((Operacion)a.getIns(), a.getInstrucciones()));
-                                                                                                            RESULT.agregarHijo("si");
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("entonces");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                            RESULT.agregarHijo("fin_si");
-                                                                                                        :}
-                |RSI CONDICION:a LOCAL:b LISTA_OSI:l RFINSI                                             {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Condicional_Si"), new Si(b.getInstrucciones(),(Operacion)a.getIns(),l.getInstrucciones()));
-                                                                                                            RESULT.agregarHijo("si");
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo(l);
-                                                                                                            RESULT.agregarHijo("fin_si");
-                                                                                                        :}
-                |RSI CONDICION:a LOCAL:b LISTA_OSI:l RDELOCONTRARIO LOCAL:c RFINSI                      {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Condicional_Si"), new Si((Operacion)a.getIns(), b.getInstrucciones(),l.getInstrucciones(),c.getInstrucciones()));
-                                                                                                            RESULT.agregarHijo("si");
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                            RESULT.agregarHijo(l);
-                                                                                                            RESULT.agregarHijo("de_lo_contrario");
-                                                                                                            RESULT.agregarHijo(c);
-                                                                                                            RESULT.agregarHijo("fin_si");
-                                                                                                        :}
-                |RSI CONDICION:a LOCAL:b RDELOCONTRARIO LOCAL:c RFINSI                                  {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Condicional_Si"), new Si((Operacion)a.getIns(), b.getInstrucciones(),c.getInstrucciones()));
-                                                                                                            RESULT.agregarHijo("si");
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                            RESULT.agregarHijo("de lo contrario");
-                                                                                                            RESULT.agregarHijo(c);
-                                                                                                            RESULT.agregarHijo("fin_si");
-                                                                                                        :}
+CONDICIONAL_SI::=RSI CONDICION:a RENTONCES LOCAL RFINSI 
+                |RSI CONDICION LOCAL LISTA_OSI RFINSI 
+                |RSI CONDICION LOCAL LISTA_OSI RDELOCONTRARIO LOCAL RFINSI 
+                |RSI CONDICION:a LOCAL:b RDELOCONTRARIO LOCAL:c RFINSI  
 ;
-RELACIONAL::=EXPRESION:a                                                                                {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion"), new LinkedList<>());
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                        :}
-           |EXPRESION:a RMAYOR EXPRESION:b                                                              {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion_Relacional"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.MAYORQUE));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("mayor");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-           |EXPRESION:a RMENOR EXPRESION:b                                                              {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion_Relacional"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.MAYORQUE));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("menor");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-           |EXPRESION:a RMAYOROIGUAL EXPRESION:b                                                        {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion_Relacional"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.MAYOROIGUAL));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("mayor_o_igual");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-           |EXPRESION:a RMENOROIGUAL EXPRESION:b                                                        {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion_Relacional"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.MENOROIGUAL));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("menor_o_igual");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-           |EXPRESION:a RESIGUAL EXPRESION:b                                                            {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion_Relacional"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.IGUAL));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("es_igual");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-           |EXPRESION:a RESDIFERENTE EXPRESION:b                                                        {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion_Relacional"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.DIFERENTE));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("es_diferente");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
+RELACIONAL::=EXPRESION
+           |EXPRESION RMAYOR EXPRESION
+           |EXPRESION RMENOR EXPRESION
+           |EXPRESION RMAYOROIGUAL EXPRESION
+           |EXPRESION RMENOROIGUAL EXPRESION
+           |EXPRESION RESIGUAL EXPRESION
+           |EXPRESION RESDIFERENTE EXPRESION
 ;
-CONDICION::=RELACIONAL:a ROR RELACIONAL:b                                                               {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion_Logica"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.OR));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("or");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-           |RELACIONAL:a RAND RELACIONAL:b                                                              {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion_Logica"), new Operacion((Operacion)a.getIns(),(Operacion)b.getIns(),Operacion.Tipo_operacion.AND));
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("and");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-           |RNOT RELACIONAL:a                                                                           {:
-                                                                                                            RESULT=new Produccion(new Nodo("Expresion_Logica"), new Operacion((Operacion)a.getIns(),Operacion.Tipo_operacion.NOT));
-                                                                                                            RESULT.agregarHijo("not");
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                        :}
+CONDICION::=RELACIONAL ROR RELACIONAL
+           |RELACIONAL RAND RELACIONAL
+           |RNOT RELACIONAL
            |RELACIONAL                                                                          
 ;
-LISTA_OSI::=LISTA_OSI:l ROSI CONDICION:a RENTONCES LOCAL:b                                              {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Lista_osi"), l.getInstrucciones());
-                                                                                                            RESULT.agregarIns(new Si((Operacion)a.getIns(), b.getInstrucciones()));
-                                                                                                            RESULT.agregarHijo(l);
-                                                                                                            RESULT.agregarHijo("o_si");
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("entonces");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
-            |ROSI CONDICION:a RENTONCES LOCAL:b                                                         {:  
-                                                                                                            RESULT=new Produccion(new Nodo("Lista_osi"), new LinkedList<>());
-                                                                                                            RESULT.agregarIns(new Si((Operacion)a.getIns(), b.getInstrucciones()));
-                                                                                                            RESULT.agregarHijo("o_si");
-                                                                                                            RESULT.agregarHijo(a);
-                                                                                                            RESULT.agregarHijo("entonces");
-                                                                                                            RESULT.agregarHijo(b);
-                                                                                                        :}
+LISTA_OSI::=LISTA_OSI ROSI CONDICION RENTONCES LOCAL
+            |ROSI CONDICION RENTONCES LOCAL 
 ;
 SELECCION_MULTIPLE::=RSEGUN EXPRESION RHACER LISTA_VALORENTONCES RFINSEGUN
                     |RSEGUN EXPRESION RHACER LISTA_VALORENTONCES RDELOCONTRARIO RENTONCES LOCAL RFINSEGUN
@@ -471,6 +284,5 @@ EJECUTAR_2::=REJECUTAR IDENTIFICADOR PARIZQ PARDER
 INSERCION_PARAMETROS::=INSERCION_PARAMETROS COMA EXPRESION
                       |EXPRESION
 ;
-
 IMPRESION::=RIMPRIMIR EXPRESION PTCOMA;
 IMPRESION_CONSALTO::= RIMPRIMIRNL EXPRESION PTCOMA;

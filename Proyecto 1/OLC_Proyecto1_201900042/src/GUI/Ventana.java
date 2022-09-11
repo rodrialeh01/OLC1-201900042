@@ -198,6 +198,8 @@ public class Ventana extends javax.swing.JFrame {
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/golanglogo.png"))); // NOI18N
         jButton4.setText("Traducir código a Golang");
 
+        panelcodigo.setMaximumSize(new java.awt.Dimension(788, 599));
+        panelcodigo.setMinimumSize(new java.awt.Dimension(788, 599));
         panelcodigo.setLayout(new java.awt.CardLayout());
 
         jTextArea1.setBackground(new java.awt.Color(12, 17, 22));
@@ -257,7 +259,7 @@ public class Ventana extends javax.swing.JFrame {
                         .addComponent(jLabel9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelcodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -398,16 +400,12 @@ public class Ventana extends javax.swing.JFrame {
             
             try {
                 sintactico.parse();
+                String salidago = "";
                 System.out.println("===========================================================================");
-                String go = "";
-                if(sintactico.getAST()!= null){
-                    for(Instruccion ins:sintactico.getAST()){
-                       go+= ins.traductorGolang();
-                    }
-                }else{
-                    go+= "Chale se intento :(";
+                for(Instruccion ins: sintactico.Golang){
+                    salidago += ins.traductorGolang();
                 }
-                System.out.println(go);
+                jTextArea1.setText(salidago);
             } catch (Exception ex) {
                 Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
             }

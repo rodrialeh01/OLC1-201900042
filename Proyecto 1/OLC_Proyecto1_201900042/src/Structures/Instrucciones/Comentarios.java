@@ -14,7 +14,7 @@ public class Comentarios implements Instruccion{
         COMENTARIO_MILTILINEA
     }
     private final Tipo_Comentario tipo;
-    private Object comentario;
+    private String comentario;
     public Comentarios(Tipo_Comentario tipo, String comentario) {
         this.tipo = tipo;
         this.comentario = comentario;
@@ -26,13 +26,17 @@ public class Comentarios implements Instruccion{
     @Override
     public String traductorGolang() {
         if(tipo==Tipo_Comentario.COMENTARIO_UNILINEA){
-            return "//"+comentario.toString();
+            System.out.println("uni");
+            System.out.println(this.comentario);
+            return this.comentario.toString();
         }else if(tipo==Tipo_Comentario.COMENTARIO_MILTILINEA){
-            return "/*"+comentario.toString()+"*/";
+            System.out.println("multi");
+            System.out.println(this.comentario);
+            return this.comentario.toString();
+            
         }else{
             return "";
         }
-         
     }
     
 }

@@ -86,20 +86,21 @@ public class Operacion implements Instruccion{
         }else if(tipo == Tipo_operacion.DECIMAL){
             return valor.toString();
         }else if(tipo == Tipo_operacion.CADENA){
-            return "\"" + valor.toString() + "\"";
+            return valor.toString();
         }else if(tipo == Tipo_operacion.VERDADERO){
             return "true";
         }else if(tipo == Tipo_operacion.FALSO){
             return "false";
         }else if(tipo == Tipo_operacion.CARACTER){
-            return "'" + valor.toString() + "'";
+            return valor.toString();
         }else if(tipo == Tipo_operacion.ASCCI){
-            String[] split1 = valor.toString().split("}");
+            String[] split1 = valor.toString().split("'");
             String[] split2 = split1[1].split("\\{");
             String[] split3 = split2[1].split("}");
             String caracterconvertido = Character.toString(Integer.parseInt(split3[0]));
             return "'" + caracterconvertido + "'";
         }else if(tipo == Tipo_operacion.IDENTIFICADOR){
+            System.out.println(valor.toString());
             return valor.toString();
         }
         //OPERADORES RELACIONALES

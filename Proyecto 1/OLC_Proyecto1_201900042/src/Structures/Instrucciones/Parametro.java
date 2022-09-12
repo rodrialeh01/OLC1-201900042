@@ -1,0 +1,42 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Structures.Instrucciones;
+
+/**
+ *
+ * @author Rodrigo
+ */
+public class Parametro implements Instruccion{
+
+    public static enum Tipo_Variable{
+        CADENA,
+        NUMERO,
+        BOOLEAN,
+        CARACTER
+    }
+    private final Operacion identificador;
+    private final Tipo_Variable tipo;
+
+    public Parametro(Operacion identificador, Tipo_Variable tipo) {
+        this.identificador = identificador;
+        this.tipo = tipo;
+    }
+    @Override
+    public String traductorGolang() {
+        String traduccion = "";
+        if(this.tipo == Tipo_Variable.NUMERO){
+            traduccion += this.identificador.traductorGolang() + " float64";
+        }else if(this.tipo == Tipo_Variable.CADENA){
+            traduccion += this.identificador.traductorGolang() + " string";
+        }else if(this.tipo == Tipo_Variable.BOOLEAN){
+            traduccion += this.identificador.traductorGolang() + " bool";
+        }else if(this.tipo == Tipo_Variable.CARACTER){
+            traduccion += this.identificador.traductorGolang() + " byte";
+        }else{
+            traduccion += "";
+        }
+        return traduccion;
+    }
+}

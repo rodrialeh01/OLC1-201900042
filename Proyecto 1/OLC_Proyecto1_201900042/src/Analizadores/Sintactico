@@ -15,6 +15,10 @@ import Structures.Instrucciones.Mientras;
 import Structures.Instrucciones.Repetir;
 import Structures.Instrucciones.Impresion;
 import Structures.Instrucciones.Ejecutar;
+import Structures.Instrucciones.Parametro;
+import Structures.Instrucciones.Funciones;
+import Structures.Instrucciones.Metodo;
+import Structures.Instrucciones.Retornar;
 import java.util.LinkedList;
 import Structures.Nodo;
 import Structures.Arbol;
@@ -74,7 +78,8 @@ non terminal EXPRESION;
 non terminal TIPODATO;
 non terminal FUNCION;
 non terminal METODO;
-non terminal LISTA_PARAMETROS;
+non terminal GLOBAL;
+non terminal LinkedList <Instruccion> LISTA_PARAMETROS;
 non terminal ENTORNO_LOCAL;
 non terminal CONDICIONAL_SI;
 non terminal CONDICION;
@@ -95,7 +100,7 @@ non terminal COMENTARIO;
 non terminal LinkedList<Instruccion> INSERCION_PARAMETROS;
 non terminal EJECUTAR_2;
 non terminal RELACIONAL;
-non terminal FUNCYMET;
+non terminal LinkedList<Instruccion> FUNCYMET;
 non terminal FYM;
 
 precedence left SUMA,RESTA;
@@ -131,17 +136,56 @@ COMENTARIO::=COMENTARIOL:a                                                      
                                                                                                             Golang.add((Comentarios) RESULT);
                                                                                                         :}
 ;
-ALGORITMO::=FUNCYMET
+GLOBAL::= GLOBAL ALGORITMO
+         |ALGORITMO
+;
+ALGORITMO::=FUNCYMET:a                                                                                  {:  
+                                                                                                            Main vacio = new Main();
+                                                                                                            Golang.add(vacio);
+                                                                                                            RESULT=(LinkedList) a;
+                                                                                                            for (int i = 0; i < a.size(); i++) {
+                                                                                                                Golang.add(a.get(i));
+                                                                                                            }
+                                                                                                        :}
            |LOCAL:a                                                                                     {:  
                                                                                                             RESULT=new Main((LinkedList) a);
                                                                                                             Golang.add((Main) RESULT);
+                                                                                                        :}
+           |LOCAL:a FUNCYMET:b                                                                          {:  
+                                                                                                            Main lleno = new Main((LinkedList) a);
+                                                                                                            Golang.add(lleno);
+                                                                                                            RESULT=(LinkedList) b;
+                                                                                                            for (int i = 0; i < b.size(); i++) {
+                                                                                                                Golang.add(b.get(i));
+                                                                                                            }
+                                                                                                        :}
+           |FUNCYMET:a LOCAL:b                                                                          {:  
+                                                                                                            Main lleno = new Main((LinkedList) b);
+                                                                                                            Golang.add(lleno);
+                                                                                                            RESULT=(LinkedList) a;
+                                                                                                            for (int i = 0; i < a.size(); i++) {
+                                                                                                                Golang.add(a.get(i));
+                                                                                                            }
+                                                                                                        :}
+;
+FUNCYMET::=FUNCYMET:a FYM:b                                                                             {:  
+                                                                                                            RESULT = new LinkedList<Instruccion>();
+                                                                                                            for (int i = 0; i < a.size(); i++) {
+                                                                                                                RESULT.add(a.get(i));
+                                                                                                            }
+                                                                                                            RESULT.add((Instruccion) b);
                                                                                                         :} 
+          |FYM:a                                                                                        {:  
+                                                                                                            RESULT= new LinkedList<Instruccion>();
+                                                                                                            RESULT.add((Instruccion) a);
+                                                                                                        :}
 ;
-FUNCYMET::=FUNCYMET FYM
-          |FYM
-;
-FYM::=FUNCION
-     |METODO
+FYM::=FUNCION:a                                                                                         {:  
+                                                                                                            RESULT = (Funciones) a;
+                                                                                                        :}
+     |METODO:a                                                                                          {:  
+                                                                                                            RESULT = (Metodo) a;
+                                                                                                        :}
 ;
 DECLARACION::=RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RNUMERO RCONVALOR EXPRESION:e PTCOMA              {:  
                                                                                                             RESULT=new Declaracion(Declaracion.Tipo_Variable.RNUMERO,(Operacion)e,(LinkedList)l);
@@ -260,23 +304,56 @@ ASIGNACION::=LISTA_IDENTIFICADORES:l FLECHA EXPRESION:e PTCOMA                  
                                                                                                             RESULT=new Asignacion((Instruccion)e,(LinkedList)l);
                                                                                                         :}
 ;
-FUNCION::=RFUNCION IDENTIFICADOR TIPODATO LOCAL RRETORNAR CONDICION PTCOMA RFINFUNCION
-         |RFUNCION IDENTIFICADOR TIPODATO RRETORNAR CONDICION PTCOMA RFINFUNCION
-         |RFUNCION IDENTIFICADOR TIPODATO RCONPARAMETROS PARIZQ LISTA_PARAMETROS PARDER LOCAL RRETORNAR CONDICION PTCOMA RFINFUNCION
-         |RFUNCION IDENTIFICADOR TIPODATO RCONPARAMETROS PARIZQ LISTA_PARAMETROS PARDER RRETORNAR CONDICION PTCOMA RFINFUNCION
+FUNCION::=RFUNCION IDENTIFICADOR:a TIPODATO:b LOCAL:c RRETORNAR CONDICION:d PTCOMA RFINFUNCION          {:  
+                                                                                                            RESULT=new Funciones(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Parametro.Tipo_Variable) b, new Retornar((Operacion) d) , (LinkedList) c);
+                                                                                                        :}
+         |RFUNCION IDENTIFICADOR:a TIPODATO:b RRETORNAR CONDICION:c PTCOMA RFINFUNCION                  {:  
+                                                                                                            RESULT=new Funciones(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Parametro.Tipo_Variable) b, new Retornar((Operacion) c));
+                                                                                                        :}
+         |RFUNCION IDENTIFICADOR:a TIPODATO:b RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER LOCAL:c RRETORNAR CONDICION:d PTCOMA RFINFUNCION{:  
+                                                                                                            RESULT=new Funciones(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Parametro.Tipo_Variable) b,(LinkedList) l, (LinkedList) c, new Retornar((Operacion) d));
+                                                                                                        :}
+         |RFUNCION IDENTIFICADOR:a TIPODATO:b RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER RRETORNAR CONDICION:c PTCOMA RFINFUNCION{:  
+                                                                                                            RESULT=new Funciones(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Parametro.Tipo_Variable) b,(LinkedList) l, new Retornar((Operacion) c));
+                                                                                                        :}
 ;
-METODO::=RMETODO IDENTIFICADOR LOCAL RFINMETODO
-        |RMETODO IDENTIFICADOR RFINMETODO
-        |RMETODO IDENTIFICADOR RCONPARAMETROS PARIZQ LISTA_PARAMETROS PARDER LOCAL RFINMETODO
-        |RMETODO IDENTIFICADOR RCONPARAMETROS PARIZQ LISTA_PARAMETROS PARDER RFINMETODO
+METODO::=RMETODO IDENTIFICADOR:a LOCAL:b RFINMETODO                                                     {:  
+                                                                                                            RESULT=new Metodo((LinkedList) b ,new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR));
+                                                                                                        :}
+        |RMETODO IDENTIFICADOR:a RFINMETODO                                                             {:  
+                                                                                                            RESULT=new Metodo(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR));
+                                                                                                        :}
+        |RMETODO IDENTIFICADOR:a RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER LOCAL:b RFINMETODO     {:  
+                                                                                                            RESULT=new Metodo(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),(LinkedList) l, (LinkedList) b);
+                                                                                                        :}
+        |RMETODO IDENTIFICADOR:a RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER RFINMETODO             {:  
+                                                                                                            RESULT=new Metodo(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),(LinkedList) l);
+                                                                                                        :}
 ;
-LISTA_PARAMETROS::=LISTA_PARAMETROS COMA IDENTIFICADOR TIPODATO
-                  |IDENTIFICADOR TIPODATO
+LISTA_PARAMETROS::=LISTA_PARAMETROS:l COMA IDENTIFICADOR:a TIPODATO:b                                   {:  
+                                                                                                            RESULT = new LinkedList<>();
+                                                                                                            for (int i = 0; i < l.size(); i++) {
+                                                                                                                RESULT.add(l.get(i));
+                                                                                                            }
+                                                                                                            RESULT.add(new Parametro(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),(Parametro.Tipo_Variable) b));
+                                                                                                        :}
+                  |IDENTIFICADOR:a TIPODATO:b                                                           {:  
+                                                                                                            RESULT= new LinkedList<Instruccion>();
+                                                                                                            RESULT.add(new Parametro(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),(Parametro.Tipo_Variable) b));
+                                                                                                        :} 
 ;
-TIPODATO::=RNUMERO
-          |RCADENA
-          |RBOOLEAN
-          |RCARACTER
+TIPODATO::=RNUMERO:a                                                                                    {:  
+                                                                                                            RESULT=Parametro.Tipo_Variable.NUMERO;
+                                                                                                        :} 
+          |RCADENA:a                                                                                    {:  
+                                                                                                            RESULT=Parametro.Tipo_Variable.CADENA;
+                                                                                                        :} 
+          |RBOOLEAN:a                                                                                   {:  
+                                                                                                            RESULT=Parametro.Tipo_Variable.BOOLEAN;
+                                                                                                        :} 
+          |RCARACTER:a                                                                                  {:  
+                                                                                                            RESULT=Parametro.Tipo_Variable.CARACTER;
+                                                                                                        :} 
 ;
 LOCAL::=LOCAL:a ENTORNO_LOCAL:b                                                                         {:  
                                                                                                             RESULT = new LinkedList<>();

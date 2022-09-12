@@ -40,9 +40,10 @@ public class Ejecutar implements Instruccion{
                 traduccion += this.identificador.traductorGolang() + "(";
                 for (int i = 0; i < this.listaParametros.size(); i++) {
                     if (i == this.listaParametros.size() - 1) {
-                        traduccion += this.listaParametros.get(i);
+                        traduccion += this.listaParametros.get(i).traductorGolang();
+                        break;
                     }
-                    traduccion += this.listaParametros.get(i) + ",";
+                    traduccion += this.listaParametros.get(i).traductorGolang() + ",";
                 }
                 traduccion += ")\n";
             }
@@ -55,11 +56,12 @@ public class Ejecutar implements Instruccion{
                 traduccion += this.identificador.traductorGolang() + "(";
                 for (int i = 0; i < this.listaParametros.size(); i++) {
                     if (i == this.listaParametros.size() - 1) {
-                        traduccion += this.listaParametros.get(i);
+                        traduccion += this.listaParametros.get(i).traductorGolang();
+                        break;
                     }
-                    traduccion += this.listaParametros.get(i) + ",";
+                    traduccion += this.listaParametros.get(i).traductorGolang() + ",";
                 }
-                traduccion += ")\n";
+                traduccion += ")";
             }
             return traduccion;
         }else{

@@ -21,11 +21,11 @@ public class Declaracion implements Instruccion{
     
    
     private final Tipo_Variable tipo;
-    private Operacion valor;
+    private Instruccion valor;
     private Object identificador;
     private LinkedList<Instruccion> listaidentificadores;
 
-    public Declaracion(Tipo_Variable tipo, Operacion valor, LinkedList<Instruccion> listaidentificadores) {
+    public Declaracion(Tipo_Variable tipo, Instruccion valor, LinkedList<Instruccion> listaidentificadores) {
         this.tipo = tipo;
         this.valor = valor;
         this.listaidentificadores = listaidentificadores;

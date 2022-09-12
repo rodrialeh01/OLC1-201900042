@@ -39,19 +39,19 @@ public class Operacion implements Instruccion{
     
     private final Tipo_operacion tipo;
     
-    private Operacion operadorizq;
+    private Instruccion operadorizq;
     
-    private Operacion operadorder;
+    private Instruccion operadorder;
     
     private Object valor;
 
-    public Operacion(Operacion operadorizq, Operacion operadorder,Tipo_operacion tipo) {
+    public Operacion(Instruccion operadorizq, Instruccion operadorder,Tipo_operacion tipo) {
         this.tipo = tipo;
         this.operadorizq = operadorizq;
         this.operadorder = operadorder;
     }
 
-    public Operacion(Operacion operadorizq,Tipo_operacion tipo) {
+    public Operacion(Instruccion operadorizq,Tipo_operacion tipo) {
         this.tipo = tipo;
         this.operadorizq = operadorizq;
     }
@@ -78,6 +78,7 @@ public class Operacion implements Instruccion{
         }else if(tipo == Tipo_operacion.MODULAR){
             return operadorizq.traductorGolang() + "%" + operadorder.traductorGolang();
         }else if(tipo == Tipo_operacion.POTENCIA){
+            Main.importacion_potencia = true;
             return "math.Pow(float64(" + operadorizq.traductorGolang() + "),float64(" + operadorder.traductorGolang() + "))";
         }
         //EXPRESIONES LITERALES

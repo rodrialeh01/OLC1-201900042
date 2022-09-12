@@ -12,19 +12,19 @@ import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
  * @author Rodrigo
  */
 public class SeleccionMultiple implements Instruccion{
-    private final Operacion condicion;
+    private final Instruccion condicion;
     
     private LinkedList<Instruccion> listaCasosInstrucciones;
     
     private LinkedList<Instruccion> listaInsdelocontrario;
 
     //SEGUN SOLO CON CASOS
-    public SeleccionMultiple(Operacion condicion, LinkedList<Instruccion> listaCasosInstrucciones) {
+    public SeleccionMultiple(Instruccion condicion, LinkedList<Instruccion> listaCasosInstrucciones) {
         this.condicion = condicion;
         this.listaCasosInstrucciones = listaCasosInstrucciones;
     }
     //SEGUN CON CASOS Y EL DE LO CONTRARIO
-    public SeleccionMultiple(Operacion condicion, LinkedList<Instruccion> listaCasosInstrucciones, LinkedList<Instruccion> listaInsdelocontrario) {
+    public SeleccionMultiple(Instruccion condicion, LinkedList<Instruccion> listaCasosInstrucciones, LinkedList<Instruccion> listaInsdelocontrario) {
         this.condicion = condicion;
         this.listaCasosInstrucciones = listaCasosInstrucciones;
         this.listaInsdelocontrario = listaInsdelocontrario;

@@ -13,16 +13,16 @@ import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
  */
 public class Mientras implements Instruccion{
     
-    private final Operacion condicion;
+    private final Instruccion condicion;
     
     private LinkedList<Instruccion> listaInstrucciones;
 
     //MIENTRAS VACIO
-    public Mientras(Operacion condicion) {
+    public Mientras(Instruccion condicion) {
         this.condicion = condicion;
     }
     //MIENTRAS CON INSTRUCCIONES
-    public Mientras(Operacion condicion, LinkedList<Instruccion> listaInstrucciones) {
+    public Mientras(Instruccion condicion, LinkedList<Instruccion> listaInstrucciones) {
         this.condicion = condicion;
         this.listaInstrucciones = listaInstrucciones;
     }

@@ -12,10 +12,10 @@ import java.util.LinkedList;
  */
 public class Asignacion implements Instruccion{
     
-    private Operacion valor;
+    private Instruccion valor;
     private LinkedList<Instruccion> listaidentificadores;
 
-    public Asignacion(Operacion valor, LinkedList<Instruccion> listaidentificadores) {
+    public Asignacion(Instruccion valor, LinkedList<Instruccion> listaidentificadores) {
         this.valor = valor;
         this.listaidentificadores = listaidentificadores;
     }

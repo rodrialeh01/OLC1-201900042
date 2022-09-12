@@ -12,7 +12,7 @@ import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
  */
 public class Si implements Instruccion{
     
-    private final Operacion condicion;
+    private final Instruccion condicion;
     
     private final LinkedList<Instruccion> listaInstrucciones;
     
@@ -21,25 +21,25 @@ public class Si implements Instruccion{
     private LinkedList<Instruccion> listaInsdelocontrario;
 
     //SI
-    public Si(Operacion condicion, LinkedList<Instruccion> listaInstrucciones) {
+    public Si(Instruccion condicion, LinkedList<Instruccion> listaInstrucciones) {
         this.condicion = condicion;
         this.listaInstrucciones = listaInstrucciones;
     }
     //SI-DE_LO_CONTRARIO
-    public Si(Operacion condicion, LinkedList<Instruccion> listaInstrucciones, LinkedList<Instruccion> listaInsdelocontrario) {
+    public Si(Instruccion condicion, LinkedList<Instruccion> listaInstrucciones, LinkedList<Instruccion> listaInsdelocontrario) {
         this.condicion = condicion;
         this.listaInstrucciones = listaInstrucciones;
         this.listaInsdelocontrario = listaInsdelocontrario;
     }
     //SI-O_SI
-    public Si(LinkedList<Instruccion> listaInstrucciones,Operacion condicion, LinkedList<Instruccion> listaOSiInstrucciones) {
+    public Si(LinkedList<Instruccion> listaInstrucciones,Instruccion condicion, LinkedList<Instruccion> listaOSiInstrucciones) {
         this.condicion = condicion;
         this.listaInstrucciones = listaInstrucciones;
         this.listaOSiInstrucciones = listaOSiInstrucciones;
     }
     
     //SI-O_SI-DE_LO_CONTRARIO
-    public Si(Operacion condicion, LinkedList<Instruccion> listaInstrucciones, LinkedList<Instruccion> listaOSiInstrucciones, LinkedList<Instruccion> listaInsdelocontrario) {
+    public Si(Instruccion condicion, LinkedList<Instruccion> listaInstrucciones, LinkedList<Instruccion> listaOSiInstrucciones, LinkedList<Instruccion> listaInsdelocontrario) {
         this.condicion = condicion;
         this.listaInstrucciones = listaInstrucciones;
         this.listaOSiInstrucciones = listaOSiInstrucciones;

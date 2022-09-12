@@ -13,16 +13,16 @@ import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
  */
 public class Repetir implements Instruccion{
 
-    private final Operacion condicion;
+    private final Instruccion condicion;
     
     private LinkedList<Instruccion> listaInstrucciones;
 
     //REPETIR VACIO
-    public Repetir(Operacion condicion) {
+    public Repetir(Instruccion condicion) {
         this.condicion = condicion;
     }
     //REPETIR CON INSTRUCCIONES
-    public Repetir(Operacion condicion, LinkedList<Instruccion> listaInstrucciones) {
+    public Repetir(Instruccion condicion, LinkedList<Instruccion> listaInstrucciones) {
         this.condicion = condicion;
         this.listaInstrucciones = listaInstrucciones;
     }

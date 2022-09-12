@@ -12,11 +12,11 @@ import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
  * @author Rodrigo
  */
 public class Case implements Instruccion{
-    private final Operacion condicion;
+    private final Instruccion condicion;
     
     private final LinkedList<Instruccion> listaInstrucciones;
 
-    public Case(Operacion condicion, LinkedList<Instruccion> listaInstrucciones) {
+    public Case(Instruccion condicion, LinkedList<Instruccion> listaInstrucciones) {
         this.condicion = condicion;
         this.listaInstrucciones = listaInstrucciones;
     }

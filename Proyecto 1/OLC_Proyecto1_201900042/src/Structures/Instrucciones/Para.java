@@ -14,29 +14,29 @@ import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 public class Para implements Instruccion{
     private final Operacion identificador;
     
-    private final Operacion operadorinicial;
+    private final Instruccion operadorinicial;
     
-    private final Operacion operadorfinal;
+    private final Instruccion operadorfinal;
     
-    private Operacion incremental;
+    private Instruccion incremental;
 
     private LinkedList<Instruccion> listaInstrucciones;
 
     //PARA VACIO
-    public Para(Operacion identificador, Operacion operadorinicial, Operacion operadorfinal) {
+    public Para(Operacion identificador, Instruccion operadorinicial, Instruccion operadorfinal) {
         this.identificador = identificador;
         this.operadorinicial = operadorinicial;
         this.operadorfinal = operadorfinal;
     }
     //PARA CON INSTRUCCIONES
-    public Para(Operacion identificador, Operacion operadorinicial, Operacion operadorfinal, LinkedList<Instruccion> listaInstrucciones) {
+    public Para(Operacion identificador, Instruccion operadorinicial, Instruccion operadorfinal, LinkedList<Instruccion> listaInstrucciones) {
         this.identificador = identificador;
         this.operadorinicial = operadorinicial;
         this.operadorfinal = operadorfinal;
         this.listaInstrucciones = listaInstrucciones;
     }
     //PARA CON INSTRUCCIONES Y CON INCREMENTAL
-    public Para(Operacion identificador, Operacion operadorinicial, Operacion operadorfinal, Operacion incremental, LinkedList<Instruccion> listaInstrucciones) {
+    public Para(Operacion identificador, Instruccion operadorinicial, Instruccion operadorfinal, Instruccion incremental, LinkedList<Instruccion> listaInstrucciones) {
         this.identificador = identificador;
         this.operadorinicial = operadorinicial;
         this.operadorfinal = operadorfinal;
@@ -44,7 +44,7 @@ public class Para implements Instruccion{
         this.listaInstrucciones = listaInstrucciones;
     }
     //PARA VACIO Y CON INCREMENTAL
-    public Para(Operacion identificador, Operacion operadorinicial, Operacion operadorfinal, Operacion incremental) {
+    public Para(Operacion identificador, Instruccion operadorinicial, Instruccion operadorfinal, Instruccion incremental) {
         this.identificador = identificador;
         this.operadorinicial = operadorinicial;
         this.operadorfinal = operadorfinal;

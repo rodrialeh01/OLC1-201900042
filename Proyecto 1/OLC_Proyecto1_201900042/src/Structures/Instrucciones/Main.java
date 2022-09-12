@@ -13,6 +13,8 @@ import java.util.LinkedList;
 public class Main implements Instruccion{
     private LinkedList<Instruccion> listaInstrucciones;
 
+    public static boolean importacion_potencia = false;
+    public static boolean importacion_print = false;
     public Main(LinkedList<Instruccion> listaInstrucciones) {
         this.listaInstrucciones = listaInstrucciones;
     }
@@ -22,14 +24,24 @@ public class Main implements Instruccion{
 
     @Override
     public String traductorGolang() {
-        String traduccion = "func main(){\n";
+        String cabecera = "package main\n\n";
+        if (importacion_potencia == true || importacion_print == true) {
+            cabecera+= "import(\n";
+            if(importacion_potencia == true){
+                cabecera += "\t\"math\"\n";
+            }else if(importacion_print == true){
+                cabecera += "\t\"fmt\"\n";
+            }
+            cabecera+=")\n\n";
+        }
+        String traduccion = cabecera + "func main(){\n";
         if(this.listaInstrucciones != null){
             for (Instruccion ins: this.listaInstrucciones) {
                 traduccion+=ins.traductorGolang();
             }
-            traduccion+="\n}";
+            traduccion+="\n}\n";
         }else if(this.listaInstrucciones == null){
-            traduccion+="\n}";
+            traduccion+="\n}\n";
         }
         return traduccion;
     }

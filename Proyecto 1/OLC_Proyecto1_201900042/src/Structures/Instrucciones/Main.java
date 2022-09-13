@@ -29,7 +29,8 @@ public class Main implements Instruccion{
             cabecera+= "import(\n";
             if(importacion_potencia == true){
                 cabecera += "\t\"math\"\n";
-            }else if(importacion_print == true){
+            }
+            if(importacion_print == true){
                 cabecera += "\t\"fmt\"\n";
             }
             cabecera+=")\n\n";

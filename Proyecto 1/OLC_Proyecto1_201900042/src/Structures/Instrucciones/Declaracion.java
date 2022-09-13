@@ -11,21 +11,14 @@ import java.util.LinkedList;
  * @author Rodrigo
  */
 public class Declaracion implements Instruccion{
-
-    public static enum Tipo_Variable{
-        RNUMERO,
-        RCADENA,
-        RBOOLEAN,
-        RCARACTER
-    }
     
    
-    private final Tipo_Variable tipo;
+    private final Parametro.Tipo_Variable tipo;
     private Instruccion valor;
     private Object identificador;
     private LinkedList<Instruccion> listaidentificadores;
 
-    public Declaracion(Tipo_Variable tipo, Instruccion valor, LinkedList<Instruccion> listaidentificadores) {
+    public Declaracion(Parametro.Tipo_Variable tipo, Instruccion valor, LinkedList<Instruccion> listaidentificadores) {
         this.tipo = tipo;
         this.valor = valor;
         this.listaidentificadores = listaidentificadores;
@@ -35,19 +28,19 @@ public class Declaracion implements Instruccion{
     public String traductorGolang() {
         String declaraciones="";
         for (int i = 0; i < this.listaidentificadores.size(); i++) {
-            if(tipo== Tipo_Variable.RNUMERO){
+            if(tipo== Parametro.Tipo_Variable.NUMERO){
                 if(valor != null){
                     declaraciones+= "var "+ this.listaidentificadores.get(i).traductorGolang() + " float64 = " + valor.traductorGolang() + "\n";
                 }
-            }else if(tipo== Tipo_Variable.RCADENA){
+            }else if(tipo== Parametro.Tipo_Variable.CADENA){
                 if(valor != null){
                     declaraciones+= "var "+ this.listaidentificadores.get(i).traductorGolang() + " string = " + valor.traductorGolang() + "\n";
                 }
-            }else if(tipo== Tipo_Variable.RBOOLEAN){
+            }else if(tipo== Parametro.Tipo_Variable.BOOLEAN){
                 if(valor!=null){
                     declaraciones+= "var "+ this.listaidentificadores.get(i).traductorGolang() + " bool = " + valor.traductorGolang() + "\n";
                 }
-            }else if(tipo== Tipo_Variable.RCARACTER){
+            }else if(tipo== Parametro.Tipo_Variable.CARACTER){
                 if(valor != null){
                     declaraciones+= "var "+ this.listaidentificadores.get(i).traductorGolang() + " byte = " + valor.traductorGolang() + "\n";
                 }

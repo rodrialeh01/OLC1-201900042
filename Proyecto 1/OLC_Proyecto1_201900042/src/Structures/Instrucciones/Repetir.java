@@ -33,7 +33,7 @@ public class Repetir implements Instruccion{
         String traduccion = "for true {\n";
         if(this.listaInstrucciones != null){
             for (Instruccion ins: this.listaInstrucciones) {
-                traduccion+= OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador+=1)+ins.traductorGolang();
+                ins.traductorGolang();
             }
         }
         traduccion+="\n\tif(" + this.condicion.traductorGolang() + "){\n\t\tbreak\n\t}\n}";

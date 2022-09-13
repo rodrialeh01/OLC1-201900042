@@ -55,7 +55,7 @@ public class Funciones implements Instruccion {
                 if (this.listaParametros == null) {
                     traduccion += this.identificador.traductorGolang() + "() float64{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador += 1) + ins.traductorGolang();
+                        traduccion += ins.traductorGolang();
                     }
                     traduccion += "\n\t" + this.valor_retorno.traductorGolang();
                     traduccion += "}\n";
@@ -70,7 +70,7 @@ public class Funciones implements Instruccion {
                     }
                     traduccion += ") float64{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador += 1) + ins.traductorGolang();
+                        traduccion += ins.traductorGolang();
                     }
                     traduccion += "\n\t" + this.valor_retorno.traductorGolang();
                     traduccion += "}\n";
@@ -97,7 +97,7 @@ public class Funciones implements Instruccion {
                 if (this.listaParametros == null) {
                     traduccion += this.identificador.traductorGolang() + "() string{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador += 1) + ins.traductorGolang();
+                        traduccion += ins.traductorGolang();
                     }
                     traduccion += "\n\t" + this.valor_retorno.traductorGolang();
                     traduccion += "}\n";
@@ -112,7 +112,7 @@ public class Funciones implements Instruccion {
                     }
                     traduccion += ") string{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador += 1) + ins.traductorGolang();
+                        traduccion += ins.traductorGolang();
                     }
                     traduccion += "\n\t" + this.valor_retorno.traductorGolang();
                     traduccion += "}\n";
@@ -139,7 +139,7 @@ public class Funciones implements Instruccion {
                 if (this.listaParametros == null) {
                     traduccion += this.identificador.traductorGolang() + "() bool{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador += 1) + ins.traductorGolang();
+                        traduccion += ins.traductorGolang();
                     }
                     traduccion += "\n\t" + this.valor_retorno.traductorGolang();
                     traduccion += "}\n";
@@ -154,7 +154,7 @@ public class Funciones implements Instruccion {
                     }
                     traduccion += ") bool{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador += 1) + ins.traductorGolang();
+                        traduccion += ins.traductorGolang();
                     }
                     traduccion += "\n\t" + this.valor_retorno.traductorGolang();
                     traduccion += "}\n";
@@ -181,7 +181,7 @@ public class Funciones implements Instruccion {
                 if (this.listaParametros == null) {
                     traduccion += this.identificador.traductorGolang() + "() byte{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador += 1) + ins.traductorGolang();
+                        traduccion += ins.traductorGolang();
                     }
                     traduccion += "\n\t" + this.valor_retorno.traductorGolang();
                     traduccion += "}\n";
@@ -196,7 +196,7 @@ public class Funciones implements Instruccion {
                     }
                     traduccion += ") byte{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador += 1) + ins.traductorGolang();
+                        traduccion += ins.traductorGolang();
                     }
                     traduccion += "\n\t" + this.valor_retorno.traductorGolang();
                     traduccion += "}\n";

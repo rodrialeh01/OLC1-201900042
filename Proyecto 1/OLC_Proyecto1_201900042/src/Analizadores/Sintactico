@@ -93,15 +93,15 @@ non terminal CICLO_REPETIR;
 non terminal EJECUTAR;
 non terminal IMPRESION;
 non terminal IMPRESION_CONSALTO;
-non terminal ALGORITMO;
+non terminal LinkedList<Instruccion> ALGORITMO;
 non terminal MAIN;
 non terminal COMENTARIOS;
 non terminal COMENTARIO;
 non terminal LinkedList<Instruccion> INSERCION_PARAMETROS;
 non terminal EJECUTAR_2;
 non terminal RELACIONAL;
-non terminal LinkedList<Instruccion> FUNCYMET;
 non terminal FYM;
+non terminal AGRUPACION;
 
 precedence left SUMA,RESTA;
 precedence left MULTIPLICACION,DIVIDIR;
@@ -116,7 +116,11 @@ INSTRUCCIONES::=MAIN
                |COMENTARIOS                                                                           
                |error
 ;
-MAIN::=RINICIO ALGORITMO RFIN                                                                                                                                     
+MAIN::=RINICIO ALGORITMO:a RFIN                                                                         {:
+                                                                                                            RESULT=(LinkedList) a;
+                                                                                                            Main m = new Main((LinkedList) a);
+                                                                                                            Golang.addFirst((Instruccion) m);
+                                                                                                        :}                                                         
       |RINICIO RFIN                                                                                     {:
                                                                                                             Main.importacion_print = false;
                                                                                                             Main.importacion_potencia = false;
@@ -136,48 +140,28 @@ COMENTARIO::=COMENTARIOL:a                                                      
                                                                                                             Golang.add((Comentarios) RESULT);
                                                                                                         :}
 ;
-GLOBAL::= GLOBAL ALGORITMO
-         |ALGORITMO
-;
-ALGORITMO::=FUNCYMET:a                                                                                  {:  
-                                                                                                            Main vacio = new Main();
-                                                                                                            Golang.add(vacio);
-                                                                                                            RESULT=(LinkedList) a;
-                                                                                                            for (int i = 0; i < a.size(); i++) {
-                                                                                                                Golang.add(a.get(i));
-                                                                                                            }
-                                                                                                        :}
-           |LOCAL:a                                                                                     {:  
-                                                                                                            RESULT=new Main((LinkedList) a);
-                                                                                                            Golang.add((Main) RESULT);
-                                                                                                        :}
-           |LOCAL:a FUNCYMET:b                                                                          {:  
-                                                                                                            Main lleno = new Main((LinkedList) a);
-                                                                                                            Golang.add(lleno);
-                                                                                                            RESULT=(LinkedList) b;
-                                                                                                            for (int i = 0; i < b.size(); i++) {
-                                                                                                                Golang.add(b.get(i));
-                                                                                                            }
-                                                                                                        :}
-           |FUNCYMET:a LOCAL:b                                                                          {:  
-                                                                                                            Main lleno = new Main((LinkedList) b);
-                                                                                                            Golang.add(lleno);
-                                                                                                            RESULT=(LinkedList) a;
-                                                                                                            for (int i = 0; i < a.size(); i++) {
-                                                                                                                Golang.add(a.get(i));
-                                                                                                            }
-                                                                                                        :}
-;
-FUNCYMET::=FUNCYMET:a FYM:b                                                                             {:  
+ALGORITMO::=ALGORITMO:a GLOBAL:b                                                                        {:  
                                                                                                             RESULT = new LinkedList<Instruccion>();
                                                                                                             for (int i = 0; i < a.size(); i++) {
                                                                                                                 RESULT.add(a.get(i));
                                                                                                             }
-                                                                                                            RESULT.add((Instruccion) b);
-                                                                                                        :} 
-          |FYM:a                                                                                        {:  
-                                                                                                            RESULT= new LinkedList<Instruccion>();
-                                                                                                            RESULT.add((Instruccion) a);
+                                                                                                            if(b != null){
+                                                                                                                RESULT.add((Instruccion) b);
+                                                                                                            }
+                                                                                                        :}                                                                                     
+           |GLOBAL:a                                                                                    {:  
+                                                                                                            if(a != null){
+                                                                                                                RESULT= new LinkedList<Instruccion>();
+                                                                                                                RESULT.add((Instruccion) a);
+                                                                                                            }
+                                                                                                        :}
+;
+GLOBAL::= ENTORNO_LOCAL:a                                                                               {:  
+                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            
+                                                                                                        :}
+         |FYM:a                                                                                         {:  
+                                                                                                            Golang.addLast((Instruccion) a);
                                                                                                         :}
 ;
 FYM::=FUNCION:a                                                                                         {:  
@@ -187,18 +171,9 @@ FYM::=FUNCION:a                                                                 
                                                                                                             RESULT = (Metodo) a;
                                                                                                         :}
 ;
-DECLARACION::=RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RNUMERO RCONVALOR EXPRESION:e PTCOMA              {:  
-                                                                                                            RESULT=new Declaracion(Declaracion.Tipo_Variable.RNUMERO,(Operacion)e,(LinkedList)l);
-                                                                                                        :}                                    
-             |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RCADENA RCONVALOR EXPRESION:e PTCOMA              {:  
-                                                                                                            RESULT=new Declaracion(Declaracion.Tipo_Variable.RCADENA,(Operacion)e,(LinkedList)l);
-                                                                                                        :}  
-             |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RBOOLEAN RCONVALOR EXPRESION:e PTCOMA             {:  
-                                                                                                            RESULT=new Declaracion(Declaracion.Tipo_Variable.RBOOLEAN,(Operacion)e,(LinkedList)l);
-                                                                                                        :}  
-             |RINGRESAR LISTA_IDENTIFICADORES:l RCOMO RCARACTER RCONVALOR EXPRESION:e PTCOMA            {:  
-                                                                                                            RESULT=new Declaracion(Declaracion.Tipo_Variable.RCARACTER,(Operacion)e,(LinkedList)l);
-                                                                                                        :} 
+DECLARACION::=RINGRESAR LISTA_IDENTIFICADORES:l RCOMO TIPODATO:b RCONVALOR CONDICION:e PTCOMA           {:  
+                                                                                                            RESULT=new Declaracion((Parametro.Tipo_Variable) b,(Operacion)e,(LinkedList)l);
+                                                                                                        :}
 ;
 LISTA_IDENTIFICADORES::=LISTA_IDENTIFICADORES:a COMA IDENTIFICADOR:b                                    {:  
                                                                                                             RESULT = new LinkedList<>();
@@ -239,9 +214,6 @@ EXPRESION::=ENTERO:a                                                            
             |RESTA EXPRESION:a                                                                          {:  
                                                                                                             RESULT=new Operacion((Instruccion)a,Operacion.Tipo_operacion.NEGATIVO);
                                                                                                         :}
-            |PARIZQ EXPRESION:a PARDER                                                                  {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,Operacion.Tipo_operacion.AGRUPACION);
-                                                                                                        :} 
             |EXPRESION:a SUMA EXPRESION:b                                                               {:  
                                                                                                             RESULT=new Operacion((Instruccion)a,(Operacion)b,Operacion.Tipo_operacion.SUMA);
                                                                                                         :} 
@@ -261,6 +233,9 @@ EXPRESION::=ENTERO:a                                                            
             |EXPRESION:a MODU EXPRESION:b                                                               {:  
                                                                                                             RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.MODULAR);
                                                                                                         :}
+            |AGRUPACION:a                                                                               {:  
+                                                                                                            RESULT=(Instruccion)a;
+                                                                                                        :}  
             |EJECUTAR_2:a                                                                               {:  
                                                                                                             RESULT=(Instruccion) a;
                                                                                                         :}
@@ -294,11 +269,15 @@ CONDICION::=RELACIONAL:a ROR RELACIONAL:b                                       
                                                                                                             RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.AND);;
                                                                                                         :}
            |RNOT RELACIONAL:a                                                                           {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,Operacion.Tipo_operacion.MENOROIGUAL);;
+                                                                                                            RESULT=new Operacion((Instruccion)a,Operacion.Tipo_operacion.NOT);;
                                                                                                         :}
            |RELACIONAL:a                                                                                {:  
                                                                                                             RESULT=(Operacion)a;
-                                                                                                        :} 
+                                                                                                        :}
+;
+AGRUPACION::=PARIZQ CONDICION:a PARDER                                                                 {:  
+                                                                                                            RESULT=new Operacion((Instruccion)a,Operacion.Tipo_operacion.AGRUPACION);
+                                                                                                        :}  
 ;
 ASIGNACION::=LISTA_IDENTIFICADORES:l FLECHA EXPRESION:e PTCOMA                                          {:  
                                                                                                             RESULT=new Asignacion((Instruccion)e,(LinkedList)l);
@@ -407,13 +386,13 @@ ENTORNO_LOCAL::=ASIGNACION:a                                                    
 CONDICIONAL_SI::=RSI CONDICION:a RENTONCES LOCAL:b RFINSI                                               {:  
                                                                                                             RESULT= new Si((Instruccion) a, (LinkedList) b);
                                                                                                         :}                                
-                |RSI CONDICION:a LOCAL:b LISTA_OSI:l RFINSI                                             {:  
+                |RSI CONDICION:a RENTONCES LOCAL:b LISTA_OSI:l RFINSI                                   {:  
                                                                                                             RESULT= new Si((LinkedList) b,(Operacion) a, (LinkedList) l);
                                                                                                         :}     
-                |RSI CONDICION:a LOCAL:b LISTA_OSI:l RDELOCONTRARIO LOCAL:c RFINSI                      {:  
+                |RSI CONDICION:a RENTONCES LOCAL:b LISTA_OSI:l RDELOCONTRARIO LOCAL:c RFINSI            {:  
                                                                                                             RESULT= new Si((Instruccion) a,(LinkedList) b, (LinkedList) l, (LinkedList) c);
                                                                                                         :}
-                |RSI CONDICION:a LOCAL:b RDELOCONTRARIO LOCAL:c RFINSI                                  {:  
+                |RSI CONDICION:a RENTONCES LOCAL:b RDELOCONTRARIO LOCAL:c RFINSI                        {:  
                                                                                                             RESULT= new Si((Instruccion) a,(LinkedList) b, (LinkedList) c);
                                                                                                         :}
 ;

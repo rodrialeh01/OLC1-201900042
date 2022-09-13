@@ -45,7 +45,7 @@ public class Metodo implements Instruccion {
             if (this.listaParametros == null) {
                 traduccion += "func " + this.identificador.traductorGolang() + "(){\n";
                 for (Instruccion ins : this.instrucciones) {
-                    traduccion += OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador += 1) + ins.traductorGolang();
+                    traduccion += ins.traductorGolang();
                 }
                 traduccion += "\n}\n";
             } else if (this.listaParametros != null) {
@@ -59,7 +59,7 @@ public class Metodo implements Instruccion {
                 }
                 traduccion += "){\n";
                 for (Instruccion ins : this.instrucciones) {
-                    traduccion += OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador += 1) + ins.traductorGolang();
+                    traduccion += ins.traductorGolang();
                 }
                 traduccion += "\n}\n";
             } 

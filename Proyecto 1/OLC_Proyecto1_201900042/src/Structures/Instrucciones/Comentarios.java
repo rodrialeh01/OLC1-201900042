@@ -28,11 +28,11 @@ public class Comentarios implements Instruccion{
         if(tipo==Tipo_Comentario.COMENTARIO_UNILINEA){
             System.out.println("uni");
             System.out.println(this.comentario);
-            return this.comentario.toString();
+            return this.comentario.toString() + "\n";
         }else if(tipo==Tipo_Comentario.COMENTARIO_MILTILINEA){
             System.out.println("multi");
             System.out.println(this.comentario);
-            return this.comentario.toString();
+            return this.comentario.toString() + "\n";
             
         }else{
             return "";

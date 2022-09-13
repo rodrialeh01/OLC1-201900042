@@ -41,9 +41,9 @@ public class SeleccionMultiple implements Instruccion{
             for (Instruccion ins: this.listaCasosInstrucciones) {
                 traduccion+= ins.traductorGolang();
             }
-            traduccion+= OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador+1) + "default:\n";
+            traduccion+= "default:\n";
             for(Instruccion ins: this.listaInsdelocontrario) {
-                traduccion+= OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador+2) + ins.traductorGolang();
+                traduccion+=ins.traductorGolang();
             }
         }
         traduccion+= "}\n";

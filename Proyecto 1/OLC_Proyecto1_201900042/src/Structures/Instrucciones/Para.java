@@ -60,7 +60,7 @@ public class Para implements Instruccion{
             traductor+= this.identificador.traductorGolang() + "++ {\n";
             if (this.listaInstrucciones!= null) {
                 for (Instruccion ins: this.listaInstrucciones) {
-                    traductor+= OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador+=1) + ins.traductorGolang();
+                    traductor+= ins.traductorGolang();
                 }
             }
             traductor+="\n}\n";
@@ -68,7 +68,7 @@ public class Para implements Instruccion{
             traductor+= this.identificador.traductorGolang() + "=" + this.identificador.traductorGolang() + "+" + this.incremental.traductorGolang() + " {\n" ;
             if (this.listaInstrucciones!= null) {
                 for (Instruccion ins: this.listaInstrucciones) {
-                    traductor+= OLC_Proyecto1_201900042.tabular(OLC_Proyecto1_201900042.contador+=1) + ins.traductorGolang();
+                    traductor+= ins.traductorGolang();
                 }
             }
             traductor+="\n}\n";

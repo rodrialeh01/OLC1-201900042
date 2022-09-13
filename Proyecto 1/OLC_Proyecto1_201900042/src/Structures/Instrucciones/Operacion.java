@@ -124,7 +124,7 @@ public class Operacion implements Instruccion{
         }else if(tipo == Tipo_operacion.OR){
             return operadorizq.traductorGolang() + "||" + operadorder.traductorGolang();
         }else if(tipo == Tipo_operacion.NOT){
-            return operadorizq.traductorGolang() + "!" + operadorder.traductorGolang();
+            return "!" + operadorizq.traductorGolang();
         }else if(tipo == Tipo_operacion.AGRUPACION){
             return "(" + operadorizq.traductorGolang() + ")";
         }else{

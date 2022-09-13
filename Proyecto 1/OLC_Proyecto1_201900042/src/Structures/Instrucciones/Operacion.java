@@ -63,23 +63,23 @@ public class Operacion implements Instruccion{
     
     
     @Override
-    public String traductorGolang() {
+    public String traductorGolang(int identacion) {
         //OPERADORES ARITMETICOS
         if(tipo == Tipo_operacion.DIVISION){
-            return operadorizq.traductorGolang() + "/" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + "/" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.MULTIPLICACION){
-            return operadorizq.traductorGolang() + "*" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + "*" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.SUMA){
-            return operadorizq.traductorGolang() + "+" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + "+" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.RESTA){
-            return operadorizq.traductorGolang() + "-" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + "-" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.NEGATIVO){
-            return "-" + operadorizq.traductorGolang();
+            return "-" + operadorizq.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.MODULAR){
-            return operadorizq.traductorGolang() + "%" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + "%" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.POTENCIA){
             Main.importacion_potencia = true;
-            return "math.Pow(float64(" + operadorizq.traductorGolang() + "),float64(" + operadorder.traductorGolang() + "))";
+            return "math.Pow(float64(" + operadorizq.traductorGolang(identacion) + "),float64(" + operadorder.traductorGolang(identacion) + "))";
         }
         //EXPRESIONES LITERALES
         else if(tipo == Tipo_operacion.NUMERO){
@@ -106,30 +106,97 @@ public class Operacion implements Instruccion{
         }
         //OPERADORES RELACIONALES
         else if(tipo == Tipo_operacion.MAYORQUE){
-            return operadorizq.traductorGolang() + ">" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + ">" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.MENORQUE){
-            return operadorizq.traductorGolang() + "<" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + "<" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.MAYOROIGUAL){
-            return operadorizq.traductorGolang() + ">=" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + ">=" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.MENOROIGUAL){
-            return operadorizq.traductorGolang() + "<=" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + "<=" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.IGUAL){
-            return operadorizq.traductorGolang() + "==" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + "==" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.DIFERENTE){
-            return operadorizq.traductorGolang() + "!=" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + "!=" + operadorder.traductorGolang(identacion);
         }
         //OPERADORES LOGICOS
         else if(tipo == Tipo_operacion.AND){
-            return operadorizq.traductorGolang() + "&&" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + "&&" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.OR){
-            return operadorizq.traductorGolang() + "||" + operadorder.traductorGolang();
+            return operadorizq.traductorGolang(identacion) + "||" + operadorder.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.NOT){
-            return "!" + operadorizq.traductorGolang();
+            return "!" + operadorizq.traductorGolang(identacion);
         }else if(tipo == Tipo_operacion.AGRUPACION){
-            return "(" + operadorizq.traductorGolang() + ")";
+            return "(" + operadorizq.traductorGolang(identacion) + ")";
         }else{
             return "";
         }
     }
-        
+    @Override
+    public String traductorPython(int identacion) {
+        //OPERADORES ARITMETICOS
+        if(tipo == Tipo_operacion.DIVISION){
+            return operadorizq.traductorPython(identacion) + "/" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.MULTIPLICACION){
+            return operadorizq.traductorPython(identacion) + "*" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.SUMA){
+            return operadorizq.traductorPython(identacion) + "+" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.RESTA){
+            return operadorizq.traductorPython(identacion) + "-" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.NEGATIVO){
+            return "-" + operadorizq.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.MODULAR){
+            return operadorizq.traductorPython(identacion) + "%" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.POTENCIA){
+            Main.importacion_potencia = true;
+            return operadorizq.traductorPython(identacion) + "**(" + operadorder.traductorPython(identacion) + ")";
+        }
+        //EXPRESIONES LITERALES
+        else if(tipo == Tipo_operacion.NUMERO){
+            return valor.toString();
+        }else if(tipo == Tipo_operacion.DECIMAL){
+            return valor.toString();
+        }else if(tipo == Tipo_operacion.CADENA){
+            return valor.toString();
+        }else if(tipo == Tipo_operacion.VERDADERO){
+            return "True";
+        }else if(tipo == Tipo_operacion.FALSO){
+            return "False";
+        }else if(tipo == Tipo_operacion.CARACTER){
+            return valor.toString();
+        }else if(tipo == Tipo_operacion.ASCCI){
+            String[] split1 = valor.toString().split("'");
+            String[] split2 = split1[1].split("\\{");
+            String[] split3 = split2[1].split("}");
+            String caracterconvertido = Character.toString(Integer.parseInt(split3[0]));
+            return "'" + caracterconvertido + "'";
+        }else if(tipo == Tipo_operacion.IDENTIFICADOR){
+            return valor.toString();
+        }
+        //OPERADORES RELACIONALES
+        else if(tipo == Tipo_operacion.MAYORQUE){
+            return operadorizq.traductorPython(identacion) + ">" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.MENORQUE){
+            return operadorizq.traductorPython(identacion) + "<" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.MAYOROIGUAL){
+            return operadorizq.traductorPython(identacion) + ">=" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.MENOROIGUAL){
+            return operadorizq.traductorPython(identacion) + "<=" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.IGUAL){
+            return operadorizq.traductorPython(identacion) + "==" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.DIFERENTE){
+            return operadorizq.traductorPython(identacion) + "!=" + operadorder.traductorPython(identacion);
+        }
+        //OPERADORES LOGICOS
+        else if(tipo == Tipo_operacion.AND){
+            return operadorizq.traductorPython(identacion) + "and" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.OR){
+            return operadorizq.traductorPython(identacion) + "or" + operadorder.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.NOT){
+            return "not" + operadorizq.traductorPython(identacion);
+        }else if(tipo == Tipo_operacion.AGRUPACION){
+            return "(" + operadorizq.traductorPython(identacion) + ")";
+        }else{
+            return "";
+        }
+    }    
 }

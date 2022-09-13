@@ -5,7 +5,7 @@
 package Structures.Instrucciones;
 
 import java.util.LinkedList;
-
+import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 /**
  *
  * @author Rodrigo
@@ -23,7 +23,7 @@ public class Main implements Instruccion{
     }
 
     @Override
-    public String traductorGolang() {
+    public String traductorGolang(int identacion) {
         String cabecera = "package main\n\n";
         if (importacion_potencia == true || importacion_print == true) {
             cabecera+= "import(\n";
@@ -38,12 +38,26 @@ public class Main implements Instruccion{
         String traduccion = cabecera + "func main(){\n";
         if(this.listaInstrucciones != null){
             for (Instruccion ins: this.listaInstrucciones) {
-                traduccion+=ins.traductorGolang();
+                traduccion+=ins.traductorGolang(identacion +1);
             }
             traduccion+="\n}\n";
         }else if(this.listaInstrucciones == null){
             traduccion+="\n}\n";
         }
+        return traduccion;
+    }
+
+    @Override
+    public String traductorPython(int identacion) {
+        String traduccion = "def main():\n";
+        if(this.listaInstrucciones != null){
+            for (Instruccion ins: this.listaInstrucciones) {
+                traduccion+=ins.traductorPython(identacion+1);
+            }
+        }else if(this.listaInstrucciones == null){
+            traduccion+="\tpass\n";
+        }
+        traduccion += "\nif __name__ == \'__main__\':\n" + OLC_Proyecto1_201900042.tabular(identacion+1) + "main()\n";
         return traduccion;
     }
 }

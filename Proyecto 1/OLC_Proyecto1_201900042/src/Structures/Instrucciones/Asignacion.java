@@ -5,13 +5,13 @@
 package Structures.Instrucciones;
 
 import java.util.LinkedList;
+import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 
 /**
  *
  * @author Rodrigo
  */
 public class Asignacion implements Instruccion{
-    
     private Instruccion valor;
     private LinkedList<Instruccion> listaidentificadores;
 
@@ -20,10 +20,19 @@ public class Asignacion implements Instruccion{
         this.listaidentificadores = listaidentificadores;
     }
     @Override
-    public String traductorGolang() {
+    public String traductorGolang(int identacion) {
         String asignaciones = "";
         for (int i = 0; i < this.listaidentificadores.size(); i++) {
-            asignaciones += this.listaidentificadores.get(i).traductorGolang() + " = " + this.valor.traductorGolang() + "\n";
+            asignaciones += OLC_Proyecto1_201900042.tabular(identacion) + this.listaidentificadores.get(i).traductorGolang(identacion) + " = " + this.valor.traductorGolang(identacion) + "\n";
+        }
+        return asignaciones;
+    }
+
+    @Override
+    public String traductorPython(int identacion) {
+        String asignaciones = "";
+        for (int i = 0; i < this.listaidentificadores.size(); i++) {
+            asignaciones += OLC_Proyecto1_201900042.tabular(identacion) + this.listaidentificadores.get(i).traductorPython(identacion) + " = " + this.valor.traductorPython(identacion) + "\n";
         }
         return asignaciones;
     }

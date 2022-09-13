@@ -929,14 +929,16 @@ public class Sintactico extends java_cup.runtime.lr_parser {
     *Listas
     **/
     public LinkedList<ErrorLenguaje> ErroresSintacticos = new LinkedList<ErrorLenguaje>();
-    public LinkedList<Instruccion> Golang = new LinkedList<Instruccion>();
+    public LinkedList<Instruccion> TraduccionGo = new LinkedList<Instruccion>();
+    public LinkedList<Instruccion> TraduccionPy = new LinkedList<Instruccion>();
+    public String mensajeError = ""; 
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
     public void syntax_error(Symbol s){
         
         ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
-
+        mensajeError += "Error Sintáctico en la Línea " + (s.left) + " Columna "+s.right+ ". No se esperaba este componente: " +s.value+".\n";
         System.out.println("Error Sintáctico en la Línea " + (s.left) +
         " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
     } 
@@ -947,6 +949,7 @@ public class Sintactico extends java_cup.runtime.lr_parser {
      **/ 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
         ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
+        mensajeError += "Error síntactico irrecuperable en la Línea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.\n";
         System.out.println("Error síntactico irrecuperable en la Línea " + 
         (s.left)+ " Columna "+s.right+". Componente " + s.value + 
         " no reconocido."); 
@@ -1037,7 +1040,8 @@ class CUP$Sintactico$actions {
 		
                                                                                                             RESULT=(LinkedList) a;
                                                                                                             Main m = new Main((LinkedList) a);
-                                                                                                            Golang.addFirst((Instruccion) m);
+                                                                                                            TraduccionGo.addFirst((Instruccion) m);
+                                                                                                            TraduccionPy.addLast((Instruccion) m);
                                                                                                         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("MAIN",25, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -1051,7 +1055,8 @@ class CUP$Sintactico$actions {
                                                                                                             Main.importacion_print = false;
                                                                                                             Main.importacion_potencia = false;
                                                                                                             RESULT=new Main();
-                                                                                                            Golang.add((Main) RESULT);
+                                                                                                            TraduccionGo.add((Main) RESULT);
+                                                                                                            TraduccionPy.add((Main) RESULT);
                                                                                                         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("MAIN",25, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -1084,7 +1089,8 @@ class CUP$Sintactico$actions {
 		String a = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		  
                                                                                                             RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_UNILINEA, a);
-                                                                                                            Golang.add((Comentarios) RESULT);
+                                                                                                            TraduccionGo.add((Comentarios) RESULT);
+                                                                                                            TraduccionPy.add((Comentarios) RESULT);
                                                                                                         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("COMENTARIO",27, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -1099,7 +1105,8 @@ class CUP$Sintactico$actions {
 		String a = (String)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		  
                                                                                                             RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_MILTILINEA, a);
-                                                                                                            Golang.add((Comentarios) RESULT);
+                                                                                                            TraduccionGo.add((Comentarios) RESULT);
+                                                                                                            TraduccionPy.add((Comentarios) RESULT);
                                                                                                         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("COMENTARIO",27, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -1168,7 +1175,8 @@ class CUP$Sintactico$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		Object a = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		  
-                                                                                                            Golang.addLast((Instruccion) a);
+                                                                                                            TraduccionGo.addLast((Instruccion) a);
+                                                                                                            TraduccionPy.add((Instruccion) a);
                                                                                                         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("GLOBAL",9, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }

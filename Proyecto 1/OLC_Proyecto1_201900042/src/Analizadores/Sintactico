@@ -31,14 +31,16 @@ parser code
     *Listas
     **/
     public LinkedList<ErrorLenguaje> ErroresSintacticos = new LinkedList<ErrorLenguaje>();
-    public LinkedList<Instruccion> Golang = new LinkedList<Instruccion>();
+    public LinkedList<Instruccion> TraduccionGo = new LinkedList<Instruccion>();
+    public LinkedList<Instruccion> TraduccionPy = new LinkedList<Instruccion>();
+    public String mensajeError = ""; 
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
     public void syntax_error(Symbol s){
         
         ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
-
+        mensajeError += "Error Sintáctico en la Línea " + (s.left) + " Columna "+s.right+ ". No se esperaba este componente: " +s.value+".\n";
         System.out.println("Error Sintáctico en la Línea " + (s.left) +
         " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
     } 
@@ -49,6 +51,7 @@ parser code
      **/ 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
         ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
+        mensajeError += "Error síntactico irrecuperable en la Línea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.\n";
         System.out.println("Error síntactico irrecuperable en la Línea " + 
         (s.left)+ " Columna "+s.right+". Componente " + s.value + 
         " no reconocido."); 
@@ -119,13 +122,15 @@ INSTRUCCIONES::=MAIN
 MAIN::=RINICIO ALGORITMO:a RFIN                                                                         {:
                                                                                                             RESULT=(LinkedList) a;
                                                                                                             Main m = new Main((LinkedList) a);
-                                                                                                            Golang.addFirst((Instruccion) m);
+                                                                                                            TraduccionGo.addFirst((Instruccion) m);
+                                                                                                            TraduccionPy.addLast((Instruccion) m);
                                                                                                         :}                                                         
       |RINICIO RFIN                                                                                     {:
                                                                                                             Main.importacion_print = false;
                                                                                                             Main.importacion_potencia = false;
                                                                                                             RESULT=new Main();
-                                                                                                            Golang.add((Main) RESULT);
+                                                                                                            TraduccionGo.add((Main) RESULT);
+                                                                                                            TraduccionPy.add((Main) RESULT);
                                                                                                         :}
 ;
 COMENTARIOS::=COMENTARIOS COMENTARIO
@@ -133,11 +138,13 @@ COMENTARIOS::=COMENTARIOS COMENTARIO
 ;
 COMENTARIO::=COMENTARIOL:a                                                                              {:  
                                                                                                             RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_UNILINEA, a);
-                                                                                                            Golang.add((Comentarios) RESULT);
+                                                                                                            TraduccionGo.add((Comentarios) RESULT);
+                                                                                                            TraduccionPy.add((Comentarios) RESULT);
                                                                                                         :}
             |COMENTARIOML:a                                                                             {:  
                                                                                                             RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_MILTILINEA, a);
-                                                                                                            Golang.add((Comentarios) RESULT);
+                                                                                                            TraduccionGo.add((Comentarios) RESULT);
+                                                                                                            TraduccionPy.add((Comentarios) RESULT);
                                                                                                         :}
 ;
 ALGORITMO::=ALGORITMO:a GLOBAL:b                                                                        {:  
@@ -161,7 +168,8 @@ GLOBAL::= ENTORNO_LOCAL:a                                                       
                                                                                                             
                                                                                                         :}
          |FYM:a                                                                                         {:  
-                                                                                                            Golang.addLast((Instruccion) a);
+                                                                                                            TraduccionGo.addLast((Instruccion) a);
+                                                                                                            TraduccionPy.add((Instruccion) a);
                                                                                                         :}
 ;
 FYM::=FUNCION:a                                                                                         {:  

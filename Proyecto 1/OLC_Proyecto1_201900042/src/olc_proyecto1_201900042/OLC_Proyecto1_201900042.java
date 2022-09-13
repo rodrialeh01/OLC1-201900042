@@ -6,7 +6,6 @@ import GUI.Ventana;
  * @author Rodrigo
  */
 public class OLC_Proyecto1_201900042 {
-    public static int contador = 0;
     /**
      * @param args the command line arguments
      */
@@ -14,9 +13,9 @@ public class OLC_Proyecto1_201900042 {
         Ventana v = new Ventana();
         v.setVisible(true);
     }
-    public static String tabular(int contador){
+    public static String tabular(int tabulacion){
         String tabs = "";
-        for (int i = 0; i < contador; i++) {
+        for (int i = 0; i < tabulacion; i++) {
             tabs+="\t"; 
         }
         return tabs;

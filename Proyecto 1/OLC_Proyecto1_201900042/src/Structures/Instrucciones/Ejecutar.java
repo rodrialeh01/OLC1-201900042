@@ -5,6 +5,7 @@
 package Structures.Instrucciones;
 
 import java.util.LinkedList;
+import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 
 /**
  *
@@ -31,19 +32,19 @@ public class Ejecutar implements Instruccion{
     }
     
     @Override
-    public String traductorGolang() {
+    public String traductorGolang(int identacion) {
         if (this.tipo == Tipo_Variable.EJECUTAR) {
-            String traduccion = "";
+            String traduccion = OLC_Proyecto1_201900042.tabular(identacion);
             if (this.listaParametros == null) {
-                traduccion += this.identificador.traductorGolang() + "()\n";
+                traduccion += this.identificador.traductorGolang(identacion) + "()\n";
             } else if (this.listaParametros != null) {
-                traduccion += this.identificador.traductorGolang() + "(";
+                traduccion += this.identificador.traductorGolang(identacion) + "(";
                 for (int i = 0; i < this.listaParametros.size(); i++) {
                     if (i == this.listaParametros.size() - 1) {
-                        traduccion += this.listaParametros.get(i).traductorGolang();
+                        traduccion += this.listaParametros.get(i).traductorGolang(identacion);
                         break;
                     }
-                    traduccion += this.listaParametros.get(i).traductorGolang() + ",";
+                    traduccion += this.listaParametros.get(i).traductorGolang(identacion) + ",";
                 }
                 traduccion += ")\n";
             }
@@ -51,15 +52,15 @@ public class Ejecutar implements Instruccion{
         }else if(this.tipo == Tipo_Variable.EXPRESION){
             String traduccion = "";
             if (this.listaParametros == null) {
-                traduccion += this.identificador.traductorGolang() + "()";
+                traduccion += this.identificador.traductorGolang(identacion) + "()";
             } else if (this.listaParametros != null) {
-                traduccion += this.identificador.traductorGolang() + "(";
+                traduccion += this.identificador.traductorGolang(identacion) + "(";
                 for (int i = 0; i < this.listaParametros.size(); i++) {
                     if (i == this.listaParametros.size() - 1) {
-                        traduccion += this.listaParametros.get(i).traductorGolang();
+                        traduccion += this.listaParametros.get(i).traductorGolang(identacion);
                         break;
                     }
-                    traduccion += this.listaParametros.get(i).traductorGolang() + ",";
+                    traduccion += this.listaParametros.get(i).traductorGolang(identacion) + ",";
                 }
                 traduccion += ")";
             }
@@ -69,4 +70,42 @@ public class Ejecutar implements Instruccion{
         }
     }
     
+    @Override
+    public String traductorPython(int identacion) {
+        if (this.tipo == Tipo_Variable.EJECUTAR) {
+            String traduccion = OLC_Proyecto1_201900042.tabular(identacion);
+            if (this.listaParametros == null) {
+                traduccion += this.identificador.traductorPython(identacion) + "()\n";
+            } else if (this.listaParametros != null) {
+                traduccion += this.identificador.traductorPython(identacion) + "(";
+                for (int i = 0; i < this.listaParametros.size(); i++) {
+                    if (i == this.listaParametros.size() - 1) {
+                        traduccion += this.listaParametros.get(i).traductorPython(identacion);
+                        break;
+                    }
+                    traduccion += this.listaParametros.get(i).traductorPython(identacion) + ",";
+                }
+                traduccion += ")\n";
+            }
+            return traduccion;
+        }else if(this.tipo == Tipo_Variable.EXPRESION){
+            String traduccion = "";
+            if (this.listaParametros == null) {
+                traduccion += this.identificador.traductorPython(identacion) + "()";
+            } else if (this.listaParametros != null) {
+                traduccion += this.identificador.traductorPython(identacion) + "(";
+                for (int i = 0; i < this.listaParametros.size(); i++) {
+                    if (i == this.listaParametros.size() - 1) {
+                        traduccion += this.listaParametros.get(i).traductorPython(identacion);
+                        break;
+                    }
+                    traduccion += this.listaParametros.get(i).traductorPython(identacion) + ",";
+                }
+                traduccion += ")";
+            }
+            return traduccion;
+        }else{
+            return "";
+        }
+    }
 }

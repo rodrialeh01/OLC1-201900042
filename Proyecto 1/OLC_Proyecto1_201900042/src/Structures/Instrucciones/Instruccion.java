@@ -9,5 +9,6 @@ package Structures.Instrucciones;
  * @author Rodrigo
  */
 public interface Instruccion {
-    public String traductorGolang();
+    public String traductorGolang(int identacion);
+    public String traductorPython(int identacion);
 }

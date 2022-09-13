@@ -4,14 +4,15 @@
  */
 package Structures.Instrucciones;
 
+import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
+
 /**
  *
  * @author Rodrigo
  */
 public class Impresion implements Instruccion{
-
     private final Tipo_Impresion tipo;
-
+    
     public static enum Tipo_Impresion{
         CON_SALTO,
         SIN_SALTO
@@ -24,16 +25,28 @@ public class Impresion implements Instruccion{
     }
     
     @Override
-    public String traductorGolang() {
-        String traduccion = "";
+    public String traductorGolang(int identacion) {
+        String traduccion = OLC_Proyecto1_201900042.tabular(identacion);
         if(this.tipo == Tipo_Impresion.SIN_SALTO){
-            traduccion+= "fmt.Print(" + this.condicion.traductorGolang() + ")\n";
+            traduccion+= "fmt.Print(" + this.condicion.traductorGolang(identacion) + ")\n";
         }else if(this.tipo == Tipo_Impresion.CON_SALTO){
-            traduccion+= "fmt.Println(" + this.condicion.traductorGolang() + ")\n";
+            traduccion+= "fmt.Println(" + this.condicion.traductorGolang(identacion) + ")\n";
         }else{
             traduccion="";
         }
         return traduccion;
     }
     
+    @Override
+    public String traductorPython(int identacion) {
+        String traduccion = OLC_Proyecto1_201900042.tabular(identacion);
+        if(this.tipo == Tipo_Impresion.SIN_SALTO){
+            traduccion+= "print(str(" + this.condicion.traductorPython(identacion) + "), end=\" \")\n";
+        }else if(this.tipo == Tipo_Impresion.CON_SALTO){
+            traduccion+= "print(str(" + this.condicion.traductorPython(identacion) + "))\n";
+        }else{
+            traduccion="";
+        }
+        return traduccion;
+    }
 }

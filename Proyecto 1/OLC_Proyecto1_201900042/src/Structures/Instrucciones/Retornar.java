@@ -4,6 +4,8 @@
  */
 package Structures.Instrucciones;
 
+import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
+
 /**
  *
  * @author Rodrigo
@@ -16,8 +18,14 @@ public class Retornar implements Instruccion{
     }
 
     @Override
-    public String traductorGolang() {
-        String retorno = "return " + this.valor.traductorGolang() + "\n";
+    public String traductorGolang(int identacion) {
+        String retorno = "return " + this.valor.traductorGolang(identacion) + "\n";
+        return retorno;
+    }
+
+    @Override
+    public String traductorPython(int identacion) {
+        String retorno = OLC_Proyecto1_201900042.tabular(identacion) + "return " + this.valor.traductorPython(identacion) + "\n";
         return retorno;
     }
     

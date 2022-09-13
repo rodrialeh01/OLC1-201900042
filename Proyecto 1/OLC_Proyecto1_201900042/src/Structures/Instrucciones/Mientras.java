@@ -12,7 +12,6 @@ import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
  * @author Rodrigo
  */
 public class Mientras implements Instruccion{
-    
     private final Instruccion condicion;
     
     private LinkedList<Instruccion> listaInstrucciones;
@@ -30,14 +29,28 @@ public class Mientras implements Instruccion{
     
 
     @Override
-    public String traductorGolang() {
-        String traduccion = "for true {\n\tif!("+this.condicion.traductorGolang()+"){\n\t\tbreak\n\t}\n";
+    public String traductorGolang(int identacion) {
+        String traduccion =OLC_Proyecto1_201900042.tabular(identacion) + "for true {\n"+OLC_Proyecto1_201900042.tabular(identacion+1)+"if!("+this.condicion.traductorGolang(identacion)+"){\n"+OLC_Proyecto1_201900042.tabular(identacion+1)+"\tbreak\n"+OLC_Proyecto1_201900042.tabular(identacion)+"}\n";
         if(this.listaInstrucciones != null){
             for (Instruccion ins: this.listaInstrucciones) {
-                traduccion+=ins.traductorGolang();
+                traduccion+=ins.traductorGolang(identacion+1);
             }
         }
-        traduccion += "\n}\n";
+        traduccion += "\n"+OLC_Proyecto1_201900042.tabular(identacion)+"}\n";
+        return traduccion;
+    }
+
+    @Override
+    public String traductorPython(int identacion) {
+        String traduccion = OLC_Proyecto1_201900042.tabular(identacion) + "while " + this.condicion.traductorPython(identacion) + ":\n";
+        if(this.listaInstrucciones != null){
+            for (Instruccion ins: this.listaInstrucciones) {
+                traduccion+=ins.traductorPython(identacion+1);
+            }
+        }else{
+            traduccion += OLC_Proyecto1_201900042.tabular(identacion) + "pass\n";
+        }
+        traduccion += "\n";
         return traduccion;
     }
     

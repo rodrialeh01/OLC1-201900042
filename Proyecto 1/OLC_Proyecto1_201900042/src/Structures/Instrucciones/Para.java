@@ -54,24 +54,53 @@ public class Para implements Instruccion{
     
     
     @Override
-    public String traductorGolang() {
-        String traductor = "for " + this.identificador.traductorGolang() + ":=" + this.operadorinicial.traductorGolang() + "; "+ this.identificador.traductorGolang() + " < " + this.operadorfinal.traductorGolang() + "; ";
+    public String traductorGolang(int identacion) {
+        String traductor = OLC_Proyecto1_201900042.tabular(identacion) + "for " + this.identificador.traductorGolang(identacion) + ":=" + this.operadorinicial.traductorGolang(identacion) + "; "+ this.identificador.traductorGolang(identacion) + " < " + this.operadorfinal.traductorGolang(identacion) + "; ";
         if (this.incremental == null) {
-            traductor+= this.identificador.traductorGolang() + "++ {\n";
+            traductor+= this.identificador.traductorGolang(identacion) + "++ {\n";
             if (this.listaInstrucciones!= null) {
                 for (Instruccion ins: this.listaInstrucciones) {
-                    traductor+= ins.traductorGolang();
+                    traductor+= ins.traductorGolang(identacion+1);
                 }
             }
-            traductor+="\n}\n";
+            traductor+="\n"+OLC_Proyecto1_201900042.tabular(identacion)+"}\n";
         }else if (this.incremental != null) {
-            traductor+= this.identificador.traductorGolang() + "=" + this.identificador.traductorGolang() + "+" + this.incremental.traductorGolang() + " {\n" ;
+            traductor+= this.identificador.traductorGolang(identacion) + "=" + this.identificador.traductorGolang(identacion) + "+" + this.incremental.traductorGolang(identacion) + " {\n" ;
             if (this.listaInstrucciones!= null) {
                 for (Instruccion ins: this.listaInstrucciones) {
-                    traductor+= ins.traductorGolang();
+                    traductor+= ins.traductorGolang(identacion+1);
                 }
             }
-            traductor+="\n}\n";
+            traductor+="\n"+OLC_Proyecto1_201900042.tabular(identacion)+"}\n";
+        }else{
+            traductor= "";
+        }
+        return traductor;
+    }
+
+    @Override
+    public String traductorPython(int identacion) {
+        String traductor =OLC_Proyecto1_201900042.tabular(identacion) + "for " + this.identificador.traductorPython(identacion) + " in range(" + this.operadorinicial.traductorPython(identacion) + ", " + this.operadorfinal.traductorPython(identacion);
+        if (this.incremental == null) {
+            traductor+= "):\n";
+            if (this.listaInstrucciones!= null) {
+                for (Instruccion ins: this.listaInstrucciones) {
+                    traductor+= ins.traductorPython(identacion+1);
+                }
+            }else{
+                traductor+= OLC_Proyecto1_201900042.tabular(identacion)  + "pass\n";
+            }
+            traductor+="\n";
+        }else if (this.incremental != null) {
+            traductor+= ", " + this.incremental.traductorPython(identacion) + "):\n" ;
+            if (this.listaInstrucciones!= null) {
+                for (Instruccion ins: this.listaInstrucciones) {
+                    traductor+= ins.traductorPython(identacion+1);
+                }
+            }else{
+                traductor+= OLC_Proyecto1_201900042.tabular(identacion)  + "\n";
+            }
+            traductor+="\n";
         }else{
             traductor= "";
         }

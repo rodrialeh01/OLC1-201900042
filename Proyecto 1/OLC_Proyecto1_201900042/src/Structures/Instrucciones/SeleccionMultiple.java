@@ -31,22 +31,58 @@ public class SeleccionMultiple implements Instruccion{
     }
     
     @Override
-    public String traductorGolang() {
-        String traduccion = "switch " + this.condicion.traductorGolang() + " {\n";
+    public String traductorGolang(int identacion) {
+        String traduccion = OLC_Proyecto1_201900042.tabular(identacion) + "switch " + this.condicion.traductorGolang(identacion) + " {\n";
         if(listaInsdelocontrario == null){
             for (Instruccion ins: this.listaCasosInstrucciones) {
-                traduccion+= ins.traductorGolang();
+                traduccion+= ins.traductorGolang(identacion+1);
             }
         }else if(listaInsdelocontrario != null){
             for (Instruccion ins: this.listaCasosInstrucciones) {
-                traduccion+= ins.traductorGolang();
+                traduccion+= ins.traductorGolang(identacion+1);
             }
-            traduccion+= "default:\n";
+            traduccion+=OLC_Proyecto1_201900042.tabular(identacion+1) + "default:\n";
             for(Instruccion ins: this.listaInsdelocontrario) {
-                traduccion+=ins.traductorGolang();
+                traduccion+=ins.traductorGolang(identacion+1);
             }
         }
-        traduccion+= "}\n";
+        traduccion+= OLC_Proyecto1_201900042.tabular(identacion)+"}\n";
+        return traduccion;
+    }
+
+    @Override
+    public String traductorPython(int identacion) {
+        String traduccion = OLC_Proyecto1_201900042.tabular(identacion);
+        if(listaInsdelocontrario == null){
+            if(this.listaCasosInstrucciones.size() == 1){
+                traduccion += "if " + this.condicion.traductorPython(identacion) +  this.listaCasosInstrucciones.get(0).traductorPython(identacion);
+            }else if(this.listaCasosInstrucciones.size() > 1){
+                for (int i = 0; i < this.listaCasosInstrucciones.size(); i++) {
+                    if(i == 0){
+                        traduccion += "if " + this.condicion.traductorPython(identacion) +  this.listaCasosInstrucciones.get(i).traductorPython(identacion);
+                    }else{
+                        traduccion += OLC_Proyecto1_201900042.tabular(identacion) + "elif " + this.condicion.traductorPython(identacion) +  this.listaCasosInstrucciones.get(i).traductorPython(identacion);
+                    }
+                }
+            }
+        }else if(listaInsdelocontrario != null){
+            if(this.listaCasosInstrucciones.size() == 1){
+                traduccion += "if " + this.condicion.traductorPython(identacion) +  this.listaCasosInstrucciones.get(0).traductorPython(identacion);
+            }else if(this.listaCasosInstrucciones.size() > 1){
+                for (int i = 0; i < this.listaCasosInstrucciones.size(); i++) {
+                    if(i == 0){
+                        traduccion += "if " + this.condicion.traductorPython(identacion) +  this.listaCasosInstrucciones.get(i).traductorPython(identacion);
+                    }else{
+                        traduccion += OLC_Proyecto1_201900042.tabular(identacion) + "elif " + this.condicion.traductorPython(identacion) +  this.listaCasosInstrucciones.get(i).traductorPython(identacion);
+                    }
+                }
+            }
+            traduccion+= OLC_Proyecto1_201900042.tabular(identacion) + "else:\n";
+            for(Instruccion ins: this.listaInsdelocontrario) {
+                traduccion+=ins.traductorPython(identacion+1);
+            }
+        }
+        traduccion+= "\n";
         return traduccion;
     }
     

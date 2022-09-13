@@ -34,7 +34,7 @@ import Clases.ErrorLenguaje;
 BLANCOS=[ \r\t]+
 DIGITO=[0-9]+
 DECIMAL=[0-9]+("."[0-9]+)?
-CADENA=[\"](((\\\')|(\\\")|(\\n)|(\\))|[^\\\"])*[\"]
+CADENA=[\"](((\\\')|(\\\")|(\\n)|(\\))|[^\\\"\n])*[\"]
 COMENTARIOL=("//".*\r\n*)|("//".*\n*)|("//".*\r\n*)|(\/\/(.*)*)
 COMENTARIOML=[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/] 
 IDENTIFICADOR=("_"([A-Za-z0-9_])+"_")

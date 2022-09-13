@@ -12,7 +12,6 @@ import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
  * @author Rodrigo
  */
 public class Repetir implements Instruccion{
-
     private final Instruccion condicion;
     
     private LinkedList<Instruccion> listaInstrucciones;
@@ -29,14 +28,26 @@ public class Repetir implements Instruccion{
     
     
     @Override
-    public String traductorGolang() {
-        String traduccion = "for true {\n";
+    public String traductorGolang(int identacion) {
+        String traduccion =OLC_Proyecto1_201900042.tabular(identacion) + "for true {\n";
         if(this.listaInstrucciones != null){
             for (Instruccion ins: this.listaInstrucciones) {
-                ins.traductorGolang();
+                traduccion += ins.traductorGolang(identacion+1);
             }
         }
-        traduccion+="\n\tif(" + this.condicion.traductorGolang() + "){\n\t\tbreak\n\t}\n}";
+        traduccion+="\n"+OLC_Proyecto1_201900042.tabular(identacion)+"if(" + this.condicion.traductorGolang(identacion) + "){\n"+OLC_Proyecto1_201900042.tabular(identacion+1)+"\tbreak\n"+OLC_Proyecto1_201900042.tabular(identacion+1)+"}\n}";
+        return traduccion;
+    }
+
+    @Override
+    public String traductorPython(int identacion) {
+        String traduccion = OLC_Proyecto1_201900042.tabular(identacion) + "while True:\n";
+        if(this.listaInstrucciones != null){
+            for (Instruccion ins: this.listaInstrucciones) {
+                traduccion += ins.traductorPython(identacion+1);
+            }
+        }
+        traduccion += OLC_Proyecto1_201900042.tabular(identacion) + "if " + this.condicion.traductorPython(identacion) + ":\n" + OLC_Proyecto1_201900042.tabular(identacion+1) + "break\n";
         return traduccion;
     }
         

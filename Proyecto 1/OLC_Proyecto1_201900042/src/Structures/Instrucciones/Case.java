@@ -22,12 +22,25 @@ public class Case implements Instruccion{
     }
     
     @Override
-    public String traductorGolang() {
+    public String traductorGolang(int identacion) {
         String traductor ="";
         if(this.listaInstrucciones!= null){
-            traductor += "case " + this.condicion.traductorGolang() + ":\n";
+            traductor +=OLC_Proyecto1_201900042.tabular(identacion) + "case " + this.condicion.traductorGolang(identacion) + ":\n";
             for (Instruccion ins: this.listaInstrucciones) {
-                traductor+= ins.traductorGolang();
+                traductor+= ins.traductorGolang(identacion +1);
+            }
+            traductor+= "\n";
+        }
+        return traductor;
+    }
+
+    @Override
+    public String traductorPython(int identacion) {
+        String traductor ="";
+        if(this.listaInstrucciones!= null){
+            traductor += " == " + this.condicion.traductorPython(identacion) + ":\n";
+            for (Instruccion ins: this.listaInstrucciones) {
+                traductor+= ins.traductorPython(identacion+1);
             }
             traductor+= "\n";
         }

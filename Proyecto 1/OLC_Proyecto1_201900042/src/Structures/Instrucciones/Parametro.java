@@ -9,7 +9,6 @@ package Structures.Instrucciones;
  * @author Rodrigo
  */
 public class Parametro implements Instruccion{
-
     public static enum Tipo_Variable{
         CADENA,
         NUMERO,
@@ -24,19 +23,24 @@ public class Parametro implements Instruccion{
         this.tipo = tipo;
     }
     @Override
-    public String traductorGolang() {
+    public String traductorGolang(int identacion) {
         String traduccion = "";
         if(this.tipo == Tipo_Variable.NUMERO){
-            traduccion += this.identificador.traductorGolang() + " float64";
+            traduccion += this.identificador.traductorGolang(identacion) + " float64";
         }else if(this.tipo == Tipo_Variable.CADENA){
-            traduccion += this.identificador.traductorGolang() + " string";
+            traduccion += this.identificador.traductorGolang(identacion) + " string";
         }else if(this.tipo == Tipo_Variable.BOOLEAN){
-            traduccion += this.identificador.traductorGolang() + " bool";
+            traduccion += this.identificador.traductorGolang(identacion) + " bool";
         }else if(this.tipo == Tipo_Variable.CARACTER){
-            traduccion += this.identificador.traductorGolang() + " byte";
+            traduccion += this.identificador.traductorGolang(identacion) + " byte";
         }else{
             traduccion += "";
         }
         return traduccion;
+    }
+    
+    @Override
+    public String traductorPython(int identacion) {        
+        return this.identificador.traductorPython(identacion);
     }
 }

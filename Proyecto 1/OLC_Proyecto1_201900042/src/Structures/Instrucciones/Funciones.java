@@ -12,7 +12,6 @@ import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
  * @author Rodrigo
  */
 public class Funciones implements Instruccion {
-
     private final Operacion identificador;
     private final Parametro.Tipo_Variable tipo;
     private LinkedList<Instruccion> listaParametros;
@@ -48,176 +47,219 @@ public class Funciones implements Instruccion {
     }
 
     @Override
-    public String traductorGolang() {
+    public String traductorGolang(int identacion) {
         String traduccion = "func ";
         if (tipo == Parametro.Tipo_Variable.NUMERO) {
             if (this.instrucciones != null) {
                 if (this.listaParametros == null) {
-                    traduccion += this.identificador.traductorGolang() + "() float64{\n";
+                    traduccion += this.identificador.traductorGolang(identacion) + "() float64{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += ins.traductorGolang();
+                        traduccion += ins.traductorGolang(identacion+1);
                     }
-                    traduccion += "\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += "\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 } else if (this.listaParametros != null) {
-                    traduccion += this.identificador.traductorGolang() + "(";
+                    traduccion += this.identificador.traductorGolang(identacion) + "(";
                     for (int i = 0; i < this.listaParametros.size(); i++) {
                         if (i == this.listaParametros.size() - 1) {
-                            traduccion += this.listaParametros.get(i).traductorGolang();
+                            traduccion += this.listaParametros.get(i).traductorGolang(identacion);
                             break;
                         }
-                        traduccion += this.listaParametros.get(i).traductorGolang() + ",";
+                        traduccion += this.listaParametros.get(i).traductorGolang(identacion) + ",";
                     }
                     traduccion += ") float64{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += ins.traductorGolang();
+                        traduccion += ins.traductorGolang(identacion+1);
                     }
-                    traduccion += "\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += "\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 }
             }else if(this.instrucciones == null){
                 if (this.listaParametros == null) {
-                    traduccion += this.identificador.traductorGolang() + "() float64{\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += this.identificador.traductorGolang(identacion) + "() float64{\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 } else if (this.listaParametros != null) {
-                    traduccion += this.identificador.traductorGolang() + "(";
+                    traduccion += this.identificador.traductorGolang(identacion) + "(";
                     for (int i = 0; i < this.listaParametros.size(); i++) {
                         if (i == this.listaParametros.size() - 1) {
-                            traduccion += this.listaParametros.get(i).traductorGolang();
+                            traduccion += this.listaParametros.get(i).traductorGolang(identacion);
                             break;
                         }
-                        traduccion += this.listaParametros.get(i).traductorGolang() + ",";
+                        traduccion += this.listaParametros.get(i).traductorGolang(identacion) + ",";
                     }
-                    traduccion += ") float64{\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += ") float64{\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 }
             }
         } else if (tipo == Parametro.Tipo_Variable.CADENA) {
             if (this.instrucciones != null) {
                 if (this.listaParametros == null) {
-                    traduccion += this.identificador.traductorGolang() + "() string{\n";
+                    traduccion += this.identificador.traductorGolang(identacion) + "() string{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += ins.traductorGolang();
+                        traduccion += ins.traductorGolang(identacion+1);
                     }
-                    traduccion += "\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += "\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 } else if (this.listaParametros != null) {
-                    traduccion += this.identificador.traductorGolang() + "(";
+                    traduccion += this.identificador.traductorGolang(identacion) + "(";
                     for (int i = 0; i < this.listaParametros.size(); i++) {
                         if (i == this.listaParametros.size() - 1) {
-                            traduccion += this.listaParametros.get(i).traductorGolang();
+                            traduccion += this.listaParametros.get(i).traductorGolang(identacion);
                             break;
                         }
-                        traduccion += this.listaParametros.get(i).traductorGolang() + ",";
+                        traduccion += this.listaParametros.get(i).traductorGolang(identacion) + ",";
                     }
                     traduccion += ") string{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += ins.traductorGolang();
+                        traduccion += ins.traductorGolang(identacion+1);
                     }
-                    traduccion += "\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += "\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 }
             }else if(this.instrucciones == null){
                 if (this.listaParametros == null) {
-                    traduccion += this.identificador.traductorGolang() + "() string{\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += this.identificador.traductorGolang(identacion) + "() string{\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 } else if (this.listaParametros != null) {
-                    traduccion += this.identificador.traductorGolang() + "(";
+                    traduccion += this.identificador.traductorGolang(identacion) + "(";
                     for (int i = 0; i < this.listaParametros.size(); i++) {
                         if (i == this.listaParametros.size() - 1) {
-                            traduccion += this.listaParametros.get(i).traductorGolang();
+                            traduccion += this.listaParametros.get(i).traductorGolang(identacion);
                             break;
                         }
-                        traduccion += this.listaParametros.get(i).traductorGolang() + ",";
+                        traduccion += this.listaParametros.get(i).traductorGolang(identacion) + ",";
                     }
-                    traduccion += ") string{\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += ") string{\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 }
             }
         } else if (tipo == Parametro.Tipo_Variable.BOOLEAN) {
             if (this.instrucciones != null) {
                 if (this.listaParametros == null) {
-                    traduccion += this.identificador.traductorGolang() + "() bool{\n";
+                    traduccion += this.identificador.traductorGolang(identacion) + "() bool{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += ins.traductorGolang();
+                        traduccion += ins.traductorGolang(identacion+1);
                     }
-                    traduccion += "\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += "\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 } else if (this.listaParametros != null) {
-                    traduccion += this.identificador.traductorGolang() + "(";
+                    traduccion += this.identificador.traductorGolang(identacion) + "(";
                     for (int i = 0; i < this.listaParametros.size(); i++) {
                         if (i == this.listaParametros.size() - 1) {
-                            traduccion += this.listaParametros.get(i).traductorGolang();
+                            traduccion += this.listaParametros.get(i).traductorGolang(identacion);
                             break;
                         }
-                        traduccion += this.listaParametros.get(i).traductorGolang() + ",";
+                        traduccion += this.listaParametros.get(i).traductorGolang(identacion) + ",";
                     }
                     traduccion += ") bool{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += ins.traductorGolang();
+                        traduccion += ins.traductorGolang(identacion+1);
                     }
-                    traduccion += "\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += "\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 }
             }else if(this.instrucciones == null){
                 if (this.listaParametros == null) {
-                    traduccion += this.identificador.traductorGolang() + "() bool{\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += this.identificador.traductorGolang(identacion) + "() bool{\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 } else if (this.listaParametros != null) {
-                    traduccion += this.identificador.traductorGolang() + "(";
+                    traduccion += this.identificador.traductorGolang(identacion) + "(";
                     for (int i = 0; i < this.listaParametros.size(); i++) {
                         if (i == this.listaParametros.size() - 1) {
-                            traduccion += this.listaParametros.get(i).traductorGolang();
+                            traduccion += this.listaParametros.get(i).traductorGolang(identacion);
                             break;
                         }
-                        traduccion += this.listaParametros.get(i).traductorGolang() + ",";
+                        traduccion += this.listaParametros.get(i).traductorGolang(identacion) + ",";
                     }
-                    traduccion += ") bool{\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += ") bool{\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 }
             }
         } else if (tipo == Parametro.Tipo_Variable.CARACTER) {
             if (this.instrucciones != null) {
                 if (this.listaParametros == null) {
-                    traduccion += this.identificador.traductorGolang() + "() byte{\n";
+                    traduccion += this.identificador.traductorGolang(identacion) + "() byte{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += ins.traductorGolang();
+                        traduccion += ins.traductorGolang(identacion+1);
                     }
-                    traduccion += "\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += "\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 } else if (this.listaParametros != null) {
-                    traduccion += this.identificador.traductorGolang() + "(";
+                    traduccion += this.identificador.traductorGolang(identacion) + "(";
                     for (int i = 0; i < this.listaParametros.size(); i++) {
                         if (i == this.listaParametros.size() - 1) {
-                            traduccion += this.listaParametros.get(i).traductorGolang();
+                            traduccion += this.listaParametros.get(i).traductorGolang(identacion);
                             break;
                         }
-                        traduccion += this.listaParametros.get(i).traductorGolang() + ",";
+                        traduccion += this.listaParametros.get(i).traductorGolang(identacion) + ",";
                     }
                     traduccion += ") byte{\n";
                     for (Instruccion ins : this.instrucciones) {
-                        traduccion += ins.traductorGolang();
+                        traduccion += ins.traductorGolang(identacion+1);
                     }
-                    traduccion += "\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += "\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 }
             }else if(this.instrucciones == null){
                 if (this.listaParametros == null) {
-                    traduccion += this.identificador.traductorGolang() + "() byte{\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += this.identificador.traductorGolang(identacion) + "() byte{\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 } else if (this.listaParametros != null) {
-                    traduccion += this.identificador.traductorGolang() + "(";
+                    traduccion += this.identificador.traductorGolang(identacion) + "(";
                     for (int i = 0; i < this.listaParametros.size(); i++) {
                         if (i == this.listaParametros.size() - 1) {
-                            traduccion += this.listaParametros.get(i).traductorGolang();
+                            traduccion += this.listaParametros.get(i).traductorGolang(identacion);
                             break;
                         }
-                        traduccion += this.listaParametros.get(i).traductorGolang() + ",";
+                        traduccion += this.listaParametros.get(i).traductorGolang(identacion) + ",";
                     }
-                    traduccion += ") byte{\n\t" + this.valor_retorno.traductorGolang();
+                    traduccion += ") byte{\n\t" + this.valor_retorno.traductorGolang(identacion);
                     traduccion += "}\n";
                 }
             }
+        }
+        return traduccion;
+    }
+
+    @Override
+    public String traductorPython(int identacion) {
+        String traduccion = "";
+        if (this.instrucciones != null) {
+            if (this.listaParametros == null) {
+                traduccion += "def " + this.identificador.traductorPython(identacion) + "():\n";
+                for (Instruccion ins : this.instrucciones) {
+                    traduccion += ins.traductorPython(identacion+1);
+                }
+                traduccion += "\n" + this.valor_retorno.traductorPython(identacion+1);
+            } else if (this.listaParametros != null) {
+                traduccion += "def " + this.identificador.traductorPython(identacion) + "(";
+                for (int i = 0; i < this.listaParametros.size(); i++) {
+                    if(i == this.listaParametros.size()-1){
+                        traduccion+= this.listaParametros.get(i).traductorPython(identacion);
+                        break;
+                    }
+                    traduccion+= this.listaParametros.get(i).traductorPython(identacion) + ",";
+                }
+                traduccion += "):\n";
+                for (Instruccion ins : this.instrucciones) {
+                    traduccion += ins.traductorPython(identacion+1);
+                }
+                traduccion += "\n"+ this.valor_retorno.traductorPython(identacion+1);
+            } 
+        }else if(this.instrucciones ==  null){
+            if (this.listaParametros == null) {
+                traduccion += "def " + this.identificador.traductorPython(identacion) + "():\n" + this.valor_retorno.traductorPython(identacion+1);
+            } else if (this.listaParametros != null) {
+                traduccion += "def " + this.identificador.traductorPython(identacion) + "(";
+                for (int i = 0; i < this.listaParametros.size(); i++) {
+                    if(i == this.listaParametros.size()-1){
+                        traduccion+= this.listaParametros.get(i).traductorPython(identacion);
+                        break;
+                    }
+                    traduccion+= this.listaParametros.get(i).traductorPython(identacion) + ",";
+                }
+                traduccion += "):\n" + this.valor_retorno.traductorPython(identacion+1);
+            } 
         }
         return traduccion;
     }

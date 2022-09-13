@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Structures.Instrucciones.Instruccion;
+import java.util.LinkedList;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
@@ -46,6 +47,10 @@ public class Ventana extends javax.swing.JFrame {
         RSyntax();
     }
 
+    public LinkedList<Instruccion> resultadogo;
+    public LinkedList<Instruccion> resultadopy;
+    public boolean BanderaGo = false;
+    public boolean BanderaPy = false;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -77,6 +82,7 @@ public class Ventana extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jButton5 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -97,7 +103,7 @@ public class Ventana extends javax.swing.JFrame {
         jMenuItem5.setText("jMenuItem5");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Ps-Compiler");
+        setTitle("Ps-Traductor");
         setBackground(new java.awt.Color(255, 255, 153));
         setMinimumSize(new java.awt.Dimension(1365, 728));
         setResizable(false);
@@ -168,7 +174,7 @@ public class Ventana extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Ps-Compiler");
+        jLabel1.setText("Ps-Traductor");
 
         jButton1.setBackground(new java.awt.Color(204, 204, 204));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/play.png"))); // NOI18N
@@ -198,6 +204,11 @@ public class Ventana extends javax.swing.JFrame {
         jButton4.setBackground(new java.awt.Color(204, 204, 204));
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/golanglogo.png"))); // NOI18N
         jButton4.setText("Traducir código a Golang");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         panelcodigo.setMaximumSize(new java.awt.Dimension(788, 599));
         panelcodigo.setMinimumSize(new java.awt.Dimension(788, 599));
@@ -205,7 +216,7 @@ public class Ventana extends javax.swing.JFrame {
 
         jTextArea1.setBackground(new java.awt.Color(12, 17, 22));
         jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Courier New", 0, 18)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Courier New", 0, 14)); // NOI18N
         jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
@@ -214,7 +225,16 @@ public class Ventana extends javax.swing.JFrame {
         jLabel8.setText("Input:");
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
-        jLabel9.setText("Output");
+        jLabel9.setText("Output:");
+
+        jButton5.setBackground(new java.awt.Color(204, 204, 204));
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/exportar.png"))); // NOI18N
+        jButton5.setText("Exportar la Traducción");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -225,6 +245,8 @@ public class Ventana extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton3))
@@ -243,7 +265,7 @@ public class Ventana extends javax.swing.JFrame {
                                 .addComponent(jButton2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1))
-                            .addComponent(jScrollPane1))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -253,10 +275,10 @@ public class Ventana extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
                     .addComponent(jButton2)
-                    .addComponent(jLabel1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel8)
-                        .addComponent(jLabel9)))
+                        .addComponent(jLabel9))
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -264,8 +286,9 @@ public class Ventana extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
-                    .addComponent(jButton4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jMenuBar1.setBackground(new java.awt.Color(153, 153, 153));
@@ -388,11 +411,12 @@ public class Ventana extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         textArea.setText("");
+        jTextArea1.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if(textArea.getText().equals("")){
-            System.out.println("No hay nada que analizar");
+            JOptionPane.showMessageDialog(this, "Ingresa el pseudocodigo para poder realizar el análisis");
         }else{
             System.out.println("");
             Analizador_Lexico lexico = new Analizador_Lexico(new BufferedReader(new StringReader(textArea.getText())));
@@ -400,12 +424,14 @@ public class Ventana extends javax.swing.JFrame {
             
             try {
                 sintactico.parse();
-                String salidago = "";
-                System.out.println("===========================================================================");
-                for(Instruccion ins: sintactico.Golang){
-                    salidago += ins.traductorGolang();
+                if(sintactico.ErroresSintacticos.size() == 0 && lexico.ErroresLexicos.size() == 0){
+                    System.out.println("===========================================================================");
+                    resultadogo = sintactico.TraduccionGo;
+                    resultadopy = sintactico.TraduccionPy;
+                    jTextArea1.setText("Analisis éxitoso, puedes comenzar a traducir");
+                }else{
+                    jTextArea1.setText(sintactico.mensajeError);
                 }
-                jTextArea1.setText(salidago);
             } catch (Exception ex) {
                 Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -413,7 +439,23 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        BanderaGo = false;
+        if(!textArea.getText().equals("")){
+            if(resultadopy != null){
+                jTextArea1.setText("");
+                int identacion = 0;
+                String salidapython = "";
+                for(Instruccion ins: resultadopy){
+                    salidapython += ins.traductorPython(identacion);
+                }
+                jTextArea1.setText(salidapython);
+                BanderaPy = true;
+            }else{
+                JOptionPane.showMessageDialog(this, "Corrige tus errores para poder exportar el código de salida.");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Primero escribe tu pseudocódigo para poder realizar la traduccion.");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -455,6 +497,114 @@ public class Ventana extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Se guardo el archivo correctamente");
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        BanderaPy = false;
+        if(!textArea.getText().equals("")){
+            if(resultadogo != null){
+                int identacion = 0;
+                jTextArea1.setText("");
+                String salidago = "";
+                for(Instruccion ins: resultadogo){
+                    salidago += ins.traductorGolang(identacion);
+                }
+                jTextArea1.setText(salidago);
+                BanderaGo = true;
+            }else{
+                JOptionPane.showMessageDialog(this, "Corrige tus errores para poder exportar el código de salida.");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Primero escribe tu pseudocódigo para poder realizar la traduccion.");
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        if(!jTextArea1.getText().equals("")){
+            if(BanderaGo == true || BanderaPy == true){
+                if(BanderaGo == true && BanderaPy == false){
+                    JFileChooser guardarArchivo = new JFileChooser();
+                    guardarArchivo.setDialogTitle("Exportar Código");
+                    FileNameExtensionFilter filtro = new FileNameExtensionFilter(".go","go");
+                    guardarArchivo.setFileFilter(filtro);
+                    int opcion = guardarArchivo.showSaveDialog(this);
+                    File archivo;
+                    if(opcion==0){
+                        String nombre = guardarArchivo.getSelectedFile().getName();
+                        if(nombre.endsWith("go")){
+                            try {
+                            archivo = new File(guardarArchivo.getSelectedFile().getAbsolutePath());
+                            if (!archivo.exists()) {
+                                archivo.createNewFile();
+                                FileWriter fw = new FileWriter(archivo);
+                                BufferedWriter bw = new BufferedWriter(fw);
+                                bw.write(jTextArea1.getText());
+                                bw.close();
+                            }
+                            } catch (IOException ex) {
+                                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }else{
+                            try {
+                            archivo = new File(guardarArchivo.getSelectedFile().getAbsolutePath()+".go");
+                            if (!archivo.exists()) {
+                                archivo.createNewFile();
+                                FileWriter fw = new FileWriter(archivo);
+                                BufferedWriter bw = new BufferedWriter(fw);
+                                bw.write(jTextArea1.getText());
+                                bw.close();
+                            }
+                            } catch (IOException ex) {
+                                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        JOptionPane.showMessageDialog(this, "Se exportó el código correctamente");
+                    }
+                }else if(BanderaGo == false && BanderaPy == true){
+                    JFileChooser guardarArchivo = new JFileChooser();
+                    guardarArchivo.setDialogTitle("Exportar Código");
+                    FileNameExtensionFilter filtro = new FileNameExtensionFilter(".py","py");
+                    guardarArchivo.setFileFilter(filtro);
+                    int opcion = guardarArchivo.showSaveDialog(this);
+                    File archivo;
+                    if(opcion==0){
+                        String nombre = guardarArchivo.getSelectedFile().getName();
+                        if(nombre.endsWith("py")){
+                            try {
+                            archivo = new File(guardarArchivo.getSelectedFile().getAbsolutePath());
+                            if (!archivo.exists()) {
+                                archivo.createNewFile();
+                                FileWriter fw = new FileWriter(archivo);
+                                BufferedWriter bw = new BufferedWriter(fw);
+                                bw.write(jTextArea1.getText());
+                                bw.close();
+                            }
+                            } catch (IOException ex) {
+                                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }else{
+                            try {
+                            archivo = new File(guardarArchivo.getSelectedFile().getAbsolutePath()+".py");
+                            if (!archivo.exists()) {
+                                archivo.createNewFile();
+                                FileWriter fw = new FileWriter(archivo);
+                                BufferedWriter bw = new BufferedWriter(fw);
+                                bw.write(jTextArea1.getText());
+                                bw.close();
+                            }
+                            } catch (IOException ex) {
+                                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                        JOptionPane.showMessageDialog(this, "Se exportó el código correctamente");
+                    }
+                }
+            }else{
+                JOptionPane.showMessageDialog(this, "Corrige tus errores para poder exportar el código de salida.");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Primero traduce tu pseudocódigo para poder exportar el código de salida.");
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     String contenido = "";
     File archivo;
@@ -595,6 +745,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

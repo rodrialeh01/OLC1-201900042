@@ -29,18 +29,13 @@ parser code
     /**
     *Listas
     **/
-    public LinkedList<ErrorLenguaje> ErroresSintacticos = new LinkedList<ErrorLenguaje>();
-    public LinkedList<Instruccion> TraduccionGo = new LinkedList<Instruccion>();
-    public LinkedList<Instruccion> TraduccionPy = new LinkedList<Instruccion>();
-    public String mensajeError = ""; 
+
     public Nodo Raiz;
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
     public void syntax_error(Symbol s){
         
-        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
-        mensajeError += "Error Sintáctico en la Línea " + (s.left) + " Columna "+s.right+ ". No se esperaba este componente: " +s.value+".\n";
         System.out.println("Error Sintáctico en la Línea " + (s.left) +
         " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
     } 
@@ -50,8 +45,7 @@ parser code
      * en el que ya no es posible una recuperación de errores.
      **/ 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
-        mensajeError += "Error síntactico irrecuperable en la Línea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.\n";
+        
         System.out.println("Error síntactico irrecuperable en la Línea " + 
         (s.left)+ " Columna "+s.right+". Componente " + s.value + 
         " no reconocido."); 
@@ -459,11 +453,11 @@ TIPODATO::=RNUMERO:a                                                            
                                                                                                         :} 
           |RCADENA:a                                                                                    {:  
                                                                                                             RESULT = new Nodo("TIPODATO", "");
-                                                                                                            RESULT.agregarHijo(new Nodo(a, "CADENA"));
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "RCADENA"));
                                                                                                         :} 
           |RBOOLEAN:a                                                                                   {:  
                                                                                                             RESULT = new Nodo("TIPODATO", "");
-                                                                                                            RESULT.agregarHijo(new Nodo(a, "CADENA"));
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "BOOLEAN"));
                                                                                                         :} 
           |RCARACTER:a                                                                                  {:  
                                                                                                             RESULT = new Nodo("TIPODATO", "");

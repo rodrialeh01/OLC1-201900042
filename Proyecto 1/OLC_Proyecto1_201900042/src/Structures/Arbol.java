@@ -15,23 +15,27 @@ public class Arbol {
     
     public Arbol(){
     }
-
+    public String codigo = "graph G {\nsplines=false;\n";
     public void graficarAST(Nodo nodo){
-        String codigo = "";
+        graficarNodos(nodo); 
+        codigo+= "\n}";
+        System.out.println(codigo);
+    }
+    
+    public void graficarNodos(Nodo nodo){
         //ASIGNAR ID
         if(nodo.getId()==0){
             nodo.setId(OLC_Proyecto1_201900042.id_sig);
             OLC_Proyecto1_201900042.id_sig++;
         }
         if (nodo.getTipo() == "CADENA") {
-            System.out.println(nodo.getId() + "[label=" + nodo.getValor() + " shape=\"circle\"];");
+            codigo+= nodo.getId() + "[label=\"" + nodo.getValor().replace("\"", "\\\"") + "\" shape=\"circle\"];\n";
         } else {
-            System.out.println(nodo.getId() + "[label=\"" + nodo.getValor() + "\" shape=\"circle\"];");
+            codigo+= nodo.getId() + "[label=\"" + nodo.getValor() + "\" shape=\"circle\"];\n";
         }
         for(Nodo hijo : nodo.getHijos()){
-            System.out.println(nodo.getId() + "->" + OLC_Proyecto1_201900042.id_sig + ";");
-            this.graficarAST(hijo);
+            codigo+= nodo.getId() + " -- " + OLC_Proyecto1_201900042.id_sig  + "[headport=n];\n";
+            this.graficarNodos(hijo);
         }
     }
-    
 }

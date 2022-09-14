@@ -934,18 +934,13 @@ public class AST extends java_cup.runtime.lr_parser {
     /**
     *Listas
     **/
-    public LinkedList<ErrorLenguaje> ErroresSintacticos = new LinkedList<ErrorLenguaje>();
-    public LinkedList<Instruccion> TraduccionGo = new LinkedList<Instruccion>();
-    public LinkedList<Instruccion> TraduccionPy = new LinkedList<Instruccion>();
-    public String mensajeError = ""; 
+
     public Nodo Raiz;
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
     public void syntax_error(Symbol s){
         
-        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
-        mensajeError += "Error Sintáctico en la Línea " + (s.left) + " Columna "+s.right+ ". No se esperaba este componente: " +s.value+".\n";
         System.out.println("Error Sintáctico en la Línea " + (s.left) +
         " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
     } 
@@ -955,8 +950,7 @@ public class AST extends java_cup.runtime.lr_parser {
      * en el que ya no es posible una recuperación de errores.
      **/ 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
-        mensajeError += "Error síntactico irrecuperable en la Línea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.\n";
+        
         System.out.println("Error síntactico irrecuperable en la Línea " + 
         (s.left)+ " Columna "+s.right+". Componente " + s.value + 
         " no reconocido."); 
@@ -2095,7 +2089,7 @@ class CUP$AST$actions {
 		String a = (String)((java_cup.runtime.Symbol) CUP$AST$stack.peek()).value;
 		  
                                                                                                             RESULT = new Nodo("TIPODATO", "");
-                                                                                                            RESULT.agregarHijo(new Nodo(a, "CADENA"));
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "RCADENA"));
                                                                                                         
               CUP$AST$result = parser.getSymbolFactory().newSymbol("TIPODATO",6, ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), RESULT);
             }
@@ -2110,7 +2104,7 @@ class CUP$AST$actions {
 		String a = (String)((java_cup.runtime.Symbol) CUP$AST$stack.peek()).value;
 		  
                                                                                                             RESULT = new Nodo("TIPODATO", "");
-                                                                                                            RESULT.agregarHijo(new Nodo(a, "CADENA"));
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "BOOLEAN"));
                                                                                                         
               CUP$AST$result = parser.getSymbolFactory().newSymbol("TIPODATO",6, ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), RESULT);
             }

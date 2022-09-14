@@ -449,7 +449,8 @@ public class Ventana extends javax.swing.JFrame {
                     resultadopy = sintactico.TraduccionPy;
                     jTextArea1.setText("Analisis éxitoso, puedes comenzar a traducir");
                     OLC_Proyecto1_201900042.id_sig = 0;
-                    AST arbolAST = new AST(lexico);
+                    Analizador_Lexico lexico2 = new Analizador_Lexico(new BufferedReader(new StringReader(textArea.getText())));
+                    AST arbolAST = new AST(lexico2);
                     arbolAST.parse();
                     raiz = arbolAST.Raiz;
                 }else{

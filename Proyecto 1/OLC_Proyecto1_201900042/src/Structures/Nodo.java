@@ -4,6 +4,7 @@
  */
 package Structures;
 
+import Structures.Instrucciones.Instruccion;
 import java.util.LinkedList;
 
 /**
@@ -11,25 +12,39 @@ import java.util.LinkedList;
  * @author Rodrigo
  */
 public class Nodo {
-    private LinkedList<Nodo> hijos;
     private String valor;
+    private String tipo;
+    private LinkedList<Nodo> hijos;
+    private int id;
 
-    public Nodo(LinkedList<Nodo> hijos, String valor) {
-        this.hijos = hijos;
+    public Nodo(String valor, String tipo) {
+        this.id = 0;
         this.valor = valor;
-    }
-    
-    public Nodo(String valor){
-        this.valor = valor;
+        this.tipo = tipo;
         this.hijos = new LinkedList<Nodo>();
     }
-    
-    public void agregarhijo(String valor){
-        this.hijos.add(new Nodo(null,valor));
+
+    public String getValor() {
+        return valor;
+    }
+    public int getId() {
+        return id;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
-    public void agregarhijo(Nodo valor){
-        this.hijos.add(valor);
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public LinkedList<Nodo> getHijos() {
@@ -39,14 +54,8 @@ public class Nodo {
     public void setHijos(LinkedList<Nodo> hijos) {
         this.hijos = hijos;
     }
-
-    public String getValor() {
-        return valor;
-    }
-
-    public void setValor(String valor) {
-        this.valor = valor;
-    }
     
-    
+    public void agregarHijo(Nodo hijo){
+        this.hijos.add(hijo);
+    }
 }

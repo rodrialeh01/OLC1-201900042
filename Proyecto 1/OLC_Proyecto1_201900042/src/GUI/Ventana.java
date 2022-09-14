@@ -4,6 +4,8 @@
  */
 package GUI;
 
+import Clases.ErrorLenguaje;
+import Structures.Arbol;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.BufferedReader;
@@ -22,16 +24,19 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import analizadores.Analizador_Lexico;
 import analizadores.Sintactico;
+import analizadores.AST;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Structures.Instrucciones.Instruccion;
+import Structures.Nodo;
 import java.util.LinkedList;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
+import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 /**
  *
  * @author Rodrigo
@@ -51,6 +56,7 @@ public class Ventana extends javax.swing.JFrame {
     public LinkedList<Instruccion> resultadopy;
     public boolean BanderaGo = false;
     public boolean BanderaPy = false;
+    Nodo raiz;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -347,6 +353,11 @@ public class Ventana extends javax.swing.JFrame {
         jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         jMenuItem8.setIcon(new javax.swing.ImageIcon("C:\\Users\\Usuario\\OneDrive\\Documentos\\OLC1-201900042\\Proyecto 1\\OLC_Proyecto1_201900042\\src\\GUI\\Imagenes\\tree.png")); // NOI18N
         jMenuItem8.setText("AST");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem8);
 
         jMenuBar1.add(jMenu2);
@@ -437,8 +448,15 @@ public class Ventana extends javax.swing.JFrame {
                     resultadogo = sintactico.TraduccionGo;
                     resultadopy = sintactico.TraduccionPy;
                     jTextArea1.setText("Analisis éxitoso, puedes comenzar a traducir");
+                    OLC_Proyecto1_201900042.id_sig = 0;
+                    AST arbolAST = new AST(lexico);
+                    arbolAST.parse();
+                    raiz = arbolAST.Raiz;
                 }else{
                     jTextArea1.setText(sintactico.mensajeError);
+                    for(ErrorLenguaje error: sintactico.ErroresSintacticos){
+                        System.out.println(error.getDescripcion());
+                    }
                 }
             } catch (Exception ex) {
                 Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
@@ -613,6 +631,19 @@ public class Ventana extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Primero traduce tu pseudocódigo para poder exportar el código de salida.");
         }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        if(!textArea.equals("")){
+            try {
+                Arbol a = new Arbol();
+                a.graficarAST(raiz);
+            } catch (Exception ex) {
+                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Primero traduce tu pseudocódigo para poder generar el AST.");
+        }
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     String contenido = "";
     File archivo;

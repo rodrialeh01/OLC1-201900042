@@ -41,7 +41,7 @@
         <Menu class="javax.swing.JMenu" name="jMenu1">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="99" green="99" red="99" type="rgb"/>
+              <Color blue="40" green="40" id="darkGray" palette="1" red="40" type="palette"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Archivo"/>
           </Properties>
@@ -52,7 +52,7 @@
                   <KeyStroke key="Ctrl+A"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/GUI/Imagenes/openfile.png"/>
+                  <Image iconType="2" name="C:\Users\Usuario\OneDrive\Documentos\OLC1-201900042\Proyecto 1\OLC_Proyecto1_201900042\src\GUI\Imagenes\openfile.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Abrir Archivo"/>
               </Properties>
@@ -66,7 +66,7 @@
                   <KeyStroke key="Ctrl+G"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/GUI/Imagenes/savefile.png"/>
+                  <Image iconType="2" name="C:\Users\Usuario\OneDrive\Documentos\OLC1-201900042\Proyecto 1\OLC_Proyecto1_201900042\src\GUI\Imagenes\savefile.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Guardar Como"/>
               </Properties>
@@ -78,6 +78,9 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu2">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="40" green="40" id="darkGray" palette="1" red="40" type="palette"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Reporte"/>
           </Properties>
           <SubComponents>
@@ -87,7 +90,7 @@
                   <KeyStroke key="Ctrl+D"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/GUI/Imagenes/flowchart.png"/>
+                  <Image iconType="2" name="C:\Users\Usuario\OneDrive\Documentos\OLC1-201900042\Proyecto 1\OLC_Proyecto1_201900042\src\GUI\Imagenes\flowchart.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Diagrama de Flujo"/>
               </Properties>
@@ -101,7 +104,7 @@
                   <KeyStroke key="Ctrl+E"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/GUI/Imagenes/error.png"/>
+                  <Image iconType="2" name="C:\Users\Usuario\OneDrive\Documentos\OLC1-201900042\Proyecto 1\OLC_Proyecto1_201900042\src\GUI\Imagenes\error.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Errores"/>
               </Properties>
@@ -109,10 +112,24 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem4ActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+S"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="C:\Users\Usuario\OneDrive\Documentos\OLC1-201900042\Proyecto 1\OLC_Proyecto1_201900042\src\GUI\Imagenes\tree.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="AST"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu5">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="40" green="40" id="darkGray" palette="1" red="40" type="palette"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Ver"/>
           </Properties>
           <SubComponents>
@@ -122,7 +139,7 @@
                   <KeyStroke key="Ctrl+U"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/GUI/Imagenes/userm.png"/>
+                  <Image iconType="2" name="C:\Users\Usuario\OneDrive\Documentos\OLC1-201900042\Proyecto 1\OLC_Proyecto1_201900042\src\GUI\Imagenes\userm.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Manual de Usuario"/>
               </Properties>
@@ -136,7 +153,7 @@
                   <KeyStroke key="Ctrl+T"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/GUI/Imagenes/tecnicalm.png"/>
+                  <Image iconType="2" name="C:\Users\Usuario\OneDrive\Documentos\OLC1-201900042\Proyecto 1\OLC_Proyecto1_201900042\src\GUI\Imagenes\tecnicalm.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Manual T&#xe9;cnico"/>
               </Properties>

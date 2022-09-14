@@ -90,6 +90,7 @@ public class Ventana extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -295,11 +296,11 @@ public class Ventana extends javax.swing.JFrame {
         jMenuBar1.setForeground(new java.awt.Color(0, 0, 0));
         jMenuBar1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
 
-        jMenu1.setBackground(new java.awt.Color(153, 153, 153));
+        jMenu1.setBackground(java.awt.Color.darkGray);
         jMenu1.setText("Archivo");
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/openfile.png"))); // NOI18N
+        jMenuItem1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Usuario\\OneDrive\\Documentos\\OLC1-201900042\\Proyecto 1\\OLC_Proyecto1_201900042\\src\\GUI\\Imagenes\\openfile.png")); // NOI18N
         jMenuItem1.setText("Abrir Archivo");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -309,7 +310,7 @@ public class Ventana extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/savefile.png"))); // NOI18N
+        jMenuItem2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Usuario\\OneDrive\\Documentos\\OLC1-201900042\\Proyecto 1\\OLC_Proyecto1_201900042\\src\\GUI\\Imagenes\\savefile.png")); // NOI18N
         jMenuItem2.setText("Guardar Como");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -320,10 +321,11 @@ public class Ventana extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
+        jMenu2.setBackground(java.awt.Color.darkGray);
         jMenu2.setText("Reporte");
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/flowchart.png"))); // NOI18N
+        jMenuItem3.setIcon(new javax.swing.ImageIcon("C:\\Users\\Usuario\\OneDrive\\Documentos\\OLC1-201900042\\Proyecto 1\\OLC_Proyecto1_201900042\\src\\GUI\\Imagenes\\flowchart.png")); // NOI18N
         jMenuItem3.setText("Diagrama de Flujo");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -333,7 +335,7 @@ public class Ventana extends javax.swing.JFrame {
         jMenu2.add(jMenuItem3);
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/error.png"))); // NOI18N
+        jMenuItem4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Usuario\\OneDrive\\Documentos\\OLC1-201900042\\Proyecto 1\\OLC_Proyecto1_201900042\\src\\GUI\\Imagenes\\error.png")); // NOI18N
         jMenuItem4.setText("Errores");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -342,12 +344,18 @@ public class Ventana extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem4);
 
+        jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem8.setIcon(new javax.swing.ImageIcon("C:\\Users\\Usuario\\OneDrive\\Documentos\\OLC1-201900042\\Proyecto 1\\OLC_Proyecto1_201900042\\src\\GUI\\Imagenes\\tree.png")); // NOI18N
+        jMenuItem8.setText("AST");
+        jMenu2.add(jMenuItem8);
+
         jMenuBar1.add(jMenu2);
 
+        jMenu5.setBackground(java.awt.Color.darkGray);
         jMenu5.setText("Ver");
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/userm.png"))); // NOI18N
+        jMenuItem6.setIcon(new javax.swing.ImageIcon("C:\\Users\\Usuario\\OneDrive\\Documentos\\OLC1-201900042\\Proyecto 1\\OLC_Proyecto1_201900042\\src\\GUI\\Imagenes\\userm.png")); // NOI18N
         jMenuItem6.setText("Manual de Usuario");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -357,7 +365,7 @@ public class Ventana extends javax.swing.JFrame {
         jMenu5.add(jMenuItem6);
 
         jMenuItem7.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/tecnicalm.png"))); // NOI18N
+        jMenuItem7.setIcon(new javax.swing.ImageIcon("C:\\Users\\Usuario\\OneDrive\\Documentos\\OLC1-201900042\\Proyecto 1\\OLC_Proyecto1_201900042\\src\\GUI\\Imagenes\\tecnicalm.png")); // NOI18N
         jMenuItem7.setText("Manual Técnico");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -769,6 +777,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;

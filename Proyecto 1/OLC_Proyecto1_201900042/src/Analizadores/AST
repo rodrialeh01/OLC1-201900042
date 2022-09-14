@@ -72,39 +72,39 @@ terminal String RNUMERO,RCADENA,RBOOLEAN,RCARACTER;
 terminal String RVERDADERO,RFALSO;
 terminal String PARIZQ,PARDER,INTABRE,INTCIERRA,FLECHA,PTCOMA,COMA,CORIZQ,CORDER;
 
-non terminal INICIO;
-non terminal INSTRUCCIONES;
-non terminal DECLARACION;
-non terminal LinkedList<Instruccion> LISTA_IDENTIFICADORES;
-non terminal ASIGNACION;
-non terminal EXPRESION;
-non terminal TIPODATO;
-non terminal FUNCION;
-non terminal METODO;
-non terminal GLOBAL;
-non terminal LinkedList <Instruccion> LISTA_PARAMETROS;
-non terminal ENTORNO_LOCAL;
-non terminal CONDICIONAL_SI;
-non terminal CONDICION;
-non terminal LinkedList<Instruccion> LOCAL;
-non terminal LinkedList<Si> LISTA_OSI;
-non terminal SELECCION_MULTIPLE;
-non terminal LinkedList<Instruccion> LISTA_VALORENTONCES;
-non terminal CICLO_PARA;
-non terminal CICLO_MIENTRAS;
-non terminal CICLO_REPETIR;
-non terminal EJECUTAR;
-non terminal IMPRESION;
-non terminal IMPRESION_CONSALTO;
-non terminal LinkedList<Instruccion> ALGORITMO;
-non terminal MAIN;
-non terminal COMENTARIOS;
-non terminal COMENTARIO;
-non terminal LinkedList<Instruccion> INSERCION_PARAMETROS;
-non terminal EJECUTAR_2;
-non terminal RELACIONAL;
-non terminal FYM;
-non terminal AGRUPACION;
+non terminal Produccion INICIO;
+non terminal Produccion INSTRUCCIONES;
+non terminal Produccion DECLARACION;
+non terminal Produccion LISTA_IDENTIFICADORES;
+non terminal Produccion ASIGNACION;
+non terminal Produccion EXPRESION;
+non terminal Produccion TIPODATO;
+non terminal Produccion FUNCION;
+non terminal Produccion METODO;
+non terminal Produccion GLOBAL;
+non terminal Produccion LISTA_PARAMETROS;
+non terminal Produccion ENTORNO_LOCAL;
+non terminal Produccion CONDICIONAL_SI;
+non terminal Produccion CONDICION;
+non terminal Produccion LOCAL;
+non terminal Produccion LISTA_OSI;
+non terminal Produccion SELECCION_MULTIPLE;
+non terminal Produccion LISTA_VALORENTONCES;
+non terminal Produccion CICLO_PARA;
+non terminal Produccion CICLO_MIENTRAS;
+non terminal Produccion CICLO_REPETIR;
+non terminal Produccion EJECUTAR;
+non terminal Produccion IMPRESION;
+non terminal Produccion IMPRESION_CONSALTO;
+non terminal Produccion ALGORITMO;
+non terminal Produccion MAIN;
+non terminal Produccion COMENTARIOS;
+non terminal Produccion COMENTARIO;
+non terminal Produccion INSERCION_PARAMETROS;
+non terminal Produccion EJECUTAR_2;
+non terminal Produccion RELACIONAL;
+non terminal Produccion FYM;
+non terminal Produccion AGRUPACION;
 
 precedence left SUMA,RESTA;
 precedence left MULTIPLICACION,DIVIDIR;
@@ -113,9 +113,18 @@ precedence left POTENCIA,MODU;
 //-------------------------------------------GRAMATICA SINTACTICA-------------------------------------------------
 start with INICIO; 
 
-INICIO::=INSTRUCCIONES                                                                                                                                                             
+INICIO::=INSTRUCCIONES                                                                                  {:
+                                                                                                            parser.AST=a.getInstructions();
+                                                                                                            Node NODORAIZ = new Node("INICIO"); NODERAIZ.addSon(a.getNodo());
+                                                                                                            parser.arbol=new Arbol(NODORAIZ);
+                                                                                                        :}                                                                           
 ;
-INSTRUCCIONES::=MAIN                                                                                  
+INSTRUCCIONES::=MAIN                                                                                    {:
+                                                                                                            RESULT=new Production(new Node("Instrucciones"), a.getInstructions());
+                                                                                                            RESULT.addIns(b.getIns());
+                                                                                                            RESULT.addSon(a);
+                                                                                                            RESULT.addSon(b);
+                                                                                                        :}
                |COMENTARIOS                                                                           
                |error
 ;

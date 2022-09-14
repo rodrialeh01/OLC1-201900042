@@ -19,7 +19,6 @@ import Structures.Instrucciones.Parametro;
 import Structures.Instrucciones.Funciones;
 import Structures.Instrucciones.Metodo;
 import Structures.Instrucciones.Retornar;
-import Structures.Instrucciones.Osi;
 import java.util.LinkedList;
 import Structures.Nodo;
 import Structures.Arbol;
@@ -88,7 +87,7 @@ non terminal ENTORNO_LOCAL;
 non terminal CONDICIONAL_SI;
 non terminal CONDICION;
 non terminal LinkedList<Instruccion> LOCAL;
-non terminal LinkedList<Instruccion> LISTA_OSI;
+non terminal LinkedList<Si> LISTA_OSI;
 non terminal SELECCION_MULTIPLE;
 non terminal LinkedList<Instruccion> LISTA_VALORENTONCES;
 non terminal CICLO_PARA;
@@ -121,381 +120,327 @@ INSTRUCCIONES::=MAIN
                |error
 ;
 MAIN::=RINICIO ALGORITMO:a RFIN                                                                         {:
-                                                                                                            RESULT=(LinkedList) a;
-                                                                                                            Main m = new Main((LinkedList) a);
-                                                                                                            TraduccionGo.addFirst((Instruccion) m);
-                                                                                                            TraduccionPy.addLast((Instruccion) m);
+                                                                                                            
                                                                                                         :}                                                         
       |RINICIO RFIN                                                                                     {:
-                                                                                                            Main.importacion_print = false;
-                                                                                                            Main.importacion_potencia = false;
-                                                                                                            RESULT=new Main();
-                                                                                                            TraduccionGo.add((Main) RESULT);
-                                                                                                            TraduccionPy.add((Main) RESULT);
+                                                                                                            
                                                                                                         :}
 ;
 COMENTARIOS::=COMENTARIOS COMENTARIO
              |COMENTARIO
 ;
 COMENTARIO::=COMENTARIOL:a                                                                              {:  
-                                                                                                            RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_UNILINEA, a);
-                                                                                                            TraduccionGo.add((Comentarios) RESULT);
-                                                                                                            TraduccionPy.add((Comentarios) RESULT);
+                                                                                                            
                                                                                                         :}
             |COMENTARIOML:a                                                                             {:  
-                                                                                                            RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_MILTILINEA, a);
-                                                                                                            TraduccionGo.add((Comentarios) RESULT);
-                                                                                                            TraduccionPy.add((Comentarios) RESULT);
+                                                                                                            
                                                                                                         :}
 ;
 ALGORITMO::=ALGORITMO:a GLOBAL:b                                                                        {:  
-                                                                                                            RESULT = new LinkedList<Instruccion>();
-                                                                                                            for (int i = 0; i < a.size(); i++) {
-                                                                                                                RESULT.add(a.get(i));
-                                                                                                            }
-                                                                                                            if(b != null){
-                                                                                                                RESULT.add((Instruccion) b);
-                                                                                                            }
+                                                                                                            
                                                                                                         :}                                                                                     
            |GLOBAL:a                                                                                    {:  
-                                                                                                            if(a != null){
-                                                                                                                RESULT= new LinkedList<Instruccion>();
-                                                                                                                RESULT.add((Instruccion) a);
-                                                                                                            }
+                                                                                                            
                                                                                                         :}
 ;
 GLOBAL::= ENTORNO_LOCAL:a                                                                               {:  
-                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            
                                                                                                             
                                                                                                         :}
          |FYM:a                                                                                         {:  
-                                                                                                            TraduccionGo.addLast((Instruccion) a);
-                                                                                                            TraduccionPy.add((Instruccion) a);
+                                                                                                            
                                                                                                         :}
 ;
 FYM::=FUNCION:a                                                                                         {:  
-                                                                                                            RESULT = (Funciones) a;
+                                                                                                           
                                                                                                         :}
      |METODO:a                                                                                          {:  
-                                                                                                            RESULT = (Metodo) a;
+                                                                                                            
                                                                                                         :}
 ;
 DECLARACION::=RINGRESAR LISTA_IDENTIFICADORES:l RCOMO TIPODATO:b RCONVALOR CONDICION:e PTCOMA           {:  
-                                                                                                            RESULT=new Declaracion((Parametro.Tipo_Variable) b,(Operacion)e,(LinkedList)l);
+                                                                                                            
                                                                                                         :}
 ;
 LISTA_IDENTIFICADORES::=LISTA_IDENTIFICADORES:a COMA IDENTIFICADOR:b                                    {:  
-                                                                                                            RESULT = new LinkedList<>();
-                                                                                                            for (int i = 0; i < a.size(); i++) {
-                                                                                                                RESULT.add(a.get(i));
-                                                                                                            }
-                                                                                                            RESULT.add(new Operacion(b,Operacion.Tipo_operacion.IDENTIFICADOR));
+                                                                                                            
                                                                                                         :} 
                        |IDENTIFICADOR:a                                                                 {:  
-                                                                                                            RESULT= new LinkedList<Instruccion>();
-                                                                                                            RESULT.add(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR));
+                                                                                                            
                                                                                                         :}
 ;
 EXPRESION::=ENTERO:a                                                                                    {:  
-                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.NUMERO);
+                                                                                                            
                                                                                                         :}
             |DECIMAL:a                                                                                  {:  
-                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.DECIMAL);
+                                                                                                            
                                                                                                         :}
             |CADENA:a                                                                                   {:  
-                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.CADENA);
+                                                                                                            
                                                                                                         :}
             |CARACTER:a                                                                                 {:  
-                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.CARACTER);
+                                                                                                            
                                                                                                         :}
             |CARASCCI:a                                                                                 {:  
-                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.ASCCI);
+                                                                                                            
                                                                                                         :}
             |RVERDADERO:a                                                                               {:  
-                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.VERDADERO);
+                                                                                                            
                                                                                                         :}
             |RFALSO:a                                                                                   {:  
-                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.FALSO);
+                                                                                                            
                                                                                                         :}
             |IDENTIFICADOR:a                                                                            {:  
-                                                                                                            RESULT=new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR);
+                                                                                                            
                                                                                                         :}
             |RESTA EXPRESION:a                                                                          {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,Operacion.Tipo_operacion.NEGATIVO);
+                                                                                                            
                                                                                                         :}
             |EXPRESION:a SUMA EXPRESION:b                                                               {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Operacion)b,Operacion.Tipo_operacion.SUMA);
+                                                                                                            
                                                                                                         :} 
             |EXPRESION:a RESTA EXPRESION:b                                                              {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Operacion)b,Operacion.Tipo_operacion.RESTA);
+                                                                                                            
                                                                                                         :} 
             |EXPRESION:a MULTIPLICACION EXPRESION:b                                                     {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Operacion)b,Operacion.Tipo_operacion.MULTIPLICACION);
+                                                                                                            
                                                                                                         :} 
             |EXPRESION:a DIVIDIR EXPRESION:b                                                            {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Operacion)b,Operacion.Tipo_operacion.DIVISION);
+                                                                                                            
                                                                                                         :}        
             |EXPRESION:a POTENCIA CORIZQ EXPRESION:b CORDER                                             {:  
-                                                                                                            Main.importacion_potencia = true;
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.POTENCIA);
+                                                                                                            
                                                                                                         :} 
             |EXPRESION:a MODU EXPRESION:b                                                               {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.MODULAR);
+                                                                                                            
                                                                                                         :}
             |AGRUPACION:a                                                                               {:  
-                                                                                                            RESULT=(Instruccion)a;
+                                                                                                            
                                                                                                         :}  
             |EJECUTAR_2:a                                                                               {:  
-                                                                                                            RESULT=(Instruccion) a;
+                                                                                                            
                                                                                                         :}
 ;
 RELACIONAL::=EXPRESION:a                                                                                {:  
-                                                                                                            RESULT=(Operacion) a;
+                                                                                                            
                                                                                                         :}
            |EXPRESION:a RMAYOR EXPRESION:b                                                              {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.MAYORQUE);;
+                                                                                                            
                                                                                                         :}
            |EXPRESION:a RMENOR EXPRESION:b                                                              {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.MENORQUE);;
+                                                                                                            
                                                                                                         :}
            |EXPRESION:a RMAYOROIGUAL EXPRESION:b                                                        {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.MAYOROIGUAL);;
+                                                                                                            
                                                                                                         :}
            |EXPRESION:a RMENOROIGUAL EXPRESION:b                                                        {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.MENOROIGUAL);;
+                                                                                                            
                                                                                                         :}
            |EXPRESION:a RESIGUAL EXPRESION:b                                                            {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.IGUAL);;
+                                                                                                            
                                                                                                         :}
            |EXPRESION:a RESDIFERENTE EXPRESION:b                                                        {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.DIFERENTE);;
+                                                                                                            
                                                                                                         :}
 ;
 CONDICION::=RELACIONAL:a ROR RELACIONAL:b                                                               {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.OR);;
+                                                                                                            
                                                                                                         :}
            |RELACIONAL:a RAND RELACIONAL:b                                                              {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,(Instruccion)b,Operacion.Tipo_operacion.AND);;
+                                                                                                            
                                                                                                         :}
            |RNOT RELACIONAL:a                                                                           {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,Operacion.Tipo_operacion.NOT);;
+                                                                                                            
                                                                                                         :}
            |RELACIONAL:a                                                                                {:  
-                                                                                                            RESULT=(Operacion)a;
+                                                                                                            
                                                                                                         :}
 ;
 AGRUPACION::=PARIZQ CONDICION:a PARDER                                                                 {:  
-                                                                                                            RESULT=new Operacion((Instruccion)a,Operacion.Tipo_operacion.AGRUPACION);
+                                                                                                            
                                                                                                         :}  
 ;
 ASIGNACION::=LISTA_IDENTIFICADORES:l FLECHA EXPRESION:e PTCOMA                                          {:  
-                                                                                                            RESULT=new Asignacion((Instruccion)e,(LinkedList)l);
+                                                                                                            
                                                                                                         :}
 ;
 FUNCION::=RFUNCION IDENTIFICADOR:a TIPODATO:b LOCAL:c RRETORNAR CONDICION:d PTCOMA RFINFUNCION          {:  
-                                                                                                            RESULT=new Funciones(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Parametro.Tipo_Variable) b, new Retornar((Operacion) d) , (LinkedList) c);
+                                                                                                           
                                                                                                         :}
          |RFUNCION IDENTIFICADOR:a TIPODATO:b RRETORNAR CONDICION:c PTCOMA RFINFUNCION                  {:  
-                                                                                                            RESULT=new Funciones(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Parametro.Tipo_Variable) b, new Retornar((Operacion) c));
+                                                                                                            
                                                                                                         :}
          |RFUNCION IDENTIFICADOR:a TIPODATO:b RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER LOCAL:c RRETORNAR CONDICION:d PTCOMA RFINFUNCION{:  
-                                                                                                            RESULT=new Funciones(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Parametro.Tipo_Variable) b,(LinkedList) l, (LinkedList) c, new Retornar((Operacion) d));
+                                                                                                            
                                                                                                         :}
          |RFUNCION IDENTIFICADOR:a TIPODATO:b RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER RRETORNAR CONDICION:c PTCOMA RFINFUNCION{:  
-                                                                                                            RESULT=new Funciones(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Parametro.Tipo_Variable) b,(LinkedList) l, new Retornar((Operacion) c));
+                                                                                                            
                                                                                                         :}
 ;
 METODO::=RMETODO IDENTIFICADOR:a LOCAL:b RFINMETODO                                                     {:  
-                                                                                                            RESULT=new Metodo((LinkedList) b ,new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR));
+                                                                                                            
                                                                                                         :}
         |RMETODO IDENTIFICADOR:a RFINMETODO                                                             {:  
-                                                                                                            RESULT=new Metodo(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR));
+                                                                                                            
                                                                                                         :}
         |RMETODO IDENTIFICADOR:a RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER LOCAL:b RFINMETODO     {:  
-                                                                                                            RESULT=new Metodo(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),(LinkedList) l, (LinkedList) b);
+                                                                                                            
                                                                                                         :}
         |RMETODO IDENTIFICADOR:a RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER RFINMETODO             {:  
-                                                                                                            RESULT=new Metodo(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),(LinkedList) l);
+                                                                                                            
                                                                                                         :}
 ;
 LISTA_PARAMETROS::=LISTA_PARAMETROS:l COMA IDENTIFICADOR:a TIPODATO:b                                   {:  
-                                                                                                            RESULT = new LinkedList<>();
-                                                                                                            for (int i = 0; i < l.size(); i++) {
-                                                                                                                RESULT.add(l.get(i));
-                                                                                                            }
-                                                                                                            RESULT.add(new Parametro(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),(Parametro.Tipo_Variable) b));
+                                                                                                           
                                                                                                         :}
                   |IDENTIFICADOR:a TIPODATO:b                                                           {:  
-                                                                                                            RESULT= new LinkedList<Instruccion>();
-                                                                                                            RESULT.add(new Parametro(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),(Parametro.Tipo_Variable) b));
+                                                                                                            
                                                                                                         :} 
 ;
 TIPODATO::=RNUMERO:a                                                                                    {:  
-                                                                                                            RESULT=Parametro.Tipo_Variable.NUMERO;
+                                                                                                            
                                                                                                         :} 
           |RCADENA:a                                                                                    {:  
-                                                                                                            RESULT=Parametro.Tipo_Variable.CADENA;
+                                                                                                            
                                                                                                         :} 
           |RBOOLEAN:a                                                                                   {:  
-                                                                                                            RESULT=Parametro.Tipo_Variable.BOOLEAN;
+                                                                                                            
                                                                                                         :} 
           |RCARACTER:a                                                                                  {:  
-                                                                                                            RESULT=Parametro.Tipo_Variable.CARACTER;
+                                                                                                            
                                                                                                         :} 
 ;
 LOCAL::=LOCAL:a ENTORNO_LOCAL:b                                                                         {:  
-                                                                                                            RESULT = new LinkedList<>();
-                                                                                                            for (int i = 0; i < a.size(); i++) {
-                                                                                                                RESULT.add(a.get(i));
-                                                                                                            }
-                                                                                                            RESULT.add((Instruccion) b);
+                                                                                                            
                                                                                                         :}  
        |ENTORNO_LOCAL:a                                                                                 {:  
-                                                                                                            RESULT= new LinkedList<Instruccion>();
-                                                                                                            RESULT.add((Instruccion) a);
+                                                                                                            
                                                                                                         :} 
 ;
 ENTORNO_LOCAL::=ASIGNACION:a                                                                            {:  
-                                                                                                            RESULT= (Instruccion) a;
+                                                                                                           
                                                                                                         :}
                |DECLARACION:a                                                                           {:  
-                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            
                                                                                                         :}
                |CONDICIONAL_SI:a                                                                        {:  
-                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            
                                                                                                         :}
                |SELECCION_MULTIPLE:a                                                                    {:  
-                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            
                                                                                                         :} 
                |CICLO_PARA:a                                                                            {:  
-                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            
                                                                                                         :}
                |CICLO_MIENTRAS:a                                                                        {:  
-                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            
                                                                                                         :}
                |CICLO_REPETIR:a                                                                         {:  
-                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            
                                                                                                         :}
                |EJECUTAR:a                                                                              {:  
-                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            
                                                                                                         :}
                |IMPRESION:a                                                                             {:  
-                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            
                                                                                                         :}
                |IMPRESION_CONSALTO:a                                                                    {:  
-                                                                                                            RESULT= (Instruccion) a;
+                                                                                                            
                                                                                                         :}
                |COMENTARIOL:a                                                                           {:  
-                                                                                                            RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_UNILINEA, a);
+                                                                                                            
                                                                                                         :}
                |COMENTARIOML:a                                                                          {:  
-                                                                                                            RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_MILTILINEA, a);
+                                                                                                            
                                                                                                         :}
 ;
 CONDICIONAL_SI::=RSI CONDICION:a RENTONCES LOCAL:b RFINSI                                               {:  
-                                                                                                            RESULT= new Si((Instruccion) a, (LinkedList) b);
+                                                                                                            
                                                                                                         :}                                
                 |RSI CONDICION:a RENTONCES LOCAL:b LISTA_OSI:l RFINSI                                   {:  
-                                                                                                            RESULT= new Si((LinkedList) b,(Operacion) a, (LinkedList) l);
+                                                                                                            
                                                                                                         :}     
                 |RSI CONDICION:a RENTONCES LOCAL:b LISTA_OSI:l RDELOCONTRARIO LOCAL:c RFINSI            {:  
-                                                                                                            RESULT= new Si((Instruccion) a,(LinkedList) b, (LinkedList) l, (LinkedList) c);
+                                                                                                            
                                                                                                         :}
                 |RSI CONDICION:a RENTONCES LOCAL:b RDELOCONTRARIO LOCAL:c RFINSI                        {:  
-                                                                                                            RESULT= new Si((Instruccion) a,(LinkedList) b, (LinkedList) c);
+                                                                                                            
                                                                                                         :}
 ;
 LISTA_OSI::=LISTA_OSI:l ROSI CONDICION:c RENTONCES LOCAL:d                                              {:  
-                                                                                                            RESULT = new LinkedList<>();
-                                                                                                            for (int i = 0; i < l.size(); i++) {
-                                                                                                                RESULT.add(l.get(i));
-                                                                                                            }
-                                                                                                            RESULT.add(new Osi((Instruccion) c, (LinkedList) d));
+                                                                                                            
                                                                                                         :} 
             |ROSI CONDICION:e RENTONCES LOCAL:f                                                         {:  
-                                                                                                            RESULT= new LinkedList<>();
-                                                                                                            RESULT.add(new Osi((Instruccion) e, (LinkedList) f));
+                                                                                                            
                                                                                                         :}
 ;
 SELECCION_MULTIPLE::=RSEGUN EXPRESION:a RHACER LISTA_VALORENTONCES:l RFINSEGUN                          {:  
-                                                                                                            RESULT= new SeleccionMultiple((Instruccion)a, (LinkedList) l);
+                                                                                                            
                                                                                                         :}
                     |RSEGUN EXPRESION:a RHACER LISTA_VALORENTONCES:l RDELOCONTRARIO RENTONCES LOCAL:b RFINSEGUN{:  
-                                                                                                            RESULT = new SeleccionMultiple((Instruccion)a, (LinkedList)l, (LinkedList) b);
+                                                                                                            
                                                                                                         :} 
 ;
 LISTA_VALORENTONCES::=LISTA_VALORENTONCES:l INTABRE EXPRESION:e INTCIERRA RENTONCES LOCAL:a             {:  
-                                                                                                            RESULT= new LinkedList<>();
-                                                                                                            for (int i = 0; i < l.size(); i++) {
-                                                                                                                RESULT.add(l.get(i));
-                                                                                                            }
-                                                                                                            RESULT.add(new Case((Instruccion) e, (LinkedList) a));
+                                                                                                            
                                                                                                         :}
                      |INTABRE EXPRESION:e INTCIERRA RENTONCES LOCAL:a                                   {:  
-                                                                                                            RESULT= new LinkedList<>();
-                                                                                                            RESULT.add(new Case((Instruccion) e, (LinkedList) a));
+                                                                                                            
                                                                                                         :}
 ;
 CICLO_PARA::=RPARA IDENTIFICADOR:a FLECHA EXPRESION:b RHASTA EXPRESION:c RHACER LOCAL:d RFINPARA        {:  
-                                                                                                            RESULT= new Para(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Instruccion) b, (Instruccion) c, (LinkedList) d);
+                                                                                                            
                                                                                                         :}
             |RPARA IDENTIFICADOR:a FLECHA EXPRESION:b RHASTA EXPRESION:c RHACER RFINPARA                {:  
-                                                                                                            RESULT= new Para(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Instruccion) b, (Instruccion) c);
+                                                                                                            
                                                                                                         :}
             |RPARA IDENTIFICADOR:a FLECHA EXPRESION:b RHASTA EXPRESION:c RCONINCREMENTAL EXPRESION:d RHACER LOCAL:e RFINPARA {:  
-                                                                                                            RESULT= new Para(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Instruccion) b, (Instruccion) c, (Instruccion) d,(LinkedList) e);
+                                                                                                            
                                                                                                         :}
             |RPARA IDENTIFICADOR:a FLECHA EXPRESION:b RHASTA EXPRESION:c RCONINCREMENTAL EXPRESION:d RHACER RFINPARA {:  
-                                                                                                            RESULT= new Para(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Instruccion) b, (Instruccion) c, (Instruccion) d);
+                                                                                                            
                                                                                                         :}
 ;
 CICLO_MIENTRAS::=RMIENTRAS CONDICION:a RHACER LOCAL:b RFINMIENTRAS                                      {:  
-                                                                                                            RESULT= new Mientras((Instruccion) a,(LinkedList) b);
+                                                                                                            
                                                                                                         :}
                 |RMIENTRAS CONDICION:a RHACER RFINMIENTRAS                                              {:  
-                                                                                                            RESULT= new Mientras((Instruccion) a);
+                                                                                                            
                                                                                                         :}
 ;
 CICLO_REPETIR::=RREPETIR LOCAL:a RHASTAQUE CONDICION:b                                                  {:  
-                                                                                                            RESULT= new Repetir((Instruccion) b,(LinkedList) a);
+                                                                                                            
                                                                                                         :}
                |RREPETIR RHASTAQUE CONDICION:a                                                          {:  
-                                                                                                            RESULT= new Repetir((Instruccion) a);
+                                                                                                            
                                                                                                         :}
 ;
 EJECUTAR::=REJECUTAR IDENTIFICADOR:a PARIZQ PARDER PTCOMA                                               {:  
-                                                                                                            RESULT= new Ejecutar(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),Ejecutar.Tipo_Variable.EJECUTAR);
+                                                                                                            
                                                                                                         :}
            |REJECUTAR IDENTIFICADOR:a PARIZQ INSERCION_PARAMETROS:l PARDER PTCOMA                       {:  
-                                                                                                            RESULT= new Ejecutar(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),Ejecutar.Tipo_Variable.EJECUTAR,(LinkedList) l);
+                                                                                                            
                                                                                                         :}
 ;
 EJECUTAR_2::=REJECUTAR IDENTIFICADOR:a PARIZQ PARDER                                                    {:  
-                                                                                                            RESULT= new Ejecutar(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),Ejecutar.Tipo_Variable.EXPRESION);
+                                                                                                            
                                                                                                         :}
             |REJECUTAR IDENTIFICADOR:a PARIZQ INSERCION_PARAMETROS:l PARDER                             {:  
-                                                                                                            RESULT= new Ejecutar(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),Ejecutar.Tipo_Variable.EXPRESION,(LinkedList) l);
+                                                                                                            
                                                                                                         :}
 ;
 INSERCION_PARAMETROS::=INSERCION_PARAMETROS:l COMA EXPRESION:e                                          {:  
-                                                                                                            RESULT = new LinkedList<>();
-                                                                                                            for (int i = 0; i < l.size(); i++) {
-                                                                                                                RESULT.add(l.get(i));
-                                                                                                            }
-                                                                                                            RESULT.add((Instruccion) e);
+                                                                                                            
                                                                                                         :}
                       |EXPRESION:e                                                                      {:  
-                                                                                                            RESULT= new LinkedList<>();
-                                                                                                            RESULT.add((Instruccion) e);
+                                                                                                            
                                                                                                         :}
 ;
 IMPRESION::=RIMPRIMIR EXPRESION:a PTCOMA                                                                {:  
-                                                                                                            Main.importacion_print = true;
-                                                                                                            RESULT= new Impresion(Impresion.Tipo_Impresion.SIN_SALTO,(Instruccion) a);
+                                                                                                            
                                                                                                         :}
 ;
 IMPRESION_CONSALTO::= RIMPRIMIRNL EXPRESION:a PTCOMA                                                    {:  
-                                                                                                            Main.importacion_print = true;
-                                                                                                            RESULT= new Impresion(Impresion.Tipo_Impresion.CON_SALTO,(Instruccion) a);
+                                                                                                            
                                                                                                         :}
 ;

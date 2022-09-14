@@ -25,6 +25,7 @@ import Structures.Instrucciones.Parametro;
 import Structures.Instrucciones.Funciones;
 import Structures.Instrucciones.Metodo;
 import Structures.Instrucciones.Retornar;
+import Structures.Instrucciones.Osi;
 import java.util.LinkedList;
 import Structures.Nodo;
 import Structures.Arbol;
@@ -2223,7 +2224,7 @@ class CUP$Sintactico$actions {
 		LinkedList<Instruccion> b = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
 		int lleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
-		LinkedList<Si> l = (LinkedList<Si>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
+		LinkedList<Instruccion> l = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
 		  
                                                                                                             RESULT= new Si((LinkedList) b,(Operacion) a, (LinkedList) l);
                                                                                                         
@@ -2243,7 +2244,7 @@ class CUP$Sintactico$actions {
 		LinkedList<Instruccion> b = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).value;
 		int lleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).right;
-		LinkedList<Si> l = (LinkedList<Si>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).value;
+		LinkedList<Instruccion> l = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)).value;
 		int cleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).left;
 		int cright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).right;
 		LinkedList<Instruccion> c = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-1)).value;
@@ -2277,10 +2278,10 @@ class CUP$Sintactico$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 82: // LISTA_OSI ::= LISTA_OSI ROSI CONDICION RENTONCES LOCAL 
             {
-              LinkedList<Si> RESULT =null;
+              LinkedList<Instruccion> RESULT =null;
 		int lleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).right;
-		LinkedList<Si> l = (LinkedList<Si>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).value;
+		LinkedList<Instruccion> l = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)).value;
 		int cleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
 		int cright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
 		Object c = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
@@ -2292,7 +2293,7 @@ class CUP$Sintactico$actions {
                                                                                                             for (int i = 0; i < l.size(); i++) {
                                                                                                                 RESULT.add(l.get(i));
                                                                                                             }
-                                                                                                            RESULT.add(new Si((Instruccion) c, (LinkedList) d));
+                                                                                                            RESULT.add(new Osi((Instruccion) c, (LinkedList) d));
                                                                                                         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("LISTA_OSI",15, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-4)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }
@@ -2301,7 +2302,7 @@ class CUP$Sintactico$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 83: // LISTA_OSI ::= ROSI CONDICION RENTONCES LOCAL 
             {
-              LinkedList<Si> RESULT =null;
+              LinkedList<Instruccion> RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).right;
 		Object e = (Object)((java_cup.runtime.Symbol) CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-2)).value;
@@ -2309,8 +2310,8 @@ class CUP$Sintactico$actions {
 		int fright = ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()).right;
 		LinkedList<Instruccion> f = (LinkedList<Instruccion>)((java_cup.runtime.Symbol) CUP$Sintactico$stack.peek()).value;
 		  
-                                                                                                            RESULT= new LinkedList<Si>();
-                                                                                                            RESULT.add(new Si((Instruccion) e, (LinkedList) f));
+                                                                                                            RESULT= new LinkedList<>();
+                                                                                                            RESULT.add(new Osi((Instruccion) e, (LinkedList) f));
                                                                                                         
               CUP$Sintactico$result = parser.getSymbolFactory().newSymbol("LISTA_OSI",15, ((java_cup.runtime.Symbol)CUP$Sintactico$stack.elementAt(CUP$Sintactico$top-3)), ((java_cup.runtime.Symbol)CUP$Sintactico$stack.peek()), RESULT);
             }

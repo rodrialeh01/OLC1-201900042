@@ -11,38 +11,35 @@ import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
  *
  * @author Rodrigo
  */
-public class Mientras implements Instruccion{
+public class Osi implements Instruccion{
     private final Instruccion condicion;
     
     private LinkedList<Instruccion> listaInstrucciones;
 
-    //MIENTRAS VACIO
-    public Mientras(Instruccion condicion) {
-        this.condicion = condicion;
-    }
-    //MIENTRAS CON INSTRUCCIONES
-    public Mientras(Instruccion condicion, LinkedList<Instruccion> listaInstrucciones) {
+    public Osi(Instruccion condicion, LinkedList<Instruccion> listaInstrucciones) {
         this.condicion = condicion;
         this.listaInstrucciones = listaInstrucciones;
     }
-    
-    
 
+    public Osi(Instruccion condicion) {
+        this.condicion = condicion;
+    }
+    
     @Override
     public String traductorGolang(int identacion) {
-        String traduccion =OLC_Proyecto1_201900042.tabular(identacion) + "for true {\n"+OLC_Proyecto1_201900042.tabular(identacion+1)+"if!("+this.condicion.traductorGolang(identacion)+"){\n"+OLC_Proyecto1_201900042.tabular(identacion+1)+"\tbreak\n"+OLC_Proyecto1_201900042.tabular(identacion+1)+"}\n";
+        String traduccion = "else if " + this.condicion.traductorGolang(identacion) + " {\n";
         if(this.listaInstrucciones != null){
             for (Instruccion ins: this.listaInstrucciones) {
                 traduccion+=ins.traductorGolang(identacion+1);
             }
         }
-        traduccion += "\n"+OLC_Proyecto1_201900042.tabular(identacion)+"}\n";
+        traduccion+="\n"+OLC_Proyecto1_201900042.tabular(identacion)+"}";
         return traduccion;
     }
 
     @Override
     public String traductorPython(int identacion) {
-        String traduccion = OLC_Proyecto1_201900042.tabular(identacion) + "while " + this.condicion.traductorPython(identacion) + ":\n";
+        String traduccion = OLC_Proyecto1_201900042.tabular(identacion) + "elif " + this.condicion.traductorPython(identacion) + ":\n";
         if(this.listaInstrucciones != null){
             for (Instruccion ins: this.listaInstrucciones) {
                 traduccion+=ins.traductorPython(identacion+1);

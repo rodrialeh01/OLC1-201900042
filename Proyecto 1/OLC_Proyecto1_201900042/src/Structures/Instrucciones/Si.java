@@ -49,28 +49,27 @@ public class Si implements Instruccion{
     
     @Override
     public String traductorGolang(int identacion) {
-        String traduccion =OLC_Proyecto1_201900042.tabular(identacion) + "if " + this.condicion.traductorGolang(identacion) + "{\n";
+        String traduccion ="\n" +OLC_Proyecto1_201900042.tabular(identacion) + "if " + this.condicion.traductorGolang(identacion) + "{\n";
         if(this.listaInstrucciones != null){
             for (Instruccion ins: this.listaInstrucciones) {
                 traduccion+=ins.traductorGolang(identacion+1);
             }
-            traduccion+="\n"+OLC_Proyecto1_201900042.tabular(identacion)+"}\n";
+            traduccion+="\n"+OLC_Proyecto1_201900042.tabular(identacion)+"}";
         }
         if (this.listaOSiInstrucciones != null) {
             traduccion+= "";
             for (Instruccion ins: this.listaOSiInstrucciones) {
-                traduccion+=OLC_Proyecto1_201900042.tabular(identacion)+"else "+quitarIdentacion(ins.traductorGolang(identacion),"\t");
+                traduccion+=ins.traductorGolang(identacion);
             }
-            traduccion+="\n";
         }
         if (this.listaInsdelocontrario != null) {
-            traduccion+=OLC_Proyecto1_201900042.tabular(identacion) + "else{\n";
+            traduccion+="else{\n";
             for (Instruccion ins: this.listaInsdelocontrario) {
                 traduccion+= ins.traductorGolang(identacion+1);
             }
             traduccion+="\n"+OLC_Proyecto1_201900042.tabular(identacion)+"}\n";
         }
-        return traduccion;
+        return traduccion +"\n";
     }
 
     @Override
@@ -84,7 +83,7 @@ public class Si implements Instruccion{
         }
         if (this.listaOSiInstrucciones != null) {
             for (Instruccion ins: this.listaOSiInstrucciones) {
-                traduccion+= OLC_Proyecto1_201900042.tabular(identacion) + "el" + quitarIdentacion(ins.traductorPython(identacion),"\t");
+                traduccion+= ins.traductorPython(identacion);
             }
             traduccion+="\n";
         }
@@ -96,14 +95,5 @@ public class Si implements Instruccion{
             traduccion+="\n";
         }
         return traduccion;
-    }
-    public static String quitarIdentacion(String str, String start){
-		if (str == null || str.length() == 0) {
-			return str;
-		}
-		if (str.startsWith(start)) {
-			return str.substring(1);
-		}
-		return str;
     }
 }

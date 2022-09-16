@@ -4,6 +4,7 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
 import java.util.LinkedList;
 import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 /**
@@ -95,5 +96,20 @@ public class Si implements Instruccion{
             traduccion+="\n";
         }
         return traduccion;
+    }
+
+    @Override
+    public NodoDiagrama Diagrama() {
+        NodoDiagrama nuevo = new NodoDiagrama(this.condicion.traductorGolang(0), "CONDICION");
+        if(this.listaInstrucciones != null){
+            nuevo.agregarHijosCondicion(this.listaInstrucciones.get(0).Diagrama(), "SI");
+        }
+        if(this.listaOSiInstrucciones != null){
+            nuevo.agregarHijosCondicion(this.listaOSiInstrucciones.get(0).Diagrama(), "NO");
+        }
+        if(this.listaInsdelocontrario != null){
+            nuevo.agregarHijosCondicion(this.listaInsdelocontrario.get(0).Diagrama(), "NO");
+        }
+        return nuevo;
     }
 }

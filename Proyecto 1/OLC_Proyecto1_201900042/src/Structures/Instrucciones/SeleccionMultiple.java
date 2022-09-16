@@ -4,6 +4,7 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
 import java.util.LinkedList;
 import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 
@@ -84,6 +85,17 @@ public class SeleccionMultiple implements Instruccion{
         }
         traduccion+= "\n";
         return traduccion;
+    }
+
+    @Override
+    public NodoDiagrama Diagrama() {
+        NodoDiagrama nuevo = new NodoDiagrama(this.condicion.traductorGolang(0), "CONDICION");
+        if(this.listaInsdelocontrario != null){
+            for (Instruccion ins: this.listaCasosInstrucciones) {
+                nuevo.agregarHijos(ins.Diagrama());
+            }
+        }
+        return nuevo;
     }
     
 }

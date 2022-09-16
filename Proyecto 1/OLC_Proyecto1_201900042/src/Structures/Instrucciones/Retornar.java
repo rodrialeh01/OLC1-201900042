@@ -4,6 +4,7 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
 import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 
 /**
@@ -27,6 +28,12 @@ public class Retornar implements Instruccion{
     public String traductorPython(int identacion) {
         String retorno = OLC_Proyecto1_201900042.tabular(identacion) + "return " + this.valor.traductorPython(identacion) + "\n";
         return retorno;
+    }
+
+    @Override
+    public NodoDiagrama Diagrama() {
+        NodoDiagrama nuevo = new NodoDiagrama("return " + this.valor.traductorGolang(0),"PROCESO");
+        return nuevo;
     }
     
 }

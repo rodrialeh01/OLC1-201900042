@@ -4,6 +4,7 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
 import java.util.LinkedList;
 import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 
@@ -45,6 +46,15 @@ public class Case implements Instruccion{
             traductor+= "\n";
         }
         return traductor;
+    }
+
+    @Override
+    public NodoDiagrama Diagrama() {
+        NodoDiagrama nuevo = new NodoDiagrama(this.traductorGolang(0), "CONDICION");
+        if (this.listaInstrucciones!= null) {
+            nuevo.agregarHijos(this.listaInstrucciones.get(0).Diagrama());
+        }
+        return nuevo;
     }
     
 }

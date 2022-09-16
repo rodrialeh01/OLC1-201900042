@@ -455,6 +455,7 @@ public class Ventana extends javax.swing.JFrame {
                     raiz = arbolAST.Raiz;
                 }else{
                     jTextArea1.setText(sintactico.mensajeError);
+                    System.out.println(sintactico.ErroresSintacticos.size());
                     for(ErrorLenguaje error: sintactico.ErroresSintacticos){
                         System.out.println(error.getDescripcion());
                     }

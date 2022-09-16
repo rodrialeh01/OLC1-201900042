@@ -33,13 +33,21 @@ parser code
     public LinkedList<ErrorLenguaje> ErroresSintacticos = new LinkedList<ErrorLenguaje>();
     public LinkedList<Instruccion> TraduccionGo = new LinkedList<Instruccion>();
     public LinkedList<Instruccion> TraduccionPy = new LinkedList<Instruccion>();
-    public String mensajeError = ""; 
+    public String mensajeError = "";
+    public int auxfila, auxcolumna;
+    public String auxerror = ""; 
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
     public void syntax_error(Symbol s){
+        String lexema = s.value.toString();
+        auxerror = lexema;
+        int fila = s.right;
+        auxfila=fila;
+        int columna = s.left;
+        auxcolumna = columna;
         
-        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
+        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+lexema,fila,columna));
         mensajeError += "Error Sintáctico en la Línea " + (s.left) + " Columna "+s.right+ ". No se esperaba este componente: " +s.value+".\n";
         System.out.println("Error Sintáctico en la Línea " + (s.left) +
         " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
@@ -50,11 +58,17 @@ parser code
      * en el que ya no es posible una recuperación de errores.
      **/ 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+s.value.toString(),s.right,s.left));
-        mensajeError += "Error síntactico irrecuperable en la Línea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.\n";
-        System.out.println("Error síntactico irrecuperable en la Línea " + 
-        (s.left)+ " Columna "+s.right+". Componente " + s.value + 
-        " no reconocido."); 
+        String lexema = s.value.toString();
+        auxerror=lexema;
+        int fila = s.right;
+        auxfila=fila;
+        int columna = s.left;
+        
+        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Error irrecuperable: "+ lexema,fila,columna));
+        System.out.println("--------------- Error Sintactico, Panic Mode -------------------");
+        System.out.println("\t\tLexema: "+ lexema);
+        System.out.println("\t\tFila: "+ fila);
+        System.out.println("\t\tColumna: "+ columna);
     }
 :} 
 
@@ -117,7 +131,7 @@ INICIO::=INSTRUCCIONES
 ;
 INSTRUCCIONES::=MAIN                                                                                  
                |COMENTARIOS                                                                           
-               |error
+               |error                                                                                   
 ;
 MAIN::=RINICIO ALGORITMO:a RFIN                                                                         {:
                                                                                                             RESULT=(LinkedList) a;
@@ -132,6 +146,7 @@ MAIN::=RINICIO ALGORITMO:a RFIN                                                 
                                                                                                             TraduccionGo.add((Main) RESULT);
                                                                                                             TraduccionPy.add((Main) RESULT);
                                                                                                         :}
+      |error RFIN{:ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Existe un error sintactico,  carácter recuperado: "+auxerror,auxfila,auxcolumna));:}
 ;
 COMENTARIOS::=COMENTARIOS COMENTARIO
              |COMENTARIO
@@ -283,9 +298,9 @@ CONDICION::=RELACIONAL:a ROR RELACIONAL:b                                       
                                                                                                             RESULT=(Operacion)a;
                                                                                                         :}
 ;
-AGRUPACION::=PARIZQ CONDICION:a PARDER                                                                 {:  
+AGRUPACION::=PARIZQ CONDICION:a PARDER                                                                  {:  
                                                                                                             RESULT=new Operacion((Instruccion)a,Operacion.Tipo_operacion.AGRUPACION);
-                                                                                                        :}  
+                                                                                                        :}
 ;
 ASIGNACION::=LISTA_IDENTIFICADORES:l FLECHA EXPRESION:e PTCOMA                                          {:  
                                                                                                             RESULT=new Asignacion((Instruccion)e,(LinkedList)l);
@@ -303,6 +318,7 @@ FUNCION::=RFUNCION IDENTIFICADOR:a TIPODATO:b LOCAL:c RRETORNAR CONDICION:d PTCO
          |RFUNCION IDENTIFICADOR:a TIPODATO:b RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER RRETORNAR CONDICION:c PTCOMA RFINFUNCION{:  
                                                                                                             RESULT=new Funciones(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Parametro.Tipo_Variable) b,(LinkedList) l, new Retornar((Operacion) c));
                                                                                                         :}
+         |error RFINFUNCION{:ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Se esperaba palabra reservada FUNCION, carácter recuperado: "+auxerror,auxfila,auxcolumna));:}
 ;
 METODO::=RMETODO IDENTIFICADOR:a LOCAL:b RFINMETODO                                                     {:  
                                                                                                             RESULT=new Metodo((LinkedList) b ,new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR));
@@ -316,6 +332,7 @@ METODO::=RMETODO IDENTIFICADOR:a LOCAL:b RFINMETODO                             
         |RMETODO IDENTIFICADOR:a RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER RFINMETODO             {:  
                                                                                                             RESULT=new Metodo(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),(LinkedList) l);
                                                                                                         :}
+        |error RFINMETODO{:ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Se esperaba palabra reservada METODO, carácter recuperado: "+auxerror,auxfila,auxcolumna));:}
 ;
 LISTA_PARAMETROS::=LISTA_PARAMETROS:l COMA IDENTIFICADOR:a TIPODATO:b                                   {:  
                                                                                                             RESULT = new LinkedList<>();
@@ -390,6 +407,7 @@ ENTORNO_LOCAL::=ASIGNACION:a                                                    
                |COMENTARIOML:a                                                                          {:  
                                                                                                             RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_MILTILINEA, a);
                                                                                                         :}
+               |error PTCOMA{:ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Existe un error sintactico,  carácter recuperado: "+auxerror,auxfila,auxcolumna));:}
 ;
 CONDICIONAL_SI::=RSI CONDICION:a RENTONCES LOCAL:b RFINSI                                               {:  
                                                                                                             RESULT= new Si((Instruccion) a, (LinkedList) b);
@@ -421,7 +439,7 @@ SELECCION_MULTIPLE::=RSEGUN EXPRESION:a RHACER LISTA_VALORENTONCES:l RFINSEGUN  
                                                                                                         :}
                     |RSEGUN EXPRESION:a RHACER LISTA_VALORENTONCES:l RDELOCONTRARIO RENTONCES LOCAL:b RFINSEGUN{:  
                                                                                                             RESULT = new SeleccionMultiple((Instruccion)a, (LinkedList)l, (LinkedList) b);
-                                                                                                        :} 
+                                                                                                        :}
 ;
 LISTA_VALORENTONCES::=LISTA_VALORENTONCES:l INTABRE EXPRESION:e INTCIERRA RENTONCES LOCAL:a             {:  
                                                                                                             RESULT= new LinkedList<>();
@@ -461,6 +479,7 @@ CICLO_REPETIR::=RREPETIR LOCAL:a RHASTAQUE CONDICION:b                          
                |RREPETIR RHASTAQUE CONDICION:a                                                          {:  
                                                                                                             RESULT= new Repetir((Instruccion) a);
                                                                                                         :}
+
 ;
 EJECUTAR::=REJECUTAR IDENTIFICADOR:a PARIZQ PARDER PTCOMA                                               {:  
                                                                                                             RESULT= new Ejecutar(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),Ejecutar.Tipo_Variable.EJECUTAR);
@@ -468,6 +487,7 @@ EJECUTAR::=REJECUTAR IDENTIFICADOR:a PARIZQ PARDER PTCOMA                       
            |REJECUTAR IDENTIFICADOR:a PARIZQ INSERCION_PARAMETROS:l PARDER PTCOMA                       {:  
                                                                                                             RESULT= new Ejecutar(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),Ejecutar.Tipo_Variable.EJECUTAR,(LinkedList) l);
                                                                                                         :}
+           
 ;
 EJECUTAR_2::=REJECUTAR IDENTIFICADOR:a PARIZQ PARDER                                                    {:  
                                                                                                             RESULT= new Ejecutar(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),Ejecutar.Tipo_Variable.EXPRESION);
@@ -475,6 +495,7 @@ EJECUTAR_2::=REJECUTAR IDENTIFICADOR:a PARIZQ PARDER                            
             |REJECUTAR IDENTIFICADOR:a PARIZQ INSERCION_PARAMETROS:l PARDER                             {:  
                                                                                                             RESULT= new Ejecutar(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),Ejecutar.Tipo_Variable.EXPRESION,(LinkedList) l);
                                                                                                         :}
+            
 ;
 INSERCION_PARAMETROS::=INSERCION_PARAMETROS:l COMA EXPRESION:e                                          {:  
                                                                                                             RESULT = new LinkedList<>();
@@ -492,9 +513,11 @@ IMPRESION::=RIMPRIMIR EXPRESION:a PTCOMA                                        
                                                                                                             Main.importacion_print = true;
                                                                                                             RESULT= new Impresion(Impresion.Tipo_Impresion.SIN_SALTO,(Instruccion) a);
                                                                                                         :}
+           
 ;
 IMPRESION_CONSALTO::= RIMPRIMIRNL EXPRESION:a PTCOMA                                                    {:  
                                                                                                             Main.importacion_print = true;
                                                                                                             RESULT= new Impresion(Impresion.Tipo_Impresion.CON_SALTO,(Instruccion) a);
                                                                                                         :}
+                     
 ;

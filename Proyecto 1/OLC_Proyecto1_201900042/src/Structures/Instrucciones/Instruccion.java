@@ -4,6 +4,8 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
+
 /**
  *
  * @author Rodrigo
@@ -11,4 +13,5 @@ package Structures.Instrucciones;
 public interface Instruccion {
     public String traductorGolang(int identacion);
     public String traductorPython(int identacion);
+    public NodoDiagrama Diagrama();
 }

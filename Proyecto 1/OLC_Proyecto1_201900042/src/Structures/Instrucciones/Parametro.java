@@ -4,11 +4,18 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
+
 /**
  *
  * @author Rodrigo
  */
 public class Parametro implements Instruccion{
+
+    @Override
+    public NodoDiagrama Diagrama() {
+        return null;
+    }
     public static enum Tipo_Variable{
         CADENA,
         NUMERO,

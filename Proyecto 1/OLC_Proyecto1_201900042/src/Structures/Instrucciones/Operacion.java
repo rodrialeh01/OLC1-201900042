@@ -4,6 +4,8 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
+
 /**
  *
  * @author Rodrigo
@@ -198,5 +200,9 @@ public class Operacion implements Instruccion{
         }else{
             return "";
         }
-    }    
+    } 
+    @Override
+    public NodoDiagrama Diagrama() {
+        return null;
+    }
 }

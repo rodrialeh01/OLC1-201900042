@@ -4,6 +4,7 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
 import java.util.LinkedList;
 import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 
@@ -105,6 +106,20 @@ public class Para implements Instruccion{
             traductor= "";
         }
         return traductor;
+    }
+
+    @Override
+    public NodoDiagrama Diagrama() {
+         NodoDiagrama nuevo;
+        if (this.incremental == null) {
+            nuevo = new NodoDiagrama("Desde: " + this.identificador.traductorGolang(0) + " = " + this.operadorinicial.traductorGolang(0) + ";\nHasta: " + this.operadorfinal.traductorGolang(0) + "\nIncremento: 1" ,"CONDICION");
+        }else{
+            nuevo = new NodoDiagrama("Desde: " + this.identificador.traductorGolang(0) + " = " + this.operadorinicial.traductorGolang(0) + ";\nHasta: " + this.operadorfinal.traductorGolang(0) + "\nIncremento: " + this.incremental.traductorPython(0) ,"CONDICION");
+        }
+        if(this.listaInstrucciones != null){
+            nuevo.agregarHijosCondicion(this.listaInstrucciones.get(0).Diagrama(), "SI");
+        }
+        return nuevo;
     }
     
 }

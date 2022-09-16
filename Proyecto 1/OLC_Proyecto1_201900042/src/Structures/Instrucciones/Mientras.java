@@ -4,6 +4,7 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
 import java.util.LinkedList;
 import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 
@@ -52,6 +53,17 @@ public class Mientras implements Instruccion{
         }
         traduccion += "\n";
         return traduccion;
+    }
+
+    @Override
+    public NodoDiagrama Diagrama() {
+        NodoDiagrama nuevo = new NodoDiagrama("mientras " + this.condicion.traductorGolang(0),"CONDICION");
+        if(this.listaInstrucciones != null){
+            nuevo.agregarHijosCondicion(this.listaInstrucciones.get(0).Diagrama(), "SI");
+            int finallista = this.listaInstrucciones.size()-1;
+            this.listaInstrucciones.get(finallista).Diagrama().agregarHijos(nuevo);
+        }
+        return nuevo;
     }
     
 }

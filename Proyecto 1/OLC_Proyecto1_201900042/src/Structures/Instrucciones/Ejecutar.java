@@ -4,6 +4,7 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
 import java.util.LinkedList;
 import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 
@@ -107,5 +108,26 @@ public class Ejecutar implements Instruccion{
         }else{
             return "";
         }
+    }
+    
+    @Override
+    public NodoDiagrama Diagrama() {
+        NodoDiagrama nuevo;
+        if (this.listaParametros == null) {
+            nuevo = new NodoDiagrama("llamar al algoritmo"  + this.identificador.traductorGolang(0),"PROCESO");
+            return nuevo;
+        } else if (this.listaParametros != null) {
+            String params = "";
+            for (int i = 0; i < this.listaParametros.size(); i++) {
+                if (i == this.listaParametros.size() - 1) {
+                    params += this.listaParametros.get(i).traductorGolang(0);
+                    break;
+                }
+                params += this.listaParametros.get(i).traductorGolang(0) + ",";
+            }
+            nuevo = new NodoDiagrama("llamar al algoritmo"  + this.identificador.traductorGolang(0) + "\ncon parametros:\n" + params,"PROCESO");
+            return nuevo;
+        }
+        return null;
     }
 }

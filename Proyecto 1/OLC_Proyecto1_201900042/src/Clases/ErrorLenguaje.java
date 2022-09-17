@@ -9,11 +9,12 @@ package Clases;
  * @author Rodrigo
  */
 public class ErrorLenguaje {
-    String tipo, descripcion;
+    String tipo,caracter, descripcion;
     int linea,columna;
 
-    public ErrorLenguaje(String tipo, String descripcion, int linea, int columna) {
+    public ErrorLenguaje(String tipo,String caracter, String descripcion, int linea, int columna) {
         this.tipo = tipo;
+        this.caracter = caracter;
         this.descripcion = descripcion;
         this.linea = linea;
         this.columna = columna;
@@ -33,6 +34,14 @@ public class ErrorLenguaje {
 
     public int getColumna() {
         return columna;
+    }
+
+    public String getCaracter() {
+        return caracter;
+    }
+
+    public void setCaracter(String caracter) {
+        this.caracter = caracter;
     }
     
 }

@@ -54,11 +54,11 @@ public class Repetir implements Instruccion{
 
     @Override
     public NodoDiagrama Diagrama() {
-        NodoDiagrama nuevo = new NodoDiagrama("repetir mientras" + this.condicion.traductorGolang(0), "CONDICION");
+        NodoDiagrama nuevo = new NodoDiagrama("repetir mientras" + this.condicion.traductorGolang(0), "CICLO_DW");
         if(this.listaInstrucciones != null){
-            nuevo.agregarHijosCondicion(this.listaInstrucciones.get(0).Diagrama(), "SI");
+            nuevo.agregarHijos(this.listaInstrucciones.get(0).Diagrama());
             int finallista = this.listaInstrucciones.size()-1;
-            this.listaInstrucciones.get(finallista).Diagrama().agregarHijos(nuevo);
+            this.listaInstrucciones.get(finallista).Diagrama().agregarHijosCondicion(nuevo,"SI");
         }
         return nuevo;
     }

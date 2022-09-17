@@ -4,6 +4,7 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
 import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 
 /**
@@ -55,5 +56,10 @@ public class Comentarios implements Instruccion{
         }else{
             return "";
         }
+    }
+    
+    @Override
+    public NodoDiagrama Diagrama() {
+       return null;
     }
 }

@@ -65,4 +65,13 @@ public class NodoDiagrama {
         this.hijos.add(hijo);
         this.condicion = condicion;
     }
+
+    public String getCondicion() {
+        return condicion;
+    }
+
+    public void setCondicion(String condicion) {
+        this.condicion = condicion;
+    }
+    
 }

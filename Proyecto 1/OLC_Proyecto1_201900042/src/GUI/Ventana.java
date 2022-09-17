@@ -6,6 +6,7 @@ package GUI;
 
 import Clases.ErrorLenguaje;
 import Structures.Arbol;
+import Structures.Diagrama;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.BufferedReader;
@@ -31,7 +32,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Structures.Instrucciones.Instruccion;
+import Structures.Instrucciones.Main;
 import Structures.Nodo;
+import Structures.ReporteErrores;
+import java.io.FileOutputStream;
 import java.util.LinkedList;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -54,6 +58,9 @@ public class Ventana extends javax.swing.JFrame {
 
     public LinkedList<Instruccion> resultadogo;
     public LinkedList<Instruccion> resultadopy;
+    public LinkedList<Instruccion> listadiag;
+    public LinkedList<ErrorLenguaje> lexerrores;
+    public LinkedList<ErrorLenguaje> sintaxerrores;
     public boolean BanderaGo = false;
     public boolean BanderaPy = false;
     Nodo raiz;
@@ -413,11 +420,29 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
+        if (listadiag != null) {
+            String codigodiag = "digraph G {\nsplines=false;\n";
+            Diagrama Flowchart = new Diagrama();
+            for (Instruccion ins: listadiag) {
+                codigodiag += Flowchart.graficarDiagrama(ins.Diagrama());
+            }
+            codigodiag += "}";
+            try (FileOutputStream archivo = new FileOutputStream("./Diagrama.dot")) {
+                archivo.write(codigodiag.getBytes());
+                archivo.close();
+                Runtime.getRuntime().exec("dot -Tpdf Diagrama.dot -o Diagrama.pdf");
+                Flowchart.abrirDiagrama();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Primero escribe correctamente tu pseudocódigo para poder mostrar el diagrama de flujo");
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
+        ReporteErrores report = new ReporteErrores(lexerrores, sintaxerrores);
+        report.generarReporte();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -443,10 +468,13 @@ public class Ventana extends javax.swing.JFrame {
             
             try {
                 sintactico.parse();
+                lexerrores = lexico.ErroresLexicos;
+                sintaxerrores = sintactico.ErroresSintacticos;
                 if(sintactico.ErroresSintacticos.size() == 0 && lexico.ErroresLexicos.size() == 0){
                     System.out.println("===========================================================================");
                     resultadogo = sintactico.TraduccionGo;
                     resultadopy = sintactico.TraduccionPy;
+                    listadiag = sintactico.DiagramaF;
                     jTextArea1.setText("Analisis éxitoso, puedes comenzar a traducir");
                     OLC_Proyecto1_201900042.id_sig = 0;
                     Analizador_Lexico lexico2 = new Analizador_Lexico(new BufferedReader(new StringReader(textArea.getText())));
@@ -454,11 +482,14 @@ public class Ventana extends javax.swing.JFrame {
                     arbolAST.parse();
                     raiz = arbolAST.Raiz;
                 }else{
-                    jTextArea1.setText(sintactico.mensajeError);
-                    System.out.println(sintactico.ErroresSintacticos.size());
-                    for(ErrorLenguaje error: sintactico.ErroresSintacticos){
-                        System.out.println(error.getDescripcion());
+                    String errortxt = "";
+                    for (ErrorLenguaje error:lexico.ErroresLexicos) {
+                        errortxt+= "Error Lexico en la linea "+error.getLinea() + ", columna " + error.getColumna()+", caracter " + error.getCaracter() + " no esperado.\n";
                     }
+                    for (ErrorLenguaje error:sintactico.ErroresSintacticos) {
+                        errortxt+= "Error Sintáctico en la linea "+error.getLinea() + ", columna " + error.getColumna()+", No se esperaba " + error.getCaracter() + "\n";
+                    }
+                    jTextArea1.setText(errortxt);
                 }
             } catch (Exception ex) {
                 Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);

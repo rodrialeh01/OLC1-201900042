@@ -1,0 +1,12 @@
+digraph G {
+splines=false;
+1[shape="ellipse", label="INICIO
+main"];
+1 -> 2;
+2[shape="diamond", label="_a_>_b_"];
+2 -> 3[label="SI"];
+3[shape="parallelogram", label="mostrar: _b_"];
+2 -> 4[label="SI"];
+4[shape="ellipse", label="FIN
+main"];
+}

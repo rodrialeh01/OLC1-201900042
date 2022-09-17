@@ -101,8 +101,9 @@ public class Si implements Instruccion{
     @Override
     public NodoDiagrama Diagrama() {
         NodoDiagrama nuevo = new NodoDiagrama(this.condicion.traductorGolang(0), "CONDICION");
+        NodoDiagrama temp = this.listaInstrucciones.get(0).Diagrama();
         if(this.listaInstrucciones != null){
-            nuevo.agregarHijosCondicion(this.listaInstrucciones.get(0).Diagrama(), "SI");
+            nuevo.agregarHijosCondicion(temp, "SI");
         }
         if(this.listaOSiInstrucciones != null){
             nuevo.agregarHijosCondicion(this.listaOSiInstrucciones.get(0).Diagrama(), "NO");

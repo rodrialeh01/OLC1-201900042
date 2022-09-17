@@ -57,7 +57,7 @@ public class Mientras implements Instruccion{
 
     @Override
     public NodoDiagrama Diagrama() {
-        NodoDiagrama nuevo = new NodoDiagrama("mientras " + this.condicion.traductorGolang(0),"CONDICION");
+        NodoDiagrama nuevo = new NodoDiagrama("mientras " + this.condicion.traductorGolang(0),"CICLO_W");
         if(this.listaInstrucciones != null){
             nuevo.agregarHijosCondicion(this.listaInstrucciones.get(0).Diagrama(), "SI");
             int finallista = this.listaInstrucciones.size()-1;

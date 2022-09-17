@@ -27,7 +27,6 @@ public class Arbol {
         codigo += "\n}";
         System.out.println(codigo);
         try (FileOutputStream archivo = new FileOutputStream("./AST.dot")) {
-            // Cerrar archivo
             archivo.write(codigo.getBytes());
             archivo.close();
             Runtime.getRuntime().exec("dot -Tpdf AST.dot -o AST.pdf");

@@ -23,6 +23,7 @@ import Structures.Instrucciones.Osi;
 import java.util.LinkedList;
 import Structures.Nodo;
 import Structures.Arbol;
+import Structures.NodoDiagrama;
 
 
 parser code 
@@ -33,21 +34,14 @@ parser code
     public LinkedList<ErrorLenguaje> ErroresSintacticos = new LinkedList<ErrorLenguaje>();
     public LinkedList<Instruccion> TraduccionGo = new LinkedList<Instruccion>();
     public LinkedList<Instruccion> TraduccionPy = new LinkedList<Instruccion>();
+    public LinkedList<Instruccion> DiagramaF = new LinkedList<Instruccion>();
     public String mensajeError = "";
-    public int auxfila, auxcolumna;
-    public String auxerror = ""; 
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
     public void syntax_error(Symbol s){
-        String lexema = s.value.toString();
-        auxerror = lexema;
-        int fila = s.right;
-        auxfila=fila;
-        int columna = s.left;
-        auxcolumna = columna;
         
-        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Carácter no esperado: "+lexema,fila,columna));
+        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico",s.value.toString(),"Error sintactico no esperado: "+s.value,s.left,s.right));
         mensajeError += "Error Sintáctico en la Línea " + (s.left) + " Columna "+s.right+ ". No se esperaba este componente: " +s.value+".\n";
         System.out.println("Error Sintáctico en la Línea " + (s.left) +
         " Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
@@ -58,17 +52,10 @@ parser code
      * en el que ya no es posible una recuperación de errores.
      **/ 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        String lexema = s.value.toString();
-        auxerror=lexema;
-        int fila = s.right;
-        auxfila=fila;
-        int columna = s.left;
-        
-        ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Error irrecuperable: "+ lexema,fila,columna));
-        System.out.println("--------------- Error Sintactico, Panic Mode -------------------");
-        System.out.println("\t\tLexema: "+ lexema);
-        System.out.println("\t\tFila: "+ fila);
-        System.out.println("\t\tColumna: "+ columna);
+        //ErroresSintacticos.add(new ErrorLenguaje("Sintáctico",s.value.toString(),"Error sintactico irrecuperable: "+s.value,s.left,s.right));
+ System.out.println("Error síntactico irrecuperable en la Línea " + 
+        (s.left)+ " Columna "+s.right+". Componente " + s.value + 
+        " no reconocido."); 
     }
 :} 
 
@@ -130,14 +117,14 @@ start with INICIO;
 INICIO::=INSTRUCCIONES                                                                                                                                                             
 ;
 INSTRUCCIONES::=MAIN                                                                                  
-               |COMENTARIOS                                                                           
-               |error                                                                                   
+               |COMENTARIOS                                                                                     
 ;
 MAIN::=RINICIO ALGORITMO:a RFIN                                                                         {:
                                                                                                             RESULT=(LinkedList) a;
                                                                                                             Main m = new Main((LinkedList) a);
                                                                                                             TraduccionGo.addFirst((Instruccion) m);
-                                                                                                            TraduccionPy.addLast((Instruccion) m);
+                                                                                                            TraduccionPy.addLast((Instruccion) m);  
+                                                                                                            DiagramaF.add((Instruccion) m);
                                                                                                         :}                                                         
       |RINICIO RFIN                                                                                     {:
                                                                                                             Main.importacion_print = false;
@@ -145,8 +132,9 @@ MAIN::=RINICIO ALGORITMO:a RFIN                                                 
                                                                                                             RESULT=new Main();
                                                                                                             TraduccionGo.add((Main) RESULT);
                                                                                                             TraduccionPy.add((Main) RESULT);
+                                                                                                            DiagramaF.add((Main) RESULT);
                                                                                                         :}
-      |error RFIN{:ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Existe un error sintactico,  carácter recuperado: "+auxerror,auxfila,auxcolumna));:}
+      |error RFIN
 ;
 COMENTARIOS::=COMENTARIOS COMENTARIO
              |COMENTARIO
@@ -177,6 +165,12 @@ ALGORITMO::=ALGORITMO:a GLOBAL:b                                                
                                                                                                                 RESULT.add((Instruccion) a);
                                                                                                             }
                                                                                                         :}
+           |error GLOBAL:a                                                                                {:
+                                                                                                            if(a != null){
+                                                                                                                RESULT= new LinkedList<Instruccion>();
+                                                                                                                RESULT.add((Instruccion) a);
+                                                                                                            }
+                                                                                                        :}
 ;
 GLOBAL::= ENTORNO_LOCAL:a                                                                               {:  
                                                                                                             RESULT= (Instruccion) a;
@@ -185,6 +179,7 @@ GLOBAL::= ENTORNO_LOCAL:a                                                       
          |FYM:a                                                                                         {:  
                                                                                                             TraduccionGo.addLast((Instruccion) a);
                                                                                                             TraduccionPy.add((Instruccion) a);
+                                                                                                            DiagramaF.add((Instruccion) a);
                                                                                                         :}
 ;
 FYM::=FUNCION:a                                                                                         {:  
@@ -318,7 +313,6 @@ FUNCION::=RFUNCION IDENTIFICADOR:a TIPODATO:b LOCAL:c RRETORNAR CONDICION:d PTCO
          |RFUNCION IDENTIFICADOR:a TIPODATO:b RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER RRETORNAR CONDICION:c PTCOMA RFINFUNCION{:  
                                                                                                             RESULT=new Funciones(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR), (Parametro.Tipo_Variable) b,(LinkedList) l, new Retornar((Operacion) c));
                                                                                                         :}
-         |error RFINFUNCION{:ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Se esperaba palabra reservada FUNCION, carácter recuperado: "+auxerror,auxfila,auxcolumna));:}
 ;
 METODO::=RMETODO IDENTIFICADOR:a LOCAL:b RFINMETODO                                                     {:  
                                                                                                             RESULT=new Metodo((LinkedList) b ,new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR));
@@ -332,7 +326,6 @@ METODO::=RMETODO IDENTIFICADOR:a LOCAL:b RFINMETODO                             
         |RMETODO IDENTIFICADOR:a RCONPARAMETROS PARIZQ LISTA_PARAMETROS:l PARDER RFINMETODO             {:  
                                                                                                             RESULT=new Metodo(new Operacion(a,Operacion.Tipo_operacion.IDENTIFICADOR),(LinkedList) l);
                                                                                                         :}
-        |error RFINMETODO{:ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Se esperaba palabra reservada METODO, carácter recuperado: "+auxerror,auxfila,auxcolumna));:}
 ;
 LISTA_PARAMETROS::=LISTA_PARAMETROS:l COMA IDENTIFICADOR:a TIPODATO:b                                   {:  
                                                                                                             RESULT = new LinkedList<>();
@@ -407,7 +400,6 @@ ENTORNO_LOCAL::=ASIGNACION:a                                                    
                |COMENTARIOML:a                                                                          {:  
                                                                                                             RESULT=new Comentarios(Comentarios.Tipo_Comentario.COMENTARIO_MILTILINEA, a);
                                                                                                         :}
-               |error PTCOMA{:ErroresSintacticos.add(new ErrorLenguaje("Sintáctico","Existe un error sintactico,  carácter recuperado: "+auxerror,auxfila,auxcolumna));:}
 ;
 CONDICIONAL_SI::=RSI CONDICION:a RENTONCES LOCAL:b RFINSI                                               {:  
                                                                                                             RESULT= new Si((Instruccion) a, (LinkedList) b);

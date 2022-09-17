@@ -4,6 +4,7 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
 import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 
 /**
@@ -48,5 +49,11 @@ public class Impresion implements Instruccion{
             traduccion="";
         }
         return traduccion;
+    }
+    
+    @Override
+    public NodoDiagrama Diagrama() {
+        NodoDiagrama nuevo = new NodoDiagrama("mostrar: " + this.condicion.traductorGolang(0),"SALIDA");
+        return nuevo;
     }
 }

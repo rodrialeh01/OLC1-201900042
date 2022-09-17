@@ -128,10 +128,41 @@ public class Metodo implements Instruccion {
     @Override
     public NodoDiagrama Diagrama() {
         NodoDiagrama nuevo = new NodoDiagrama("INICIO\nmetodo:" + this.identificador.traductorGolang(0),"TERMINAL");
+        NodoDiagrama temp;
         if(this.listaParametros == null){
             if(this.instrucciones!= null){
-                nuevo.agregarHijos(this.instrucciones.get(0).Diagrama());
-                this.instrucciones.get(this.instrucciones.size()-1).Diagrama().agregarHijos(new NodoDiagrama("FIN\nmetodo","TERMINAL"));
+                for (int i = 0; i < this.instrucciones.size(); i++) {
+                    if(this.instrucciones.get(i).Diagrama().getTipo().equals("ENTRADA/SALIDA")){
+                        if(i != this.instrucciones.size()-1){
+                            temp = this.instrucciones.get(i).Diagrama();
+                            temp.agregarHijos(this.instrucciones.get(i+1).Diagrama());
+                        }
+                    }else if(this.instrucciones.get(i).Diagrama().getTipo().equals("SALIDA")){
+                        if(i != this.instrucciones.size()-1){
+                            temp = this.instrucciones.get(i).Diagrama();
+                            temp.agregarHijos(this.instrucciones.get(i+1).Diagrama());
+                        }
+                    }else if(this.instrucciones.get(i).Diagrama().getTipo().equals("CICLO_DW")){
+                        if(i != this.instrucciones.size()-1){
+                            temp = this.instrucciones.get(i).Diagrama();
+                            temp.agregarHijosCondicion(this.instrucciones.get(i+1).Diagrama(),"NO");
+                        }
+                    }
+                }
+                if(this.instrucciones.get(this.instrucciones.size()-1).Diagrama().getTipo().equals("ENTRADA/SALIDA")){
+                    temp = this.instrucciones.get(this.instrucciones.size()-1).Diagrama();
+                    temp.agregarHijos(new NodoDiagrama("FIN\nmetodo","TERMINAL"));
+                }else if(this.instrucciones.get(this.instrucciones.size()-1).Diagrama().getTipo().equals("SALIDA")){
+                    temp = this.instrucciones.get(this.instrucciones.size()-1).Diagrama();
+                    temp.agregarHijos(new NodoDiagrama("FIN\nmetodo","TERMINAL"));
+                }else if(this.instrucciones.get(this.instrucciones.size()-1).Diagrama().getTipo().equals("CICLO_DW")){
+                    temp = this.instrucciones.get(this.instrucciones.size()-1).Diagrama();
+                    temp.agregarHijosCondicion(new NodoDiagrama("FIN\nmetodo","TERMINAL"),"NO");
+                }else{
+                    temp = this.instrucciones.get(this.instrucciones.size()-1).Diagrama();
+                    temp.agregarHijos(new NodoDiagrama("FIN\nmetodo","TERMINAL"));
+                }
+                nuevo.agregarHijos(temp);
             }else{
                 nuevo.agregarHijos(new NodoDiagrama("FIN\nmetodo","TERMINAL"));
             }
@@ -147,8 +178,38 @@ public class Metodo implements Instruccion {
             NodoDiagrama nuevo2 = new NodoDiagrama(variables,"ENTRADA/SALIDA");
             nuevo.agregarHijos(nuevo2);
             if(this.instrucciones!= null){
-                nuevo2.agregarHijos(this.instrucciones.get(0).Diagrama());
-                this.instrucciones.get(this.instrucciones.size()-1).Diagrama().agregarHijos(new NodoDiagrama("FIN\nmetodo","TERMINAL"));
+                for (int i = 0; i < this.instrucciones.size(); i++) {
+                    if(this.instrucciones.get(i).Diagrama().getTipo().equals("ENTRADA/SALIDA")){
+                        if(i != this.instrucciones.size()-1){
+                            temp = this.instrucciones.get(i).Diagrama();
+                            temp.agregarHijos(this.instrucciones.get(i+1).Diagrama());
+                        }
+                    }else if(this.instrucciones.get(i).Diagrama().getTipo().equals("SALIDA")){
+                        if(i != this.instrucciones.size()-1){
+                            temp = this.instrucciones.get(i).Diagrama();
+                            temp.agregarHijos(this.instrucciones.get(i+1).Diagrama());
+                        }
+                    }else if(this.instrucciones.get(i).Diagrama().getTipo().equals("CICLO_DW")){
+                        if(i != this.instrucciones.size()-1){
+                            temp = this.instrucciones.get(i).Diagrama();
+                            temp.agregarHijosCondicion(this.instrucciones.get(i+1).Diagrama(),"NO");
+                        }
+                    }
+                }
+                if(this.instrucciones.get(this.instrucciones.size()-1).Diagrama().getTipo().equals("ENTRADA/SALIDA")){
+                    temp = this.instrucciones.get(this.instrucciones.size()-1).Diagrama();
+                    temp.agregarHijos(new NodoDiagrama("FIN\nmetodo","TERMINAL"));
+                }else if(this.instrucciones.get(this.instrucciones.size()-1).Diagrama().getTipo().equals("SALIDA")){
+                    temp = this.instrucciones.get(this.instrucciones.size()-1).Diagrama();
+                    temp.agregarHijos(new NodoDiagrama("FIN\nmetodo","TERMINAL"));
+                }else if(this.instrucciones.get(this.instrucciones.size()-1).Diagrama().getTipo().equals("CICLO_DW")){
+                    temp = this.instrucciones.get(this.instrucciones.size()-1).Diagrama();
+                    temp.agregarHijosCondicion(new NodoDiagrama("FIN\nmetodo","TERMINAL"),"NO");
+                }else{
+                    temp = this.instrucciones.get(this.instrucciones.size()-1).Diagrama();
+                    temp.agregarHijos(new NodoDiagrama("FIN\nmetodo","TERMINAL"));
+                }
+                nuevo2.agregarHijos(temp);
             }else{
                 nuevo2.agregarHijos(new NodoDiagrama("FIN\nmetodo","TERMINAL"));
             }

@@ -4,6 +4,7 @@
  */
 package Structures.Instrucciones;
 
+import Structures.NodoDiagrama;
 import java.util.LinkedList;
 import olc_proyecto1_201900042.OLC_Proyecto1_201900042;
 
@@ -36,5 +37,14 @@ public class Asignacion implements Instruccion{
         }
         return asignaciones;
     }
-    
+
+    @Override
+    public NodoDiagrama Diagrama() {
+        String ids = "Asignar:\n";
+        for (Instruccion ins: this.listaidentificadores) {
+            ids+= ins.traductorGolang(0) + " = " + valor.traductorGolang(0) + "\n";
+        }
+        NodoDiagrama nuevo = new NodoDiagrama(ids,"ENTRADA/SALIDA");
+        return nuevo;
+    }
 }

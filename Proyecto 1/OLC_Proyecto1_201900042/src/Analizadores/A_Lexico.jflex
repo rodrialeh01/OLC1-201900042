@@ -11,6 +11,7 @@ import Clases.ErrorLenguaje;
 %{
     //CODIGO DE JAVA
     public LinkedList<ErrorLenguaje> ErroresLexicos = new LinkedList<ErrorLenguaje>();
+    public String messagerror = "";
 %}
 
 //Directivas
@@ -125,5 +126,6 @@ INTERROGACIONA = [\¿]
 . {
     System.out.println("Este es un error lexico: "+yytext()+
     ", en la linea: "+yyline+", en la columna: "+yychar);
-    ErroresLexicos.add(new ErrorLenguaje("Lexico","El caracter " + yytext()+ "no es válido en el lenguaje", yyline,yychar));
+    ErroresLexicos.add(new ErrorLenguaje("Lexico",yytext(),"El caracter " + yytext()+ " no es válido en el lenguaje", yyline,yychar));
+    messagerror+= "Este es un error lexico: "+yytext()+ ", en la linea: "+yyline+", en la columna: "+yychar + "\n";
 }

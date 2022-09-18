@@ -37,6 +37,7 @@ import Structures.Nodo;
 import Structures.ReporteErrores;
 import java.io.FileOutputStream;
 import java.util.LinkedList;
+import javax.swing.ImageIcon;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
@@ -54,8 +55,12 @@ public class Ventana extends javax.swing.JFrame {
         initComponents();
         jTextArea1.setEditable(false);
         RSyntax();
+        inicializar();
     }
-
+    private void inicializar() {
+        ImageIcon icono = new ImageIcon("src/GUI/Imagenes/logomini.png");
+        this.setIconImage(icono.getImage());
+    }
     public LinkedList<Instruccion> resultadogo;
     public LinkedList<Instruccion> resultadopy;
     public LinkedList<Instruccion> listadiag;
@@ -188,7 +193,7 @@ public class Ventana extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Century Gothic", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Ps-Traductor");
+        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Usuario\\OneDrive\\Documentos\\OLC1-201900042\\Proyecto 1\\OLC_Proyecto1_201900042\\src\\GUI\\Imagenes\\logo.png")); // NOI18N
 
         jButton1.setBackground(new java.awt.Color(204, 204, 204));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GUI/Imagenes/play.png"))); // NOI18N
@@ -470,6 +475,8 @@ public class Ventana extends javax.swing.JFrame {
                 sintactico.parse();
                 lexerrores = lexico.ErroresLexicos;
                 sintaxerrores = sintactico.ErroresSintacticos;
+                int totalerrores = lexerrores.size() + sintaxerrores.size();
+                this.jLabel3.setText(String.valueOf(totalerrores));
                 if(sintactico.ErroresSintacticos.size() == 0 && lexico.ErroresLexicos.size() == 0){
                     System.out.println("===========================================================================");
                     resultadogo = sintactico.TraduccionGo;
@@ -667,11 +674,15 @@ public class Ventana extends javax.swing.JFrame {
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         if(!textArea.equals("")){
-            try {
-                Arbol a = new Arbol();
-                a.graficarAST(raiz);
-            } catch (Exception ex) {
-                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+            if(lexerrores.size() != 0 && sintaxerrores.size() != 0){
+                try {
+                    Arbol a = new Arbol();
+                    a.graficarAST(raiz);
+                } catch (Exception ex) {
+                    Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else{
+                JOptionPane.showMessageDialog(this, "Primero corrige tus errores para poder generar el AST.");
             }
         }else{
             JOptionPane.showMessageDialog(this, "Primero traduce tu pseudocódigo para poder generar el AST.");

@@ -1286,7 +1286,8 @@ class CUP$AST$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$AST$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$AST$stack.peek()).value;
 		  
-                                                                                                            RESULT=new Nodo(a,"ENTERO");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "ENTERO"));
                                                                                                         
               CUP$AST$result = parser.getSymbolFactory().newSymbol("EXPRESION",5, ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), RESULT);
             }
@@ -1300,7 +1301,8 @@ class CUP$AST$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$AST$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$AST$stack.peek()).value;
 		  
-                                                                                                            RESULT=new Nodo(a, "DECIMAL");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "DECIMAL"));
                                                                                                         
               CUP$AST$result = parser.getSymbolFactory().newSymbol("EXPRESION",5, ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), RESULT);
             }
@@ -1314,7 +1316,8 @@ class CUP$AST$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$AST$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$AST$stack.peek()).value;
 		  
-                                                                                                            RESULT=new Nodo(a, "CADENA");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "CADENA"));
                                                                                                         
               CUP$AST$result = parser.getSymbolFactory().newSymbol("EXPRESION",5, ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), RESULT);
             }
@@ -1328,7 +1331,8 @@ class CUP$AST$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$AST$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$AST$stack.peek()).value;
 		  
-                                                                                                            RESULT=new Nodo(a, "CARACTER");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "CARACTER"));
                                                                                                         
               CUP$AST$result = parser.getSymbolFactory().newSymbol("EXPRESION",5, ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), RESULT);
             }
@@ -1342,7 +1346,8 @@ class CUP$AST$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$AST$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$AST$stack.peek()).value;
 		  
-                                                                                                            RESULT=new Nodo(a, "ASCCI");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "ASCCI"));
                                                                                                         
               CUP$AST$result = parser.getSymbolFactory().newSymbol("EXPRESION",5, ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), RESULT);
             }
@@ -1356,7 +1361,8 @@ class CUP$AST$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$AST$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$AST$stack.peek()).value;
 		  
-                                                                                                            RESULT=new Nodo(a, "VERDADERO");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "RVERDADERO"));
                                                                                                         
               CUP$AST$result = parser.getSymbolFactory().newSymbol("EXPRESION",5, ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), RESULT);
             }
@@ -1370,7 +1376,8 @@ class CUP$AST$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$AST$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$AST$stack.peek()).value;
 		  
-                                                                                                            RESULT=new Nodo(a, "FALSO");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "RFALSO"));
                                                                                                         
               CUP$AST$result = parser.getSymbolFactory().newSymbol("EXPRESION",5, ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), RESULT);
             }
@@ -1384,7 +1391,8 @@ class CUP$AST$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$AST$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$AST$stack.peek()).value;
 		  
-                                                                                                            RESULT=new Nodo(a, "IDENTIFICADOR");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "IDENTIFICADOR"));
                                                                                                         
               CUP$AST$result = parser.getSymbolFactory().newSymbol("EXPRESION",5, ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), ((java_cup.runtime.Symbol)CUP$AST$stack.peek()), RESULT);
             }

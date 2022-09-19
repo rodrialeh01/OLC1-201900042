@@ -675,15 +675,11 @@ public class Ventana extends javax.swing.JFrame {
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         if(!textArea.equals("")){
-            if(lexerrores.size() != 0 && sintaxerrores.size() != 0){
-                try {
-                    Arbol a = new Arbol();
-                    a.graficarAST(raiz);
-                } catch (Exception ex) {
-                    Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }else{
-                JOptionPane.showMessageDialog(this, "Primero corrige tus errores para poder generar el AST.");
+            try {
+                Arbol a = new Arbol();
+                a.graficarAST(raiz);
+            } catch (Exception ex) {
+                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else{
             JOptionPane.showMessageDialog(this, "Primero traduce tu pseudocódigo para poder generar el AST.");

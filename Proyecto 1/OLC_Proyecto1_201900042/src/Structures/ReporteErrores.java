@@ -89,7 +89,7 @@ public class ReporteErrores {
         abrirReporte();
     }
     public void crearReporte(){
-        File reporte1 = new File("Reporte_Errores.html");
+        File reporte1 = new File("./Reportes/Reporte_Errores.html");
         try{
             FileWriter escribir = new FileWriter(reporte1);
             escribir.write(textohtml.toString());
@@ -102,7 +102,7 @@ public class ReporteErrores {
     public void abrirReporte(){
         try
         {
-            File file = new File("Reporte_Errores.html");
+            File file = new File("./Reportes/Reporte_Errores.html");
             if(!Desktop.isDesktopSupported())
             {
                 System.out.println("not supported");

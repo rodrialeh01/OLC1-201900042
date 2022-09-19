@@ -68,7 +68,7 @@ public class Diagrama {
     public void abrirDiagrama(){
         try
         {
-            File file = new File("Diagrama.pdf");
+            File file = new File("./Reportes/Diagrama.pdf");
             if(!Desktop.isDesktopSupported())
             {
                 System.out.println("not supported");

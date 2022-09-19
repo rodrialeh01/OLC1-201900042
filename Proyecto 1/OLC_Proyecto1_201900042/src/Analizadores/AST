@@ -195,28 +195,36 @@ LISTA_IDENTIFICADORES::=LISTA_IDENTIFICADORES:a COMA IDENTIFICADOR:b            
                                                                                                         :}
 ;
 EXPRESION::=ENTERO:a                                                                                    {:  
-                                                                                                            RESULT=new Nodo(a,"ENTERO");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "ENTERO"));
                                                                                                         :}
             |DECIMAL:a                                                                                  {:  
-                                                                                                            RESULT=new Nodo(a, "DECIMAL");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "DECIMAL"));
                                                                                                         :}
             |CADENA:a                                                                                   {:  
-                                                                                                            RESULT=new Nodo(a, "CADENA");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "CADENA"));
                                                                                                         :}
             |CARACTER:a                                                                                 {:  
-                                                                                                            RESULT=new Nodo(a, "CARACTER");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "CARACTER"));
                                                                                                         :}
             |CARASCCI:a                                                                                 {:  
-                                                                                                            RESULT=new Nodo(a, "ASCCI");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "ASCCI"));
                                                                                                         :}
             |RVERDADERO:a                                                                               {:  
-                                                                                                            RESULT=new Nodo(a, "VERDADERO");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "RVERDADERO"));
                                                                                                         :}
             |RFALSO:a                                                                                   {:  
-                                                                                                            RESULT=new Nodo(a, "FALSO");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "RFALSO"));
                                                                                                         :}
             |IDENTIFICADOR:a                                                                            {:  
-                                                                                                            RESULT=new Nodo(a, "IDENTIFICADOR");
+                                                                                                            RESULT=new Nodo("EXPRESION","");
+                                                                                                            RESULT.agregarHijo(new Nodo(a, "IDENTIFICADOR"));
                                                                                                         :}
             |RESTA EXPRESION:a                                                                          {:  
                                                                                                             RESULT=new Nodo("EXPRESION", "");

@@ -35,6 +35,7 @@ import Structures.Instrucciones.Instruccion;
 import Structures.Instrucciones.Main;
 import Structures.Nodo;
 import Structures.ReporteErrores;
+import java.awt.Desktop;
 import java.io.FileOutputStream;
 import java.util.LinkedList;
 import javax.swing.ImageIcon;
@@ -432,10 +433,10 @@ public class Ventana extends javax.swing.JFrame {
                 codigodiag += Flowchart.graficarDiagrama(ins.Diagrama());
             }
             codigodiag += "}";
-            try (FileOutputStream archivo = new FileOutputStream("./Diagrama.dot")) {
+            try (FileOutputStream archivo = new FileOutputStream("./Reportes/Diagrama.dot")) {
                 archivo.write(codigodiag.getBytes());
                 archivo.close();
-                Runtime.getRuntime().exec("dot -Tpdf Diagrama.dot -o Diagrama.pdf");
+                Runtime.getRuntime().exec("dot -Tpdf ./Reportes/Diagrama.dot -o ./Reportes/Diagrama.pdf");
                 Flowchart.abrirDiagrama();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -451,11 +452,11 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        // TODO add your handling code here:
+        abrirReportes("./Documentacion/Manual_Usuario.pdf");
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        // TODO add your handling code here:
+        abrirReportes("./Documentacion/Manual_Tecnico.pdf");
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -787,6 +788,25 @@ public class Ventana extends javax.swing.JFrame {
         esquema.getStyle(Token.LITERAL_CHAR).foreground=literales;
         esquema.getStyle(Token.LITERAL_STRING_DOUBLE_QUOTE).foreground=literales;
         esquema.getStyle(Token.LITERAL_NUMBER_DECIMAL_INT).foreground=literales;
+    }
+    public void abrirReportes(String ruta){
+        try
+        {
+            File file = new File(ruta);
+            if(!Desktop.isDesktopSupported())
+            {
+                System.out.println("not supported");
+                return;
+            }
+            Desktop desktop = Desktop.getDesktop();
+            if(file.exists())
+                desktop.open(file);
+                System.out.println("XD");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     /**
      * @param args the command line arguments

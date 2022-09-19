@@ -26,10 +26,10 @@ public class Arbol {
         graficarNodos(nodo);
         codigo += "\n}";
         System.out.println(codigo);
-        try (FileOutputStream archivo = new FileOutputStream("./AST.dot")) {
+        try (FileOutputStream archivo = new FileOutputStream("./Reportes/AST.dot")) {
             archivo.write(codigo.getBytes());
             archivo.close();
-            Runtime.getRuntime().exec("dot -Tpdf AST.dot -o AST.pdf");
+            Runtime.getRuntime().exec("dot -Tpdf ./Reportes/AST.dot -o ./Reportes/AST.pdf");
             abrirArbol();
         } catch (Exception ex) {
             ex.printStackTrace();
